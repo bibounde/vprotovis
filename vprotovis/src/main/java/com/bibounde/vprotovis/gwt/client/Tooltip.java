@@ -1,4 +1,4 @@
-package com.gdteam.vprotovis.gwt.client;
+package com.bibounde.vprotovis.gwt.client;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;

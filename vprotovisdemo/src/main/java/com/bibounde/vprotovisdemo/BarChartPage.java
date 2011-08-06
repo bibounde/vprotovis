@@ -1,4 +1,4 @@
-package com.gdteam.vprotovisdemo;
+package com.bibounde.vprotovisdemo;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.vaadin.codelabel.CodeLabel;
 
-import com.gdteam.vprotovis.BarChartComponent;
-import com.gdteam.vprotovis.chart.bar.Serie;
+import com.bibounde.vprotovis.BarChartComponent;
+import com.bibounde.vprotovis.chart.bar.Serie;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.validator.AbstractValidator;

@@ -1,13 +1,13 @@
-package com.gdteam.vprotovis;
+package com.bibounde.vprotovis;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gdteam.vprotovis.chart.bar.BarChart;
-import com.gdteam.vprotovis.chart.bar.Serie;
-import com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent;
+import com.bibounde.vprotovis.chart.bar.BarChart;
+import com.bibounde.vprotovis.chart.bar.Serie;
+import com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;

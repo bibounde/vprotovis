@@ -12,12 +12,12 @@
         <init-param>
             <description>Vaadin application class to start</description>
             <param-name>application</param-name>
-            <param-value>com.gdteam.vprotovis.WidgetTestApplication</param-value>
+            <param-value>com.bibounde.vprotovis.WidgetTestApplication</param-value>
         </init-param>
         <init-param>
             <description>Application widgetset</description>
             <param-name>widgetset</param-name>
-            <param-value>com.gdteam.vprotovis.gwt.VProtovisWidgetSet</param-value>
+            <param-value>com.bibounde.vprotovis.gwt.VProtovisWidgetSet</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

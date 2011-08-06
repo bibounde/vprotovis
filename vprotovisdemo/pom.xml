@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<parent>
+      <groupId>com.bibounde.vprotovis</groupId>
+      <artifactId>vprotovisproject</artifactId>
+      <version>1</version>
+    </parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.gdteam.vprotovisdemo</groupId>
+	<groupId>com.bibounde.vprotovisdemo</groupId>
 	<artifactId>vprotovisdemo</artifactId>
 	<packaging>war</packaging>
 	<version>0.1-SNAPSHOT</version>
-	<name>Vaadin Protovis Wrapper Demo</name>
+	<name>Vaadin wrapper for Vaadin Demo</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -142,9 +148,9 @@
 			<version>${vaadin.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.gdteam.vprotovis</groupId>
+			<groupId>com.bibounde.vprotovis</groupId>
 			<artifactId>vprotovis</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>

@@ -1,4 +1,4 @@
-package com.gdteam.vprotovis.chart.bar;
+package com.bibounde.vprotovis.chart.bar;
 
 import java.io.Serializable;
 

@@ -5,7 +5,7 @@
 <module>
     <inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
 
-    <inherits name="com.gdteam.vprotovis.gwt.VProtovisWidgetSet" />
+    <inherits name="com.bibounde.vprotovis.gwt.VProtovisWidgetSet" />
 
     <inherits name="org.vaadin.codelabel.CodelabelWidgetset" />
 </module>

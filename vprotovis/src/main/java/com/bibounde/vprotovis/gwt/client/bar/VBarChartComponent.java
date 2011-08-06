@@ -1,9 +1,9 @@
-package com.gdteam.vprotovis.gwt.client.bar;
+package com.bibounde.vprotovis.gwt.client.bar;
 
 import java.util.logging.Logger;
 
-import com.gdteam.vprotovis.gwt.client.Tooltip;
-import com.gdteam.vprotovis.gwt.client.Tooltip.ArrowStyle;
+import com.bibounde.vprotovis.gwt.client.Tooltip;
+import com.bibounde.vprotovis.gwt.client.Tooltip.ArrowStyle;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -103,32 +103,32 @@ public class VBarChartComponent extends Widget implements Paintable {
     
         var vbarchart = this;
         
-        var colors = eval(this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getColors()());
+        var colors = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getColors()());
         
-        var data = eval(this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getData()());
-        var serieNames = eval(this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getSerieNames()());
+        var data = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getData()());
+        var serieNames = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getSerieNames()());
         
-        var verticalOffset = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getVerticalOffset()();
-        var horizontalOffset = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getHorizontalOffset()();
+        var verticalOffset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getVerticalOffset()();
+        var horizontalOffset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getHorizontalOffset()();
         
-        var chartWidth = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getChartWidth()();
-        var chartHeight = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getChartHeight()();
+        var chartWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getChartWidth()();
+        var chartHeight = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getChartHeight()();
         
         var legendSize = 0;
-        if (this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()()) {
-            legendSize = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getLegendSize()();
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()()) {
+            legendSize = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getLegendSize()();
         }
         
-        var vis = new $wnd.pv.Panel().canvas(this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getDivId()());
+        var vis = new $wnd.pv.Panel().canvas(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getDivId()());
         vis.width(chartWidth);
         vis.height(chartHeight);
         
-        var groupWidths = eval(this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getGroupWidth()());
+        var groupWidths = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupWidth()());
         
         //Value axis management
-        if (this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::isValueAxisEnabled()()) {
-            var ruleMax = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelMax()();
-            var ruleStep = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelStep()();
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isValueAxisEnabled()()) {
+            var ruleMax = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelMax()();
+            var ruleStep = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelStep()();
             var rule = vis.add($wnd.pv.Rule).data($wnd.pv.range(0, ruleMax, ruleStep));
             rule.bottom(function(d) { 
                 return d * barHeight + verticalOffset;
@@ -137,9 +137,9 @@ public class VBarChartComponent extends Widget implements Paintable {
             rule.width(chartWidth - legendSize - horizontalOffset + 30);
             rule.strokeStyle("rgba(0,0,0,.2)");
             rule.textStyle("rgba(0,0,0,.5)");
-            if (this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::isValueAxisLabelEnabled()()) {
+            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isValueAxisLabelEnabled()()) {
                 rule.text(function(d) {
-                    return vbarchart.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelValue(D)(d);
+                    return vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelValue(D)(d);
                 });
                 rule.add($wnd.pv.Label).textAlign("right").textBaseline("middle");
             }
@@ -147,9 +147,9 @@ public class VBarChartComponent extends Widget implements Paintable {
         
         var bar = vis.add($wnd.pv.Panel).def("active", false).def("activeIndex", -1).data(data).data(data).left(function(){return groupWidths[this.index][0]}).width(function(){return groupWidths[this.index][1]}).add($wnd.pv.Bar).data(function(d){ return d});
         
-        var barWidth = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getBarWidth()();
-        var barHeight = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getBarHeight()();
-        var barInset = this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getBarInset()();
+        var barWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getBarWidth()();
+        var barHeight = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getBarHeight()();
+        var barInset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getBarInset()();
         
         bar.bottom(verticalOffset).width(barWidth - barInset).height(function(d){ return d * barHeight;}).left(function(){return this.index * barWidth});
         
@@ -165,14 +165,14 @@ public class VBarChartComponent extends Widget implements Paintable {
         //bar.fillStyle(colors.by($wnd.pv.index));
         
         //Group axis management
-        if (this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::isGroupAxisEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isGroupAxisEnabled()()) {
             var rule = vis.add($wnd.pv.Rule); 
             
             rule.bottom(verticalOffset).width(chartWidth - legendSize - horizontalOffset + 30).left(horizontalOffset - 20);
             rule.strokeStyle("rgba(0,0,0,.2)");
         }
         
-        if (this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::isGroupAxisLabelEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isGroupAxisLabelEnabled()()) {
         
             var tick = vis.add($wnd.pv.Rule); 
             tick.data(data).left(function(){return groupWidths[this.index][0] + (groupWidths[this.index][1] / 2 - 1);});
@@ -185,19 +185,19 @@ public class VBarChartComponent extends Widget implements Paintable {
             label.textStyle("rgba(0,0,0,.5)");
             
             label.text(function(){
-                return vbarchart.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getGroupName(I)(this.parent.index);
+                return vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupName(I)(this.parent.index);
             });
         }
         
         //Event management
-        if (this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::isTooltipEnabled()()) {
-            var tooltips = eval(this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::getTooltips()());
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isTooltipEnabled()()) {
+            var tooltips = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getTooltips()());
             bar.event('mouseover', function() {
                 var left = this.left() + this.parent.left();
                 var top = this.top() + this.parent.top();
                 var width = this.width();
                 var tooltip = tooltips[this.parent.index][this.index];
-                vbarchart.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::showTooltip(DDDLjava/lang/String;)(left, top, width, tooltip);
+                vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::showTooltip(DDDLjava/lang/String;)(left, top, width, tooltip);
                 
                 this.parent.active(true);
                 this.parent.activeIndex(this.index);
@@ -205,7 +205,7 @@ public class VBarChartComponent extends Widget implements Paintable {
                 return this;
             });
             bar.event('mouseout', function() {
-                vbarchart.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::hideTooltip()();
+                vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::hideTooltip()();
                 this.parent.active(false);
                 this.parent.activeIndex(this.index);
                 return this;
@@ -214,7 +214,7 @@ public class VBarChartComponent extends Widget implements Paintable {
         
         
         //Legend management
-        if (this.@com.gdteam.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()()) {
             var legend = vis.add($wnd.pv.Dot).data(serieNames);
             legend.top(function() {
                 return (chartHeight - serieNames.length * 26)/2 + ((this.index) * 26);

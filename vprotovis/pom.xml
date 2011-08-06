@@ -3,13 +3,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   
   <parent>
-    <groupId>com.gdteam.vprotovis</groupId>
+    <groupId>com.bibounde.vprotovis</groupId>
     <artifactId>vprotovisproject</artifactId>
     <version>1</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.gdteam.vprotovis</groupId>
+  <groupId>com.bibounde.vprotovis</groupId>
   <artifactId>vprotovis</artifactId>
   <packaging>jar</packaging>
   <version>0.2-SNAPSHOT</version>
@@ -58,7 +58,7 @@
               -->
 
               <!-- Comma-separated list of widgetsets in the package -->
-              <Vaadin-Widgetsets>com.gdteam.vprotovis.gwt.VProtovisWidgetSet</Vaadin-Widgetsets>
+              <Vaadin-Widgetsets>com.bibounde.vprotovis.gwt.VProtovisWidgetSet</Vaadin-Widgetsets>
             </manifestEntries>
           </archive>
         </configuration>
@@ -74,7 +74,7 @@
         <version>${gwt.plugin.version}</version>
         <configuration>
           <!-- if you don't specify any modules, the plugin will find them -->
-          <!-- <modules> <module>com.gdteam.gwt.MyWidgetSet</module> </modules> -->
+          <!-- <modules> <module>com.bibounde.gwt.MyWidgetSet</module> </modules> -->
           <webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
           <!-- On Mac running Snow Leopard, add "-d32" -->
           <!-- This causes error messages (but build works) in phase "package": two processes would use the same debug 
@@ -116,7 +116,7 @@
           <execution>
             <configuration>
               <!-- if you don't specify any modules, the plugin will find them -->
-              <!-- <modules> <module>com.gdteam.gwt.MyWidgetSet</module> </modules> -->
+              <!-- <modules> <module>com.bibounde.gwt.MyWidgetSet</module> </modules> -->
             </configuration>
             <goals>
               <goal>update-widgetset</goal>

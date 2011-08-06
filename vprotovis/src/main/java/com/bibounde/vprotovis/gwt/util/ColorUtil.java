@@ -1,4 +1,4 @@
-package com.gdteam.vprotovis.gwt.util;
+package com.bibounde.vprotovis.gwt.util;
 
 import java.awt.Color;
 

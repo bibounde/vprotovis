@@ -1,5 +1,5 @@
-import com.gdteam.vprotovis.BarChartComponent;
-import com.gdteam.vprotovis.chart.bar.Serie;
+import com.bibounde.vprotovis.BarChartComponent;
+import com.bibounde.vprotovis.chart.bar.Serie;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.gdteam.vprotovisdemo;
+package com.bibounde.vprotovisdemo;
 
 import com.vaadin.Application;
 import com.vaadin.ui.TabSheet;
