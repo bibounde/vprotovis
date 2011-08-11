@@ -6,14 +6,13 @@ import java.util.List;
 import com.bibounde.vprotovis.chart.line.InterpolationMode;
 import com.bibounde.vprotovis.chart.line.LineChart;
 import com.bibounde.vprotovis.chart.line.Serie;
+import com.bibounde.vprotovis.common.AxisLabelFormatter;
+import com.bibounde.vprotovis.common.DefaultAxisLabelFormatter;
+import com.bibounde.vprotovis.common.Padding;
+import com.bibounde.vprotovis.common.Point;
+import com.bibounde.vprotovis.common.Range;
+import com.bibounde.vprotovis.common.Rectangle;
 import com.bibounde.vprotovis.gwt.client.line.VLineChartComponent;
-import com.bibounde.vprotovis.gwt.common.AxisLabelFormatter;
-import com.bibounde.vprotovis.gwt.common.DefaultAxisLabelFormatter;
-import com.bibounde.vprotovis.gwt.common.Padding;
-import com.bibounde.vprotovis.gwt.common.Point;
-import com.bibounde.vprotovis.gwt.common.Range;
-import com.bibounde.vprotovis.gwt.common.Rectangle;
-import com.google.gwt.dom.client.LegendElement;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
@@ -206,10 +205,8 @@ public class LineChartComponent extends AbstractComponent {
                 yMin = yMin > value.getY() ? value.getY() : yMin;
             }
         }
-
         
-        
-        Padding padding = new Padding(5d, xMin < 0 ? 5d : 0d, 5d, yMin < 0 ? 5d : 0d);
+        Padding padding = new Padding(10d, xMin < 0 ? 10d : 0d, 10d, yMin < 0 ? 10d : 0d);
         
         this.paintChartValues(target);
         this.paintChartOptions(target, new Rectangle(xMin, yMin, xMax, yMax), padding);
@@ -244,8 +241,8 @@ public class LineChartComponent extends AbstractComponent {
 
         double bottom = this.getAutoBottom(dataRect);
         double left = this.getAutoLeft(dataRect);
-        Range rangeY = this.chart.getVerticalAxisLabelStart() != -1 ? new Range(this.chart.getVerticalAxisLabelStart(), this.chart.getVerticalAxisLabelStop(), this.chart.getVerticalAxisLabelStep()) : this.getAutoRange(dataRect.getY1(), dataRect.getY2(), this.chart.getVerticalAxisLabelStep());
-        Range rangeX = this.chart.getHorizontalAxisLabelStart() != -1 ? new Range(this.chart.getHorizontalAxisLabelStart(), this.chart.getHorizontalAxisLabelStop(), this.chart.getHorizontalAxisLabelStep()) : this.getAutoRange(dataRect.getX1(), dataRect.getX2(), this.chart.getHorizontalAxisLabelStep());
+        Range rangeY = this.chart.getVerticalAxisLabelStart() != -1 ? new Range(this.chart.getVerticalAxisLabelStart(), this.chart.getVerticalAxisLabelStop(), this.chart.getVerticalAxisLabelStep()) : Range.getAutoRange(dataRect.getY1(), dataRect.getY2(), this.chart.getVerticalAxisLabelStep());
+        Range rangeX = this.chart.getHorizontalAxisLabelStart() != -1 ? new Range(this.chart.getHorizontalAxisLabelStart(), this.chart.getHorizontalAxisLabelStop(), this.chart.getHorizontalAxisLabelStep()) : Range.getAutoRange(dataRect.getX1(), dataRect.getX2(), this.chart.getHorizontalAxisLabelStep());
 
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_BOTTOM, bottom);
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_LEFT, left);
@@ -329,28 +326,16 @@ public class LineChartComponent extends AbstractComponent {
 
         return availableWidth / max;
     }
-    
-    protected Range getAutoRange(double minValue, double maxValue, double step) {
-        double start = 0d;
-        double stop = maxValue + step;
-        
-        if (minValue < 0) {
-            //0 must be displayed
-            double initialStart = 1 - Math.max(Math.abs(minValue), maxValue) - step;
-            while(start > initialStart) {
-                start -= step;
-            }
-            stop = 1 - start; 
-        }
-        
-        return new Range(start, stop, step);
-    }
 
     /**
      * @param horizontalAxisLabelFormatter the horizontalAxisLabelFormatter to set
      */
     public void setHorizontalAxisLabelFormatter(AxisLabelFormatter horizontalAxisLabelFormatter) {
-        this.horizontalAxisLabelFormatter = horizontalAxisLabelFormatter;
+        if (horizontalAxisLabelFormatter == null) {
+            this.horizontalAxisLabelFormatter = new DefaultAxisLabelFormatter();
+        } else {
+            this.horizontalAxisLabelFormatter = horizontalAxisLabelFormatter;
+        }
     }
 
 
@@ -359,6 +344,10 @@ public class LineChartComponent extends AbstractComponent {
      * @param verticalAxisLabelFormatter the verticalAxisLabelFormatter to set
      */
     public void setVerticalAxisLabelFormatter(AxisLabelFormatter verticalAxisLabelFormatter) {
-        this.verticalAxisLabelFormatter = verticalAxisLabelFormatter;
+        if (verticalAxisLabelFormatter == null) {
+            this.verticalAxisLabelFormatter = new DefaultAxisLabelFormatter();
+        } else {
+            this.verticalAxisLabelFormatter = verticalAxisLabelFormatter;
+        }
     }
 }

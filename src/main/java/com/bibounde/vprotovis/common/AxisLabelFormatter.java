@@ -1,4 +1,4 @@
-package com.bibounde.vprotovis.gwt.common;
+package com.bibounde.vprotovis.common;
 
 public interface AxisLabelFormatter {
 

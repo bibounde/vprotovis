@@ -1,9 +1,9 @@
 package com.bibounde.vprotovis;
 
-import com.bibounde.vprotovis.chart.bar.Serie;
+import com.bibounde.vprotovis.chart.bar.TooltipFormatter;
 import com.bibounde.vprotovis.chart.line.InterpolationMode;
-import com.bibounde.vprotovis.gwt.common.AxisLabelFormatter;
-import com.bibounde.vprotovis.gwt.common.Point;
+import com.bibounde.vprotovis.common.AxisLabelFormatter;
+import com.bibounde.vprotovis.common.Point;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
@@ -19,58 +19,58 @@ public class WidgetTestApplication extends Application {
         window = new Window("Widget Test");
         setMainWindow(window);
 
-        //this.runBar();
-        this.runLine();
+        this.runBar();
+        //this.runLine();
     }
     
     private void runBar() {
-        BarChartComponent bar = new BarChartComponent() {
-
-            @Override
-            public String getTooltipHTML(int serieIndex, int valueIndex, String groupName) {
-
-                Serie serie = this.getChart().getSeries().get(serieIndex);
-
+        BarChartComponent bar = new BarChartComponent();
+        bar.addSerie("Sales", new double[] { -100, 1170, 660, 1030 });
+        bar.addSerie("Expenses", new double[] { 400, 460, -1200, 540 });
+        bar.addSerie("VAT", new double[] { 20, 46, 78, 130 });
+        
+        bar.setGroupNames(new String[] { "2008", "2009", "2010", "2011" });
+        bar.setId("protovis");
+        bar.setChartWidth(550);
+        bar.setChartHeight(250);
+        
+        bar.setBarInset(2);
+        bar.setGroupBarInset(25);
+        
+        bar.addHorizontalAxisWithLabel();
+        
+        bar.setMarginLeft(50);
+        bar.setMarginBottom(20);
+        bar.addVerticalAxis(650, true);
+        bar.setVerticalAxisLabelFormatter(new AxisLabelFormatter() {
+            public String format(double labelValue) {
+                return String.valueOf(labelValue) + "\u20AC";
+            }
+        });
+        
+        bar.addLegend(150);
+        
+        TooltipFormatter tooltipFormatter = new TooltipFormatter() {
+            
+            public String getTooltipHTML(String serieName, double value, String groupName) {
                 StringBuilder tooltipHTML = new StringBuilder();
                 tooltipHTML.append("<table border=0 cellpadding=2 ><tr><td valign=top>").append("<img src=\"");
 
-                double ref = serie.getValues()[valueIndex];
-                double previous = valueIndex == 0 ? 0 : serie.getValues()[valueIndex - 1];
-
                 String img = "http://www.investirama.com/img/axialis/green/Arrow2%20Up.png";
-                if (previous > ref) {
+                if (value < 0) {
                     img = "http://www.investirama.com/img/axialis/red/Arrow2%20Down.png";
                 }
                 tooltipHTML.append(img);
                 tooltipHTML.append("\"></td><td>");
                 tooltipHTML.append("<b><i>").append(groupName).append("</i></b><br/>");
-                tooltipHTML.append(serie.getName()).append(": ").append(ref).append(" \u20AC");
+                tooltipHTML.append(serieName).append(": ").append(value).append(" \u20AC");
                 tooltipHTML.append("</td><tr></table>");
 
                 return tooltipHTML.toString();
             }
-
         };
-        bar.addSerie("Sales", new double[] { 1000, 1170, 660, 1030 });
-        bar.addSerie("Expenses", new double[] { 400, 460, 1200, 540 });
-        bar.addSerie("VAT", new double[] { 20, 46, 78, 13 });
-
-        // Optional
-        bar.setGroupNames(new String[] { "2008", "2009", "2010", "2011" });
-        bar.setId("protovis");
-        bar.setChartWidth(600);
-        bar.setChartHeight(250);
-
-        bar.setBarInset(2);
-        bar.setGroupBarInset(25);
-
-        bar.addGroupAxisWithLabel();
-        bar.addValueAxisWithLabel(70, 1201, 300, "#.#", " \u20AC");
-
-        //bar.setColors(new String[]{"red","blue"});
-        bar.addLegend(250);
-        // bar.setTooltipEnabled(false);
-
+        bar.setTooltipFormatter(tooltipFormatter);
+        
         window.addComponent(bar);
     }
     
@@ -105,7 +105,7 @@ public class WidgetTestApplication extends Application {
                 return String.valueOf(labelValue) + "\u20AC";
             }
         });
-        line.addVerticalAxis(300, true);
+        line.addVerticalAxis(325, true);
         
         line.addLegend(150);
         

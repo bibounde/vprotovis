@@ -3,48 +3,55 @@ package com.bibounde.vprotovis.gwt.client.bar;
 import java.util.logging.Logger;
 
 import com.bibounde.vprotovis.gwt.client.Tooltip;
+import com.bibounde.vprotovis.gwt.client.UIDLUtil;
 import com.bibounde.vprotovis.gwt.client.Tooltip.ArrowStyle;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VBarChartComponent extends Widget implements Paintable {
-	
-	public static final String UIDL_DIV_ID = "vprotovis.div.id";
-	public static final String UIDL_DATA_GROUPS_COUNT = "vprotovis.data.groups.count";
-	public static final String UIDL_DATA_GROUP_VALUES = "vprotovis.data.group.values.";
-	public static final String UIDL_DATA_GROUP_NAME = "vprotovis.data.group.name.";
-	public static final String UIDL_DATA_GROUP_TOOLTIP_VALUES = "vprotovis.data.group.tooltip.values.";
-	public static final String UIDL_DATA_SERIE_NAME = "vprotovis.data.serie.name.";
-	public static final String UIDL_DATA_SERIES_COUNT = "vprotovis.data.series.count";
-	public static final String UIDL_OPTIONS_WIDTH = "vprotovis.options.width";
-	public static final String UIDL_OPTIONS_HEIGHT = "vprotovis.options.height";
-	public static final String UIDL_OPTIONS_BAR_WIDTH = "vprotovis.options.bar.width";
-	public static final String UIDL_OPTIONS_BAR_HEIGHT = "vprotovis.options.bar.height";
-	public static final String UIDL_OPTIONS_BAR_INSET = "vprotovis.options.bar.inset";
-	public static final String UIDL_OPTIONS_GROUP_WIDTH = "vprotovis.options.group.width";
-	public static final String UIDL_OPTIONS_GROUP_INSET = "vprotovis.options.group.inset";
-	public static final String UIDL_OPTIONS_GROUP_AXIS_ENABLED = "vprotovis.options.group.axis.enabled";
-	public static final String UIDL_OPTIONS_GROUP_AXIS_LABEL_ENABLED = "vprotovis.options.group.axis.label.enabled";
-	public static final String UIDL_OPTIONS_VALUE_AXIS_ENABLED = "vprotovis.options.value.axis.enabled";
-	public static final String UIDL_OPTIONS_VALUE_AXIS_LABEL_ENABLED = "vprotovis.options.value.axis.label.enabled";
-	public static final String UIDL_OPTIONS_VALUE_AXIS_LABEL_PATTERN = "vprotovis.options.value.axis.label.pattern";
-	public static final String UIDL_OPTIONS_VALUE_AXIS_LABEL_UNIT = "vprotovis.options.value.axis.label.unit";
-	public static final String UIDL_OPTIONS_VALUE_AXIS_LABEL_MAX = "vprotovis.options.value.axis.label.max";
-	public static final String UIDL_OPTIONS_VALUE_AXIS_LABEL_STEP = "vprotovis.options.value.axis.label.step";
-	public static final String UIDL_OPTIONS_LEGEND_ENABLED = "vprotovis.options.legend.enabled";
-	public static final String UIDL_OPTIONS_LEGEND_SIZE = "vprotovis.options.legend.size";
-	public static final String UIDL_OPTIONS_VERTICAL_OFFSET = "vprotovis.options.vertical.offset";
-	public static final String UIDL_OPTIONS_HORIZONTAL_OFFSET = "vprotovis.options.horizontal.offset";
-	public static final String UIDL_OPTIONS_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled";
-	public static final String UIDL_OPTIONS_COLORS = "vprotovis.options.colors";
-	
-	
-	
+
+    public static final String UIDL_DIV_ID = "vprotovis.div.id";
+    public static final String UIDL_DATA_SERIES_COUNT = "vprotovis.data.series.count";
+    public static final String UIDL_DATA_SERIES_NAMES = "vprotovis.data.series.names";
+    public static final String UIDL_DATA_GROUPS_COUNT = "vprotovis.data.groups.count";
+    public static final String UIDL_DATA_GROUPS_NAMES = "vprotovis.data.groups.names";
+    public static final String UIDL_DATA_GROUP_NAME = "vprotovis.data.group.name.";
+    public static final String UIDL_DATA_SERIE_NAME = "vprotovis.data.serie.name.";
+    public static final String UIDL_DATA_GROUP_VALUES = "vprotovis.data.group.values.";
+    public static final String UIDL_DATA_GROUP_TOOLTIP_VALUES = "vprotovis.data.group.tooltip.values.";
+    public static final String UIDL_OPTIONS_WIDTH = "vprotovis.options.width";
+    public static final String UIDL_OPTIONS_HEIGHT = "vprotovis.options.height";
+    public static final String UIDL_OPTIONS_BOTTOM = "vprotovis.options.bottom";
+    public static final String UIDL_OPTIONS_LEFT = "vprotovis.options.left";
+    public static final String UIDL_OPTIONS_GROUP_WIDTH = "vprotovis.options.group.width";
+    public static final String UIDL_OPTIONS_GROUP_INSET = "vprotovis.options.group.inset";
+    public static final String UIDL_OPTIONS_BAR_HEIGHT = "vprotovis.options.bar.height";
+    public static final String UIDL_OPTIONS_BAR_WIDTH = "vprotovis.options.bar.width";
+    public static final String UIDL_OPTIONS_BAR_INSET = "vprotovis.options.bar.inset";
+    public static final String UIDL_OPTIONS_MARGIN_LEFT = "vprotovis.options.margin.left";
+    public static final String UIDL_OPTIONS_MARGIN_RIGHT = "vprotovis.options.margin.right";
+    public static final String UIDL_OPTIONS_MARGIN_TOP= "vprotovis.options.margin.top";
+    public static final String UIDL_OPTIONS_MARGIN_BOTTOM = "vprotovis.options.margin.bottom";
+    public static final String UIDL_OPTIONS_PADDING_LEFT = "vprotovis.options.padding.left";
+    public static final String UIDL_OPTIONS_PADDING_RIGHT = "vprotovis.options.padding.right";
+    public static final String UIDL_OPTIONS_PADDING_TOP= "vprotovis.options.padding.top";
+    public static final String UIDL_OPTIONS_PADDING_BOTTOM = "vprotovis.options.padding.bottom";
+    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_ENABLED = "vprotovis.options.horizontal.axis.enabled";
+    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_ENABLED = "vprotovis.options.horizontal.axis.label.enabled";
+    public static final String UIDL_OPTIONS_VERTICAL_AXIS_ENABLED = "vprotovis.options.vertical.axis.enabled";
+    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_ENABLED = "vprotovis.options.vertical.axis.label.enabled";
+    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_D_VALUES = "vprotovis.options.vertical.axis.label.range.d.values";
+    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_S_VALUES = "vprotovis.options.vertical.axis.label.range.s.values";
+    public static final String UIDL_OPTIONS_VERTICAL_AXIS_GRID_ENABLED = "vprotovis.options.vertical.axis.grid.enabled";
+    public static final String UIDL_OPTIONS_COLORS = "vprotovis.options.colors";
+    public static final String UIDL_OPTIONS_LEGEND_ENABLED = "vprotovis.options.legend.enabled";
+    public static final String UIDL_OPTIONS_LEGEND_AREA_WIDTH = "vprotovis.options.legend.area.width";
+    public static final String UIDL_OPTIONS_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled";
+    
     /** Set the CSS class name to allow styling. */
     public static final String CLASSNAME = "v-vprotovis-barchart";
     
@@ -59,16 +66,14 @@ public class VBarChartComponent extends Widget implements Paintable {
     
     private UIDL currentUIDL;
     
-    private NumberFormat labelFormat;
-    
     private Tooltip currentTooltip;
-
+    
     /**
      * The constructor should first call super() to initialize the component and
      * then handle any initialization relevant to Vaadin.
      */
     public VBarChartComponent() {
-    	DivElement canvas = Document.get().createDivElement();
+        DivElement canvas = Document.get().createDivElement();
         setElement(canvas);
         setStyleName(CLASSNAME);
     }
@@ -77,7 +82,7 @@ public class VBarChartComponent extends Widget implements Paintable {
      * Called whenever an update is received from the server 
      */
     public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
-    	
+        
         if (client.updateComponent(this, uidl, true)) {
             // If client.updateComponent returns true there has been no changes and we
             // do not need to update anything.
@@ -94,99 +99,147 @@ public class VBarChartComponent extends Widget implements Paintable {
         paintableId = uidl.getId();
         getElement().setId(this.getDivId());
         
-        this.labelFormat = NumberFormat.getFormat(uidl.getStringVariable(UIDL_OPTIONS_VALUE_AXIS_LABEL_PATTERN));
-        
         execChart();
     }
     
     private native void execChart() /*-{
     
         var vbarchart = this;
-        
+    
         var colors = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getColors()());
-        
+        var axisColor = $wnd.pv.color("#969696");
+        var legendColor = $wnd.pv.color("#464646");
+        var gridColor = $wnd.pv.color("#E4E4E4");
+    
         var data = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getData()());
         var serieNames = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getSerieNames()());
-        
-        var verticalOffset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getVerticalOffset()();
-        var horizontalOffset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getHorizontalOffset()();
+        var groupCount = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupCount()();
+        var groupNames = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupNames()());
         
         var chartWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getChartWidth()();
         var chartHeight = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getChartHeight()();
         
-        var legendSize = 0;
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()()) {
-            legendSize = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getLegendSize()();
-        }
+        var panelBottom = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPanelBottom()();
+        var panelLeft = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPanelLeft()();
         
         var vis = new $wnd.pv.Panel().canvas(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getDivId()());
         vis.width(chartWidth);
         vis.height(chartHeight);
         
-        var groupWidths = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupWidth()());
+        var marginLeft = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getMarginLeft()();
+        var marginRight = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getMarginRight()();
+        var marginBottom = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getMarginBottom()();
+        var marginTop = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getMarginTop()();
+        var paddingLeft = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPaddingLeft()();
+        var paddingRight = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPaddingRight()();
+        var paddingBottom = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPaddingBottom()();
+        var paddingTop = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPaddingTop()();
         
-        //Value axis management
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isValueAxisEnabled()()) {
-            var ruleMax = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelMax()();
-            var ruleStep = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelStep()();
-            var rule = vis.add($wnd.pv.Rule).data($wnd.pv.range(0, ruleMax, ruleStep));
-            rule.bottom(function(d) { 
-                return d * barHeight + verticalOffset;
-            });
-            rule.left(horizontalOffset - 20);
-            rule.width(chartWidth - legendSize - horizontalOffset + 30);
-            rule.strokeStyle("rgba(0,0,0,.2)");
-            rule.textStyle("rgba(0,0,0,.5)");
-            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isValueAxisLabelEnabled()()) {
-                rule.text(function(d) {
-                    return vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getValueAxisLabelValue(D)(d);
-                });
-                rule.add($wnd.pv.Label).textAlign("right").textBaseline("middle");
-            }
-        }
+        var legendAreaWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getLegendAreaWidth()();;
         
-        var bar = vis.add($wnd.pv.Panel).def("active", false).def("activeIndex", -1).data(data).left(function(){return groupWidths[this.index][0]}).width(function(){return groupWidths[this.index][1]}).add($wnd.pv.Bar).data(function(d){ return d});
+        var maxYTick = chartHeight - marginTop;
+        var minYTick = marginBottom;
         
+        var yRange = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getVerticalAxisLabelRangeDValues()());
+        var yRangeText = eval(this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getVerticalAxisLabelRangeSValues()());
+        
+        var groupWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupWidth()();
+        var groupInset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupInset()();
         var barWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getBarWidth()();
         var barHeight = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getBarHeight()();
         var barInset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getBarInset()();
         
-        bar.bottom(verticalOffset).width(barWidth - barInset).height(function(d){ return d * barHeight;}).left(function(){return this.index * barWidth});
-        
-        //Color management
-        bar.fillStyle(function() {
-        
-            if (this.parent.active() && this.parent.activeIndex() == this.index) {
-                return $wnd.pv.color(colors.range()[this.index]).brighter(0.5);
-            } else {
-                return $wnd.pv.color(colors.range()[this.index]);
-            }
-        });
-        //bar.fillStyle(colors.by($wnd.pv.index));
-        
-        //Group axis management
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isGroupAxisEnabled()()) {
-            var rule = vis.add($wnd.pv.Rule); 
-            
-            rule.bottom(verticalOffset).width(chartWidth - legendSize - horizontalOffset + 30).left(horizontalOffset - 20);
-            rule.strokeStyle("rgba(0,0,0,.2)");
+        //Grid management
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isVerticalAxisGridEnabled()()) {
+            var grid = vis.add($wnd.pv.Rule).data(yRange);
+            grid.bottom(function(d) {
+                var ret = (d * barHeight) + panelBottom;
+                if (ret < maxYTick && ret >= minYTick) {;
+                    return ret;
+                } else {
+                    //Out of range
+                    return chartHeight * 10;
+                }
+            });
+            grid.left(0 + marginLeft);
+            grid.width(chartWidth - marginLeft - marginRight - legendAreaWidth);
+            grid.strokeStyle(gridColor);
         }
         
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isGroupAxisLabelEnabled()()) {
-        
-            var tick = vis.add($wnd.pv.Rule); 
-            tick.data(data).left(function(){return groupWidths[this.index][0] + (groupWidths[this.index][1] / 2 - 1);});
-            tick.bottom(verticalOffset - 3).height(3);
-            tick.strokeStyle("rgba(0,0,0,.5)");
-        
-            var label = bar.parent.anchor('bottom').add($wnd.pv.Label);
+        //Panel and bar management
+        var panel = vis.add($wnd.pv.Panel).def("active", false).def("activeIndex", -1).data(data);
+        panel.width(groupWidth).bottom(panelBottom).left(function() {
+            var padding = 0;
+            if (this.index == 0) {
+                padding = paddingLeft;
+            }
+            return padding + panelLeft + this.index * (groupWidth + groupInset);
+        });
+                
+        var bar = panel.add($wnd.pv.Bar).data(function(d){ return d});
+        bar.bottom(function(d) {
+            if (d < 0) {
+                return d * barHeight;
+            } else {
+                return 0;
+            }
+        });
+        bar.width(barWidth).height(function(d) {return Math.abs(d * barHeight);});
+        bar.left(function(){return this.index * (barWidth + barInset)});
+        //Color management
+        bar.fillStyle(colors.by($wnd.pv.index));
+    
+        //Horizontal axis management
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isHorizontalAxisEnabled()()) {
+            var rule = vis.add($wnd.pv.Rule);
             
-            label.textMargin(3);
-            label.textStyle("rgba(0,0,0,.5)");
+            rule.bottom(panelBottom).width(chartWidth - marginLeft - marginRight - legendAreaWidth).left(0 + marginLeft);
+            rule.strokeStyle(axisColor);
             
-            label.text(function(){
-                return vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getGroupName(I)(this.parent.index);
-            });
+            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isHorizontalAxisLabelEnabled()()) {
+        
+                var tick = vis.add($wnd.pv.Rule).data(groupNames);
+                tick.left(function() {
+                    var padding = 0;
+                    if (this.index == 0) {
+                        padding = paddingLeft;
+                    }
+                    return padding + panelLeft + this.index * (groupWidth + groupInset) + (groupWidth / 2);
+                });
+                tick.bottom(panelBottom - 3);
+                tick.height(3);
+                tick.strokeStyle(axisColor);
+                tick.anchor("bottom").add($wnd.pv.Label).text(function(d) {
+                    return d;
+                }).textStyle(axisColor);
+            }
+        }
+        
+        //Vertical axis management
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isVerticalAxisEnabled()()) {
+            var rule = vis.add($wnd.pv.Rule);
+            rule.bottom(0 + marginBottom).left(panelLeft).height(chartHeight - marginBottom - marginTop);
+            rule.strokeStyle(axisColor);
+            
+            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isVerticalAxisLabelEnabled()()) {
+        
+                var tick = vis.add($wnd.pv.Rule).data(yRange);
+                tick.bottom(function(d) {
+                    var ret = (d * barHeight) + panelBottom;
+                    if (ret <= maxYTick && ret >= minYTick) {
+                        return ret;
+                    } else {
+                        //Out of range
+                        return chartHeight * 10;
+                    }
+                });
+                tick.left(panelLeft - 3);
+                tick.width(3);
+                tick.strokeStyle(axisColor);
+                tick.anchor("left").add($wnd.pv.Label).text(function() {
+                    return yRangeText[this.index];
+                }).textStyle(axisColor);
+            }
         }
         
         //Event management
@@ -195,255 +248,259 @@ public class VBarChartComponent extends Widget implements Paintable {
             bar.event('mouseover', function() {
                 var left = this.left() + this.parent.left();
                 var top = this.top() + this.parent.top();
-                var width = this.width();
+                var bottom = this.bottom() + this.parent.bottom();
+                var barWidth = this.width();
+                var barBbottom = this.bottom();
                 var tooltip = tooltips[this.parent.index][this.index];
-                vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::showTooltip(DDDLjava/lang/String;)(left, top, width, tooltip);
-                
-                this.parent.active(true);
-                this.parent.activeIndex(this.index);
+                vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::showTooltip(DDDDDLjava/lang/String;)(left, top, bottom, barBbottom, barWidth, tooltip);
                 
                 return this;
             });
             bar.event('mouseout', function() {
                 vbarchart.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::hideTooltip()();
-                this.parent.active(false);
-                this.parent.activeIndex(this.index);
                 return this;
             });
         }
         
-        
         //Legend management
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()()) {
-            var legend = vis.add($wnd.pv.Dot).data(serieNames);
-            legend.top(function() {
-                return (chartHeight - serieNames.length * 26)/2 + ((this.index) * 26);
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()) {
+            //Use bar instead of DOT because msie-shim does not support it
+            var legend = vis.add($wnd.pv.Bar).data(serieNames);
+            legend.top(function(){
+                return marginTop + (this.index * 18);
             });
-            legend.right(legendSize - 40);
-            legend.size(50).strokeStyle(null).shape('square').fillStyle(colors.by($wnd.pv.index)).anchor("right").add($wnd.pv.Label);
+            //Offset = 20
+            legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + 20);
+            legend.fillStyle(colors.by($wnd.pv.index));
+            legend.anchor("left").add($wnd.pv.Label).textBaseline("middle").textMargin(16).textStyle(legendColor);
         }
-        
+    
         vis.render();
-        
     }-*/;
     
-    public void showTooltip(double left, double top, double barWidth, String tooltipText) {
-    	int arrowOffset = 10;
-    	int tooltipLeft = this.getElement().getAbsoluteLeft() + Double.valueOf(left).intValue();
-    	int tooltipTop = this.getElement().getAbsoluteTop() + Double.valueOf(top).intValue();
-    	
-    	if (this.currentTooltip == null) {
-    		this.currentTooltip = new Tooltip();
-    	}
-    	this.currentTooltip.setText(tooltipText);
-    	this.currentTooltip.initArrows();
-    	
-    	//Tooltip location calculation
-    	this.currentTooltip.show();
-    	//TODO: manage left and right
-    	if (top < this.currentTooltip.getOffsetHeight()) {
-    		//Display at the right
-    		this.currentTooltip.setArrowStyle(ArrowStyle.LEFT);
-    		this.currentTooltip.setPopupPosition(tooltipLeft + Double.valueOf(barWidth).intValue() + 2, tooltipTop);
-    	} else {
-    		this.currentTooltip.setArrowStyle(ArrowStyle.BOTTOM);
-    		this.currentTooltip.setPopupPosition(tooltipLeft - arrowOffset+ (Double.valueOf(barWidth).intValue() / 2), tooltipTop - this.currentTooltip.getOffsetHeight());
-    	}
-    	
+    public void showTooltip(double left, double top, double bottom, double barBottom, double barWidth, String tooltipText) {
+        int arrowOffset = 10;
+        int tooltipLeft = this.getElement().getAbsoluteLeft() + Double.valueOf(left).intValue();
+        int tooltipTop = this.getElement().getAbsoluteTop() + Double.valueOf(top).intValue();
+        int tooltipBottom = this.getElement().getAbsoluteBottom() - Double.valueOf(bottom).intValue();
+        
+        if (this.currentTooltip == null) {
+            this.currentTooltip = new Tooltip();
+        }
+        this.currentTooltip.setText(tooltipText);
+        this.currentTooltip.initArrows();
+        
+        //Tooltip location calculation
+        this.currentTooltip.show();
+        //TODO: manage left and right
+        if (barBottom < 0) {
+            //Bar with negative value
+            if (bottom < this.currentTooltip.getOffsetHeight()) {
+                //Display at the right
+                this.currentTooltip.setArrowStyle(ArrowStyle.LEFT);
+                this.currentTooltip.setPopupPosition(tooltipLeft + Double.valueOf(barWidth).intValue() + 2, tooltipBottom - this.currentTooltip.getOffsetHeight());
+            } else {
+                this.currentTooltip.setArrowStyle(ArrowStyle.TOP);
+                this.currentTooltip.setPopupPosition(tooltipLeft - arrowOffset+ (Double.valueOf(barWidth).intValue() / 2), tooltipBottom);
+            }
+        } else {
+            if (top < this.currentTooltip.getOffsetHeight()) {
+                //Display at the right
+                this.currentTooltip.setArrowStyle(ArrowStyle.LEFT);
+                this.currentTooltip.setPopupPosition(tooltipLeft + Double.valueOf(barWidth).intValue() + 2, tooltipTop);
+            } else {
+                this.currentTooltip.setArrowStyle(ArrowStyle.BOTTOM);
+                this.currentTooltip.setPopupPosition(tooltipLeft - arrowOffset+ (Double.valueOf(barWidth).intValue() / 2), tooltipTop - this.currentTooltip.getOffsetHeight());
+            }
+        }
     }
     
     public void hideTooltip() {
-    	if (this.currentTooltip != null) {
-    		this.currentTooltip.hide();
-    	}
+        if (this.currentTooltip != null) {
+            this.currentTooltip.hide();
+        }
     }
     
     public String getDivId() {
-    	return this.currentUIDL.getStringVariable(UIDL_DIV_ID);
+        return this.currentUIDL.getStringVariable(UIDL_DIV_ID);
     }
     
+    public String getData() {
+        StringBuilder ret = new StringBuilder("[");
+        int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_GROUPS_COUNT);
+        
+        for (int i = 0; i < serieCount; i++) {
+            if (i > 0) {
+                ret.append(", ");
+            }
+            ret.append("[");
+            
+            String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_GROUP_VALUES + i);
+            for (int j = 0; j < values.length; j++) {
+                if (j > 0) {
+                    ret.append(", ");
+                }
+                ret.append(values[j]);
+            }
+            ret.append("]");
+        }
+        ret.append("]");
+        return ret.toString();
+    };
+    
     public double getChartWidth() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_WIDTH);
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_WIDTH);
     }
     
     public double getChartHeight() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_HEIGHT);
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_HEIGHT);
+    }
+    
+    public double getPanelBottom() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BOTTOM);
+    }
+    
+    public double getPanelLeft() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LEFT);
+    }
+    
+    public double getGroupWidth() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_GROUP_WIDTH);
+    }
+    
+    public int getGroupCount() {
+        return this.currentUIDL.getIntVariable(UIDL_DATA_GROUPS_COUNT);
+    }
+    
+    public double getGroupInset() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_GROUP_INSET);
     }
     
     public double getBarWidth() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BAR_WIDTH);
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BAR_WIDTH);
     }
     
     public double getBarHeight() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BAR_HEIGHT);
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BAR_HEIGHT);
     }
     
     public double getBarInset() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BAR_INSET);
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BAR_INSET);
+    }
+    public double getMarginLeft() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_LEFT);
     }
     
-    public String getGroupWidth() {
-    	return this.currentUIDL.getStringVariable(UIDL_OPTIONS_GROUP_WIDTH);
+    public double getMarginRight() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_RIGHT);
+    }
+
+    public double getMarginTop() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_TOP);
     }
     
-    public double getGroupBarInset() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_GROUP_INSET);
+    public double getMarginBottom() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_BOTTOM);
     }
     
-    public double getVerticalOffset() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_VERTICAL_OFFSET);
+    public double getPaddingLeft() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_PADDING_LEFT);
+    }
+    public double getPaddingRight() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_PADDING_RIGHT);
+    }
+    public double getPaddingTop() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_PADDING_TOP);
+    }
+    public double getPaddingBottom() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_PADDING_BOTTOM);
+    }
+    public boolean isHorizontalAxisEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_ENABLED);
+    }
+    public boolean isHorizontalAxisLabelEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_ENABLED);
     }
     
-    public double getHorizontalOffset() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_HORIZONTAL_OFFSET);
+    public String getGroupNames() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_GROUPS_NAMES);
+        return UIDLUtil.getJSArray(values, true);
     }
     
-    public boolean isGroupAxisEnabled() {
-    	return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_GROUP_AXIS_ENABLED);
+    public boolean isVerticalAxisEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_ENABLED);
     }
     
-    public boolean isGroupAxisLabelEnabled() {
-    	return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_GROUP_AXIS_LABEL_ENABLED);
+    public boolean isVerticalAxisLabelEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_ENABLED);
     }
     
-    public String getGroupName(int index) {
-    	return this.currentUIDL.getStringVariable(UIDL_DATA_GROUP_NAME + index);
+    public boolean isVerticalAxisGridEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_GRID_ENABLED);
     }
     
-    public boolean isValueAxisEnabled() {
-    	return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VALUE_AXIS_ENABLED);
+    public String getVerticalAxisLabelRangeDValues() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_D_VALUES);
+        return UIDLUtil.getJSArray(values, false);
     }
     
-    public boolean isValueAxisLabelEnabled() {
-    	return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VALUE_AXIS_LABEL_ENABLED);
-    }
-    
-    public double getValueAxisLabelMax() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_VALUE_AXIS_LABEL_MAX);
-    }
-    
-    public double getValueAxisLabelStep() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_VALUE_AXIS_LABEL_STEP);
-    }
-    
-    public String getValueAxisLabelValue(double value) {
-    	return this.labelFormat.format(value) + this.currentUIDL.getStringVariable(UIDL_OPTIONS_VALUE_AXIS_LABEL_UNIT);
-    }
-    
-    public boolean isLegendEnabled() {
-    	return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_LEGEND_ENABLED);
-    }
-    
-    public double getLegendSize() {
-    	return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LEGEND_SIZE);
-    }
-    
-    public boolean isTooltipEnabled() {
-    	return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIP_ENABLED);
-    }
-    
-    public boolean isColorEnabled() {
-        return this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_COLORS).length > 0;
+    public String getVerticalAxisLabelRangeSValues() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_S_VALUES);
+        return UIDLUtil.getJSArray(values, true);
     }
     
     public String getColors() {
+        String[] colors = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_COLORS);
         
-        if (this.isColorEnabled()) {
-            String[] colors = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_COLORS);
-            
-            StringBuilder ret = new StringBuilder("$wnd.pv.colors(");
+        StringBuilder ret = new StringBuilder("$wnd.pv.colors(");
 
-            for (int i = 0; i < colors.length; i++) {
-                if (i > 0) {
-                    ret.append(", ");
-                }
-                ret.append("'").append(colors[i]).append("'");
+        for (int i = 0; i < colors.length; i++) {
+            if (i > 0) {
+                ret.append(", ");
             }
-            ret.append(")");
-            
-            return ret.toString();
-        } else {
-            return "$wnd.pv.Colors.category20()";
+            ret.append("'").append(colors[i]).append("'");
         }
-        
+        ret.append(")");
+        return ret.toString();
     }
     
+    public boolean isLegendEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_LEGEND_ENABLED);
+    }
     
-    
-    public String getData() {
-    	StringBuilder ret = new StringBuilder("[");
-    	
-    	int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_GROUPS_COUNT);
-    	
-    	for (int i = 0; i < serieCount; i++) {
-    		
-    		if (i > 0) {
-    			ret.append(", ");
-    		}
-    		ret.append("[");
-    		
-			String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_GROUP_VALUES + i);
-			
-			for (int j = 0; j < values.length; j++) {
-				if (j > 0) {
-	    			ret.append(", ");
-	    		}
-				
-				ret.append(values[j]);
-			}
-			ret.append("]");
-		}
-    	
-    	ret.append("]");
-
-    	return ret.toString();
-    };
-    
-    public String getTooltips() {
-    	StringBuilder ret = new StringBuilder("[");
-    	
-    	int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_GROUPS_COUNT);
-    	
-    	for (int i = 0; i < serieCount; i++) {
-    		
-    		if (i > 0) {
-    			ret.append(", ");
-    		}
-    		ret.append("[");
-    		
-			String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_GROUP_TOOLTIP_VALUES + i);
-			
-			for (int j = 0; j < values.length; j++) {
-				if (j > 0) {
-	    			ret.append(", ");
-	    		}
-				
-				ret.append("'").append(values[j]).append("'");
-			}
-			ret.append("]");
-		}
-    	
-    	ret.append("]");
-
-    	return ret.toString();
+    public double getLegendAreaWidth() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LEGEND_AREA_WIDTH);
     }
     
     public String getSerieNames() {
-    	
-    	int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_SERIES_COUNT);
-    	
-    	
-    	
-    	StringBuilder ret = new StringBuilder("[");
-    	
-    	for (int i = 0; i < serieCount; i++) {
-			if (i > 0) {
-				ret.append(", ");
-			}
-			ret.append("'").append(this.currentUIDL.getStringVariable(UIDL_DATA_SERIE_NAME + i)).append("'");
-		}
-    	ret.append("]");
-    	
-    	return ret.toString();
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_SERIES_NAMES);
+        return UIDLUtil.getJSArray(values, true);
+    }
+    
+    public boolean isTooltipEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIP_ENABLED);
+    }
+    
+    public String getTooltips() {
+        StringBuilder ret = new StringBuilder("[");
+        
+        int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_GROUPS_COUNT);
+        for (int i = 0; i < serieCount; i++) {
+            if (i > 0) {
+                ret.append(", ");
+            }
+            String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_GROUP_TOOLTIP_VALUES + i);
+            
+            ret.append("[");
+            for (int j = 0; j < values.length; j++) {
+                if (j > 0) {
+                    ret.append(", ");
+                }
+                ret.append("'").append(values[j]).append("'");
+            }
+            ret.append("]");
+        }
+        ret.append("]");
+        return ret.toString();
     }
 }

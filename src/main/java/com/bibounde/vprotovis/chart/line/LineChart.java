@@ -3,7 +3,7 @@ package com.bibounde.vprotovis.chart.line;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bibounde.vprotovis.gwt.common.Point;
+import com.bibounde.vprotovis.common.Point;
 import com.bibounde.vprotovis.gwt.util.ColorUtil;
 
 public class LineChart {

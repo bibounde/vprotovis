@@ -2,7 +2,7 @@ package com.bibounde.vprotovis.chart.line;
 
 import java.io.Serializable;
 
-import com.bibounde.vprotovis.gwt.common.Point;
+import com.bibounde.vprotovis.common.Point;
 
 public class Serie implements Serializable {
 

@@ -1,4 +1,4 @@
-package com.bibounde.vprotovis.gwt.common;
+package com.bibounde.vprotovis.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +78,21 @@ public class Range {
     @Override
     public String toString() {
         return "Range [start=" + start + ", stop=" + stop + ", step=" + step + "]";
+    }
+    
+    public static  Range getAutoRange(double minValue, double maxValue, double step) {
+        double start = 0d;
+        double stop = maxValue + step;
+        
+        if (minValue < 0) {
+            //0 must be displayed
+            double initialStart = 1 - Math.max(Math.abs(minValue), maxValue) - step;
+            while(start > initialStart) {
+                start -= step;
+            }
+            stop = 1 - start; 
+        }
+        
+        return new Range(start, stop, step);
     }
 }

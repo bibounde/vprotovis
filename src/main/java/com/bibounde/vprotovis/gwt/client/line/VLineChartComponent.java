@@ -117,6 +117,11 @@ public class VLineChartComponent extends Widget implements Paintable {
         
         var legendAreaWidth = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLegendAreaWidth()();
         
+        var maxYTick = chartHeight - marginTop;
+        var minYTick = marginBottom;
+        var maxXTick = chartWidth - marginRight - legendAreaWidth;
+        var minXTick = marginLeft;
+        
         var xRange = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getHorizontalAxisLabelRangeDValues()());
         var xRangeText = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getHorizontalAxisLabelRangeSValues()());
         
@@ -133,8 +138,14 @@ public class VLineChartComponent extends Widget implements Paintable {
         //Grid management
         if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isHorizontalAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(xRange);
-            grid.left(function(d) { 
-               return (d * lineLeft) + panelLeft;
+            grid.left(function(d) {
+               var ret = (d * lineLeft) + panelLeft;
+               if (ret <= maxXTick && ret >= minXTick) {
+                   return ret;
+               } else {
+                   //Out of range
+                   return chartWidth * 10;
+               }
             });
             grid.bottom(0 + marginBottom);
             grid.height(chartHeight - marginBottom - marginTop);
@@ -143,7 +154,15 @@ public class VLineChartComponent extends Widget implements Paintable {
         
         if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isVerticalAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(yRange);
-            grid.bottom(function(d) {return (d * lineBottom) + panelBottom;});
+            grid.bottom(function(d) {
+                var ret = (d * lineBottom) + panelBottom;
+                if (ret <= maxYTick && ret >= minYTick) {
+                    return ret;
+                } else {
+                    //Out of range
+                    return chartHeight * 10;
+                }
+            });
             grid.left(0 + marginLeft);
             grid.width(chartWidth - marginLeft - marginRight - legendAreaWidth);
             grid.strokeStyle(gridColor);
@@ -161,7 +180,13 @@ public class VLineChartComponent extends Widget implements Paintable {
         
                 var tick = vis.add($wnd.pv.Rule).data(xRange);
                 tick.left(function(d) { 
-                    return (d * lineLeft) + panelLeft;
+                    var ret = (d * lineLeft) + panelLeft;
+                    if (ret <= maxXTick && ret >= minXTick) {
+                        return ret;
+                    } else {
+                        //Out of range
+                        return chartWidth * 10;
+                    }
                 });
                 tick.bottom(panelBottom - 3);
                 tick.height(3);
@@ -181,7 +206,15 @@ public class VLineChartComponent extends Widget implements Paintable {
             if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isVerticalAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(yRange);
-                tick.bottom(function(d) {return (d * lineBottom) + panelBottom;});
+                tick.bottom(function(d) {
+                    var ret = (d * lineBottom) + panelBottom;
+                    if (ret <= maxYTick && ret >= minYTick) {
+                        return ret;
+                    } else {
+                        //Out of range
+                        return chartHeight * 10;
+                    }
+                });
                 tick.left(panelLeft - 3);
                 tick.width(3);
                 tick.strokeStyle(axisColor);
@@ -212,7 +245,7 @@ public class VLineChartComponent extends Widget implements Paintable {
             });
             //Offset = 20
             legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + 20);
-            legend.fillStyle(function() {return colors.range()[this.index];});
+            legend.fillStyle(colors.by($wnd.pv.index));
             legend.anchor("left").add($wnd.pv.Label).textBaseline("middle").textMargin(16).textStyle(legendColor);
         }
         
