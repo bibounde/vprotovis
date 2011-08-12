@@ -1,12 +1,13 @@
 package com.bibounde.vprotovis.chart.line;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.bibounde.vprotovis.common.Point;
 import com.bibounde.vprotovis.gwt.util.ColorUtil;
 
-public class LineChart {
+public class LineChart implements Serializable {
 
 	private double width = 150, height = 150;
 	private List<Serie> series = new ArrayList<Serie>();

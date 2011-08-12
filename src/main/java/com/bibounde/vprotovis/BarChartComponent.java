@@ -39,6 +39,10 @@ public class BarChartComponent extends AbstractComponent {
     public int addSerie(String name, double[] values) {
         return this.chart.addSerie(name, values);
     }
+    
+    public void clearData() {
+        this.chart.getSeries().clear();
+    }
 
     /**
      * @param width

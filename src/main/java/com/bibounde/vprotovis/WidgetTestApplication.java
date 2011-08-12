@@ -26,20 +26,20 @@ public class WidgetTestApplication extends Application {
     private void runBar() {
         BarChartComponent bar = new BarChartComponent();
         bar.addSerie("Sales", new double[] { -100, 1170, 660, 1030 });
-        bar.addSerie("Expenses", new double[] { 400, 460, -1200, 540 });
-        bar.addSerie("VAT", new double[] { 20, 46, 78, 130 });
+        bar.addSerie("Expenses", new double[] { 1757.0, -1307.0, -1825.0, 252.0 });
+        bar.addSerie("VAT", new double[] { 1593.0, -1659.0, -204.0, 680.0 });
         
         bar.setGroupNames(new String[] { "2008", "2009", "2010", "2011" });
-        bar.setId("protovis");
-        bar.setChartWidth(550);
-        bar.setChartHeight(250);
+        //bar.setId("protovis");
+        bar.setChartWidth(400);
+        bar.setChartHeight(300);
         
-        bar.setBarInset(2);
-        bar.setGroupBarInset(25);
+        //bar.setBarInset(2);
+        //bar.setGroupBarInset(25);
         
         bar.addHorizontalAxisWithLabel();
         
-        bar.setMarginLeft(50);
+        /*bar.setMarginLeft(50);
         bar.setMarginBottom(20);
         bar.addVerticalAxis(650, true);
         bar.setVerticalAxisLabelFormatter(new AxisLabelFormatter() {
@@ -69,7 +69,7 @@ public class WidgetTestApplication extends Application {
                 return tooltipHTML.toString();
             }
         };
-        bar.setTooltipFormatter(tooltipFormatter);
+        bar.setTooltipFormatter(tooltipFormatter);*/
         
         window.addComponent(bar);
     }

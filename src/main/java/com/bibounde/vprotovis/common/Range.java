@@ -1,9 +1,10 @@
 package com.bibounde.vprotovis.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Range {
+public class Range implements Serializable {
 
     private double start, stop, step;
 

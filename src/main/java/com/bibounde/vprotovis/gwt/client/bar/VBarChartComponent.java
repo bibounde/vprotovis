@@ -169,11 +169,7 @@ public class VBarChartComponent extends Widget implements Paintable {
         //Panel and bar management
         var panel = vis.add($wnd.pv.Panel).def("active", false).def("activeIndex", -1).data(data);
         panel.width(groupWidth).bottom(panelBottom).left(function() {
-            var padding = 0;
-            if (this.index == 0) {
-                padding = paddingLeft;
-            }
-            return padding + panelLeft + this.index * (groupWidth + groupInset);
+            return paddingLeft + panelLeft + this.index * (groupWidth + groupInset);
         });
                 
         var bar = panel.add($wnd.pv.Bar).data(function(d){ return d});
@@ -200,11 +196,7 @@ public class VBarChartComponent extends Widget implements Paintable {
         
                 var tick = vis.add($wnd.pv.Rule).data(groupNames);
                 tick.left(function() {
-                    var padding = 0;
-                    if (this.index == 0) {
-                        padding = paddingLeft;
-                    }
-                    return padding + panelLeft + this.index * (groupWidth + groupInset) + (groupWidth / 2);
+                    return paddingLeft + panelLeft + this.index * (groupWidth + groupInset) + (groupWidth / 2);
                 });
                 tick.bottom(panelBottom - 3);
                 tick.height(3);

@@ -1,6 +1,8 @@
 package com.bibounde.vprotovis.common;
 
-public class Point {
+import java.io.Serializable;
+
+public class Point implements Serializable {
 
     private double x, y;
 

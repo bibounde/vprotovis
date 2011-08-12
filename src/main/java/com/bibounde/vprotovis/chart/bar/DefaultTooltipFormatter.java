@@ -1,6 +1,8 @@
 package com.bibounde.vprotovis.chart.bar;
 
-public class DefaultTooltipFormatter implements TooltipFormatter {
+import java.io.Serializable;
+
+public class DefaultTooltipFormatter implements TooltipFormatter, Serializable {
 
     public String getTooltipHTML(String serieName, double value, String groupName) {
         StringBuilder ret = new StringBuilder();

@@ -1,6 +1,8 @@
 package com.bibounde.vprotovis.common;
 
-public class Padding {
+import java.io.Serializable;
+
+public class Padding implements Serializable {
 
     private double top, left, right, bottom;
 

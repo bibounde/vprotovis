@@ -2,10 +2,11 @@ package com.bibounde.vprotovis.chart.bar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 import com.bibounde.vprotovis.gwt.util.ColorUtil;
 
-public class BarChart {
+public class BarChart implements Serializable {
 
     private double width = 150, height = 150;
     private List<Serie> series = new ArrayList<Serie>();
