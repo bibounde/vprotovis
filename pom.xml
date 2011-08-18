@@ -14,7 +14,7 @@
 		<vaadin.version>6.6.0</vaadin.version>
 		<gwt.version>2.2.0</gwt.version>
 		<gwt.plugin.version>2.2.0</gwt.plugin.version>
-		<scm.add.files>${scm.add.files}</scm.add.files>
+		<scm.add.files>${maven.scm.includes}</scm.add.files>
 	</properties>
 
 	<repositories>
