@@ -192,7 +192,7 @@
 				    <basedir>target/checkout</basedir>
 					<connectionUrl>scm:git:git@github.com:bibounde/bibounde-mvn-repo.git</connectionUrl>
 					<developerConnectionUrl>scm:git:git@github.com:bibounde/bibounde-mvn-repo.git</developerConnectionUrl>
-					<message>Deployed by jenkins (build ${BUILD_NUMBER})</message>
+					<message>Deployed by jenkins (build #${BUILD_NUMBER})</message>
 				    <includes>${scm.add.files}</includes>
 				</configuration>
 			</plugin>
