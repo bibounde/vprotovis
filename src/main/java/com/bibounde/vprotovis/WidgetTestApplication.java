@@ -1,7 +1,6 @@
 package com.bibounde.vprotovis;
 
 import com.bibounde.vprotovis.chart.bar.TooltipFormatter;
-import com.bibounde.vprotovis.chart.line.InterpolationMode;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.Point;
 import com.vaadin.Application;
@@ -19,8 +18,8 @@ public class WidgetTestApplication extends Application {
         window = new Window("Widget Test");
         setMainWindow(window);
 
-        this.runBar();
-        //this.runLine();
+        //this.runBar();
+        this.runLine();
     }
     
     private void runBar() {
@@ -30,25 +29,29 @@ public class WidgetTestApplication extends Application {
         bar.addSerie("VAT", new double[] { 1593.0, -1659.0, -204.0, 680.0 });
         
         bar.setGroupNames(new String[] { "2008", "2009", "2010", "2011" });
-        //bar.setId("protovis");
+        bar.setId("protovis");
         bar.setChartWidth(400);
         bar.setChartHeight(300);
         
         //bar.setBarInset(2);
         //bar.setGroupBarInset(25);
         
-        bar.addHorizontalAxisWithLabel();
+        bar.setXAxisLabelVisible(true);
         
-        /*bar.setMarginLeft(50);
+        bar.setMarginLeft(50);
         bar.setMarginBottom(20);
-        bar.addVerticalAxis(650, true);
-        bar.setVerticalAxisLabelFormatter(new AxisLabelFormatter() {
+        bar.setYAxisVisible(true);
+        bar.setYAxisLabelVisible(true);
+        bar.setYAxisLabelStep(650);
+        bar.setYAxisGridVisible(true);
+        bar.setYAxisLabelFormatter(new AxisLabelFormatter() {
             public String format(double labelValue) {
                 return String.valueOf(labelValue) + "\u20AC";
             }
         });
         
-        bar.addLegend(150);
+        bar.setLegendVisible(true);
+        bar.setLegendAreaWidth(150);
         
         TooltipFormatter tooltipFormatter = new TooltipFormatter() {
             
@@ -69,7 +72,7 @@ public class WidgetTestApplication extends Application {
                 return tooltipHTML.toString();
             }
         };
-        bar.setTooltipFormatter(tooltipFormatter);*/
+        bar.setTooltipFormatter(tooltipFormatter);
         
         window.addComponent(bar);
     }
@@ -80,34 +83,28 @@ public class WidgetTestApplication extends Application {
         
         line.addSerie("Sales", new Point[]{new Point(0, 1000), new Point(1, 1170), new Point(2, 660), new Point(3, 1030)});
         line.addSerie("Expenses", new Point[]{new Point(0, 400), new Point(1, 460), new Point(2, 1200), new Point(3, 540)});
-        line.addSerie("Expenses- NegY", new Point[]{new Point(0, 0), new Point(1, -360), new Point(2, 12), new Point(3, 210)});
+        line.addSerie("Expenses- NegY", new Point[]{new Point(0, 0), new Point(1, -1360), new Point(2, 12), new Point(3, 210)});
         
         line.setId("protovis");
-        line.setChartWidth(550);
-        line.setChartHeight(250);
-        line.setInterpolationMode(InterpolationMode.CARDINAL);
+        line.setChartWidth(450);
+        line.setChartHeight(300);
+        //line.setInterpolationMode(InterpolationMode.STEP_AFTER);
         //line.setLineWidth(4);
         //line.setColors(new String[]{"#9c9ede", "#cedb9c", "#de9ed6"});
         
-        line.setHorizontalAxisLabelFormatter(new AxisLabelFormatter() {
-            
-            public String format(double labelValue) {
-                return String.valueOf(labelValue) + "j.";
-            }
-        });
-        line.addHorizontalAxisWithLabel(0.5, 3.5, 0.5, false);
+        
+        line.setXAxisVisible(true);
+        line.setXAxisLabelVisible(true);
+        line.setXAxisLabelStep(0.5);
+        line.setXAxisGridVisible(true);
         line.setMarginLeft(50);
-        //line.setMarginBottom(20);
+        line.setMarginBottom(50);
         //line.addVerticalAxis(-1200, 1200, 300);
-        
-        line.setVerticalAxisLabelFormatter(new AxisLabelFormatter() {
-            public String format(double labelValue) {
-                return String.valueOf(labelValue) + "\u20AC";
-            }
-        });
-        line.addVerticalAxis(325, true);
-        
-        line.addLegend(150);
+       
+        line.setYAxisVisible(true);
+        line.setYAxisLabelVisible(true);
+        line.setYAxisLabelStep(300);
+        line.setYAxisGridVisible(true);
         
         window.addComponent(line);
     }

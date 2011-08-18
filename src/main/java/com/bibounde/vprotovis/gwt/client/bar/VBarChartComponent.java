@@ -40,13 +40,13 @@ public class VBarChartComponent extends Widget implements Paintable {
     public static final String UIDL_OPTIONS_PADDING_RIGHT = "vprotovis.options.padding.right";
     public static final String UIDL_OPTIONS_PADDING_TOP= "vprotovis.options.padding.top";
     public static final String UIDL_OPTIONS_PADDING_BOTTOM = "vprotovis.options.padding.bottom";
-    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_ENABLED = "vprotovis.options.horizontal.axis.enabled";
-    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_ENABLED = "vprotovis.options.horizontal.axis.label.enabled";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_ENABLED = "vprotovis.options.vertical.axis.enabled";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_ENABLED = "vprotovis.options.vertical.axis.label.enabled";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_D_VALUES = "vprotovis.options.vertical.axis.label.range.d.values";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_S_VALUES = "vprotovis.options.vertical.axis.label.range.s.values";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_GRID_ENABLED = "vprotovis.options.vertical.axis.grid.enabled";
+    public static final String UIDL_OPTIONS_X_AXIS_ENABLED = "vprotovis.options.x.axis.enabled";
+    public static final String UIDL_OPTIONS_X_AXIS_LABEL_ENABLED = "vprotovis.options.x.axis.label.enabled";
+    public static final String UIDL_OPTIONS_Y_AXIS_ENABLED = "vprotovis.options.y.axis.enabled";
+    public static final String UIDL_OPTIONS_Y_AXIS_LABEL_ENABLED = "vprotovis.options.y.axis.label.enabled";
+    public static final String UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_D_VALUES = "vprotovis.options.y.axis.label.range.d.values";
+    public static final String UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_S_VALUES = "vprotovis.options.y.axis.label.range.s.values";
+    public static final String UIDL_OPTIONS_Y_AXIS_GRID_ENABLED = "vprotovis.options.y.axis.grid.enabled";
     public static final String UIDL_OPTIONS_COLORS = "vprotovis.options.colors";
     public static final String UIDL_OPTIONS_LEGEND_ENABLED = "vprotovis.options.legend.enabled";
     public static final String UIDL_OPTIONS_LEGEND_AREA_WIDTH = "vprotovis.options.legend.area.width";
@@ -150,7 +150,7 @@ public class VBarChartComponent extends Widget implements Paintable {
         var barInset = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getBarInset()();
         
         //Grid management
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isVerticalAxisGridEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isYAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(yRange);
             grid.bottom(function(d) {
                 var ret = (d * barHeight) + panelBottom;
@@ -186,13 +186,13 @@ public class VBarChartComponent extends Widget implements Paintable {
         bar.fillStyle(colors.by($wnd.pv.index));
     
         //Horizontal axis management
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isHorizontalAxisEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isXAxisEnabled()()) {
             var rule = vis.add($wnd.pv.Rule);
             
             rule.bottom(panelBottom).width(chartWidth - marginLeft - marginRight - legendAreaWidth).left(0 + marginLeft);
             rule.strokeStyle(axisColor);
             
-            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isHorizontalAxisLabelEnabled()()) {
+            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isXAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(groupNames);
                 tick.left(function() {
@@ -208,12 +208,12 @@ public class VBarChartComponent extends Widget implements Paintable {
         }
         
         //Vertical axis management
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isVerticalAxisEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isYAxisEnabled()()) {
             var rule = vis.add($wnd.pv.Rule);
             rule.bottom(0 + marginBottom).left(panelLeft).height(chartHeight - marginBottom - marginTop);
             rule.strokeStyle(axisColor);
             
-            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isVerticalAxisLabelEnabled()()) {
+            if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isYAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(yRange);
                 tick.bottom(function(d) {
@@ -255,7 +255,7 @@ public class VBarChartComponent extends Widget implements Paintable {
         }
         
         //Legend management
-        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isLegendEnabled()()) {
             //Use bar instead of DOT because msie-shim does not support it
             var legend = vis.add($wnd.pv.Bar).data(serieNames);
             legend.top(function(){
@@ -407,11 +407,11 @@ public class VBarChartComponent extends Widget implements Paintable {
     public double getPaddingBottom() {
         return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_PADDING_BOTTOM);
     }
-    public boolean isHorizontalAxisEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_ENABLED);
+    public boolean isXAxisEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_X_AXIS_ENABLED);
     }
-    public boolean isHorizontalAxisLabelEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_ENABLED);
+    public boolean isXAxisLabelEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_X_AXIS_LABEL_ENABLED);
     }
     
     public String getGroupNames() {
@@ -419,25 +419,25 @@ public class VBarChartComponent extends Widget implements Paintable {
         return UIDLUtil.getJSArray(values, true);
     }
     
-    public boolean isVerticalAxisEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_ENABLED);
+    public boolean isYAxisEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_Y_AXIS_ENABLED);
     }
     
-    public boolean isVerticalAxisLabelEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_ENABLED);
+    public boolean isYAxisLabelEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_Y_AXIS_LABEL_ENABLED);
     }
     
-    public boolean isVerticalAxisGridEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_GRID_ENABLED);
+    public boolean isYAxisGridEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_Y_AXIS_GRID_ENABLED);
     }
     
     public String getVerticalAxisLabelRangeDValues() {
-        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_D_VALUES);
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_D_VALUES);
         return UIDLUtil.getJSArray(values, false);
     }
     
     public String getVerticalAxisLabelRangeSValues() {
-        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_S_VALUES);
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_S_VALUES);
         return UIDLUtil.getJSArray(values, true);
     }
     

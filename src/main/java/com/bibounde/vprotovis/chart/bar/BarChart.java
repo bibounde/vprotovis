@@ -11,17 +11,15 @@ public class BarChart implements Serializable {
     private double width = 150, height = 150;
     private List<Serie> series = new ArrayList<Serie>();
     private String[] groupNames;
-    private double groupBarInset = 10d;
+    private double groupInset = 25d;
     private double barInset = 2d;
     private double marginLeft = 10d, marginRight = 10d, marginTop = 10d, marginBottom = 10d;
-    private boolean horizontalAxisEnabled = false;
-    private boolean horizontalAxisLabelEnabled = false;
-    private boolean verticalAxisEnabled = false;
-    private boolean verticalAxisLabelEnabled = false;
-    private double verticalAxisLabelStart = 0d;
-    private double verticalAxisLabelStop = 0d;
-    private double verticalAxisLabelStep = 0d;
-    private boolean verticalAxisGridEnabled = false;
+    private boolean xAxisEnabled = false;
+    private boolean xAxisLabelEnabled = false;
+    private boolean yAxisEnabled = false;
+    private boolean yAxisLabelEnabled = false;
+    private double yAxisLabelStep = 0d;
+    private boolean yAxisGridEnabled = false;
     private String[] colors = ColorUtil.getDefaultColors();
     private boolean legendEnabled = false;
     private double legendAreaWidth = 0d;
@@ -84,16 +82,16 @@ public class BarChart implements Serializable {
         this.groupNames = groupNames;
     }
     /**
-     * @return the groupBarInset
+     * @return the groupInset
      */
-    public double getGroupBarInset() {
-        return groupBarInset;
+    public double getGroupInset() {
+        return groupInset;
     }
     /**
-     * @param groupBarInset the groupBarInset to set
+     * @param groupInset the groupInset to set
      */
-    public void setGroupBarInset(double groupBarInset) {
-        this.groupBarInset = groupBarInset;
+    public void setGroupInset(double groupBarInset) {
+        this.groupInset = groupBarInset;
     }
     /**
      * @return the barInset
@@ -156,100 +154,77 @@ public class BarChart implements Serializable {
         this.marginBottom = marginBottom;
     }
     /**
-     * @return the horizontalAxisEnabled
+     * @return the xAxisEnabled
      */
-    public boolean isHorizontalAxisEnabled() {
-        return horizontalAxisEnabled;
+    public boolean isXAxisEnabled() {
+        return xAxisEnabled;
     }
     /**
-     * @param horizontalAxisEnabled the horizontalAxisEnabled to set
+     * @param xAxisEnabled the xAxisEnabled to set
      */
-    public void setHorizontalAxisEnabled(boolean horizontalAxisEnabled) {
-        this.horizontalAxisEnabled = horizontalAxisEnabled;
+    public void setXAxisEnabled(boolean xAxisEnabled) {
+        this.xAxisEnabled = xAxisEnabled;
     }
     /**
-     * @return the horizontalAxisLabelEnabled
+     * @return the xAxisLabelEnabled
      */
-    public boolean isHorizontalAxisLabelEnabled() {
-        return horizontalAxisLabelEnabled;
+    public boolean isXAxisLabelEnabled() {
+        return xAxisLabelEnabled;
     }
     /**
-     * @param horizontalAxisLabelEnabled the horizontalAxisLabelEnabled to set
+     * @param xAxisLabelEnabled the xAxisLabelEnabled to set
      */
-    public void setHorizontalAxisLabelEnabled(boolean horizontalAxisLabelEnabled) {
-        this.horizontalAxisLabelEnabled = horizontalAxisLabelEnabled;
+    public void setXAxisLabelEnabled(boolean xAxisLabelEnabled) {
+        this.xAxisLabelEnabled = xAxisLabelEnabled;
     }
     /**
-     * @return the verticalAxisEnabled
+     * @return the yAxisEnabled
      */
-    public boolean isVerticalAxisEnabled() {
-        return verticalAxisEnabled;
+    public boolean isYAxisEnabled() {
+        return yAxisEnabled;
     }
     /**
-     * @param verticalAxisEnabled the verticalAxisEnabled to set
+     * @param yAxisEnabled the yAxisEnabled to set
      */
-    public void setVerticalAxisEnabled(boolean verticalAxisEnabled) {
-        this.verticalAxisEnabled = verticalAxisEnabled;
+    public void setYAxisEnabled(boolean yAxisEnabled) {
+        this.yAxisEnabled = yAxisEnabled;
     }
     /**
-     * @return the verticalAxisLabelEnabled
+     * @return the yAxisLabelEnabled
      */
-    public boolean isVerticalAxisLabelEnabled() {
-        return verticalAxisLabelEnabled;
+    public boolean isYAxisLabelEnabled() {
+        return yAxisLabelEnabled;
     }
     /**
-     * @param verticalAxisLabelEnabled the verticalAxisLabelEnabled to set
+     * @param yAxisLabelEnabled the yAxisLabelEnabled to set
      */
-    public void setVerticalAxisLabelEnabled(boolean verticalAxisLabelEnabled) {
-        this.verticalAxisLabelEnabled = verticalAxisLabelEnabled;
+    public void setYAxisLabelEnabled(boolean yAxisLabelEnabled) {
+        this.yAxisLabelEnabled = yAxisLabelEnabled;
+    }
+    
+    /**
+     * @return the yAxisLabelStep
+     */
+    public double getYAxisLabelStep() {
+        return yAxisLabelStep;
     }
     /**
-     * @return the verticalAxisLabelStart
+     * @param yAxisLabelStep the yAxisLabelStep to set
      */
-    public double getVerticalAxisLabelStart() {
-        return verticalAxisLabelStart;
+    public void setYAxisLabelStep(double yAxisLabelStep) {
+        this.yAxisLabelStep = yAxisLabelStep;
     }
     /**
-     * @param verticalAxisLabelStart the verticalAxisLabelStart to set
+     * @return the yAxisGridEnabled
      */
-    public void setVerticalAxisLabelStart(double verticalAxisLabelStart) {
-        this.verticalAxisLabelStart = verticalAxisLabelStart;
+    public boolean isYAxisGridEnabled() {
+        return yAxisGridEnabled;
     }
     /**
-     * @return the verticalAxisLabelStop
+     * @param yAxisGridEnabled the yAxisGridEnabled to set
      */
-    public double getVerticalAxisLabelStop() {
-        return verticalAxisLabelStop;
-    }
-    /**
-     * @param verticalAxisLabelStop the verticalAxisLabelStop to set
-     */
-    public void setVerticalAxisLabelStop(double verticalAxisLabelStop) {
-        this.verticalAxisLabelStop = verticalAxisLabelStop;
-    }
-    /**
-     * @return the verticalAxisLabelStep
-     */
-    public double getVerticalAxisLabelStep() {
-        return verticalAxisLabelStep;
-    }
-    /**
-     * @param verticalAxisLabelStep the verticalAxisLabelStep to set
-     */
-    public void setVerticalAxisLabelStep(double verticalAxisLabelStep) {
-        this.verticalAxisLabelStep = verticalAxisLabelStep;
-    }
-    /**
-     * @return the verticalAxisGridEnabled
-     */
-    public boolean isVerticalAxisGridEnabled() {
-        return verticalAxisGridEnabled;
-    }
-    /**
-     * @param verticalAxisGridEnabled the verticalAxisGridEnabled to set
-     */
-    public void setVerticalAxisGridEnabled(boolean verticalAxisGridEnabled) {
-        this.verticalAxisGridEnabled = verticalAxisGridEnabled;
+    public void setYAxisGridEnabled(boolean yAxisGridEnabled) {
+        this.yAxisGridEnabled = yAxisGridEnabled;
     }
     /**
      * @return the colors

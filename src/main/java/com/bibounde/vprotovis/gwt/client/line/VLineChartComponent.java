@@ -30,16 +30,18 @@ public class VLineChartComponent extends Widget implements Paintable {
     public static final String UIDL_OPTIONS_PADDING_RIGHT = "vprotovis.options.padding.right";
     public static final String UIDL_OPTIONS_PADDING_TOP= "vprotovis.options.padding.top";
     public static final String UIDL_OPTIONS_PADDING_BOTTOM = "vprotovis.options.padding.bottom";
-    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_ENABLED = "vprotovis.options.horizontal.axis.enabled";
-    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_ENABLED = "vprotovis.options.horizontal.axis.label.enabled";
-    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_RANGE_D_VALUES = "vprotovis.options.horizontal.axis.label.range.d.values";
-    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_RANGE_S_VALUES = "vprotovis.options.horizontal.axis.label.range.s.values";
-    public static final String UIDL_OPTIONS_HORIZONTAL_AXIS_GRID_ENABLED = "vprotovis.options.horizontal.axis.grid.enabled";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_ENABLED = "vprotovis.options.vertical.axis.enabled";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_ENABLED = "vprotovis.options.vertical.axis.label.enabled";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_D_VALUES = "vprotovis.options.vertical.axis.label.range.d.values";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_S_VALUES = "vprotovis.options.vertical.axis.label.range.s.values";
-    public static final String UIDL_OPTIONS_VERTICAL_AXIS_GRID_ENABLED = "vprotovis.options.vertical.axis.grid.enabled";
+    public static final String UIDL_OPTIONS_X_AXIS_ENABLED = "vprotovis.options.x.axis.enabled";
+    public static final String UIDL_OPTIONS_X_AXIS_LABEL_ZERO_ENABLED = "vprotovis.options.x.axis.label.zero.enabled";
+    public static final String UIDL_OPTIONS_X_AXIS_LABEL_ENABLED = "vprotovis.options.x.axis.label.enabled";
+    public static final String UIDL_OPTIONS_X_AXIS_LABEL_RANGE_D_VALUES = "vprotovis.options.x.axis.label.range.d.values";
+    public static final String UIDL_OPTIONS_X_AXIS_LABEL_RANGE_S_VALUES = "vprotovis.options.x.axis.label.range.s.values";
+    public static final String UIDL_OPTIONS_X_AXIS_GRID_ENABLED = "vprotovis.options.x.axis.grid.enabled";
+    public static final String UIDL_OPTIONS_Y_AXIS_LABEL_ZERO_ENABLED = "vprotovis.options.y.axis.label.zero.enabled";
+    public static final String UIDL_OPTIONS_Y_AXIS_ENABLED = "vprotovis.options.y.axis.enabled";
+    public static final String UIDL_OPTIONS_Y_AXIS_LABEL_ENABLED = "vprotovis.options.y.axis.label.enabled";
+    public static final String UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_D_VALUES = "vprotovis.options.y.axis.label.range.d.values";
+    public static final String UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_S_VALUES = "vprotovis.options.y.axis.label.range.s.values";
+    public static final String UIDL_OPTIONS_Y_AXIS_GRID_ENABLED = "vprotovis.options.y.axis.grid.enabled";
     public static final String UIDL_OPTIONS_INTERPOLATION_MODE = "vprotovis.options.interpolation.mode";
     public static final String UIDL_OPTIONS_LINE_WIDTH = "vprotovis.options.line.width";
     public static final String UIDL_OPTIONS_COLORS = "vprotovis.options.colors";
@@ -122,11 +124,11 @@ public class VLineChartComponent extends Widget implements Paintable {
         var maxXTick = chartWidth - marginRight - legendAreaWidth;
         var minXTick = marginLeft;
         
-        var xRange = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getHorizontalAxisLabelRangeDValues()());
-        var xRangeText = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getHorizontalAxisLabelRangeSValues()());
+        var xRange = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getXAxisLabelRangeDValues()());
+        var xRangeText = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getXAxisLabelRangeSValues()());
         
-        var yRange = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getVerticalAxisLabelRangeDValues()());
-        var yRangeText = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getVerticalAxisLabelRangeSValues()());
+        var yRange = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getYAxisLabelRangeDValues()());
+        var yRangeText = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getYAxisLabelRangeSValues()());
         
         var panelBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getPanelBottom()();
         var panelLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getPanelLeft()();
@@ -136,7 +138,7 @@ public class VLineChartComponent extends Widget implements Paintable {
         vis.height(chartHeight);
         
         //Grid management
-        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isHorizontalAxisGridEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(xRange);
             grid.left(function(d) {
                var ret = (d * lineLeft) + panelLeft;
@@ -152,7 +154,7 @@ public class VLineChartComponent extends Widget implements Paintable {
             grid.strokeStyle(gridColor);
         }
         
-        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isVerticalAxisGridEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isYAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(yRange);
             grid.bottom(function(d) {
                 var ret = (d * lineBottom) + panelBottom;
@@ -168,24 +170,41 @@ public class VLineChartComponent extends Widget implements Paintable {
             grid.strokeStyle(gridColor);
         }
         
+        var panel = vis.add($wnd.pv.Panel).data(data).bottom(panelBottom).left(panelLeft); 
+        var line = panel.add($wnd.pv.Line).data(function(d) {return d;})
+        
+        var lineBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineBottom()();
+        var lineLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineLeft()();
+        
+        line.left(function(d) {return d.x * lineLeft;});
+        line.bottom(function(d) {return d.y * lineBottom;});
+        line.lineWidth(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineWidth()());
+        line.interpolate(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getInterpolationMode()());
+        line.strokeStyle(function() {return colors.range()[this.parent.index];});
+        
         //Horizontal axis management
-        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isHorizontalAxisEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisEnabled()()) {
         
             var rule = vis.add($wnd.pv.Rule);
             
             rule.bottom(panelBottom).width(chartWidth - marginLeft - marginRight - legendAreaWidth).left(0 + marginLeft);
             rule.strokeStyle(axisColor);
         
-            if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isHorizontalAxisLabelEnabled()()) {
+            if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(xRange);
-                tick.left(function(d) { 
-                    var ret = (d * lineLeft) + panelLeft;
-                    if (ret <= maxXTick && ret >= minXTick) {
-                        return ret;
-                    } else {
+                tick.left(function(d) {
+                    if (d == 0 && !vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisLabelZeroEnabled()()) {
                         //Out of range
                         return chartWidth * 10;
+                    } else {
+                        var ret = (d * lineLeft) + panelLeft;
+                        if (ret <= maxXTick && ret >= minXTick) {
+                            return ret;
+                        } else {
+                            //Out of range
+                            return chartWidth * 10;
+                        }
                     }
                 });
                 tick.bottom(panelBottom - 3);
@@ -198,15 +217,20 @@ public class VLineChartComponent extends Widget implements Paintable {
         }
         
         //Vertical axis management
-        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isVerticalAxisEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isYAxisEnabled()()) {
             var rule = vis.add($wnd.pv.Rule);
             rule.bottom(0 + marginBottom).left(panelLeft).height(chartHeight - marginBottom - marginTop);
             rule.strokeStyle(axisColor);
             
-            if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isVerticalAxisLabelEnabled()()) {
+            if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isYAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(yRange);
                 tick.bottom(function(d) {
+                    if (d == 0 && !vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isYAxisLabelZeroEnabled()()) {
+                        //Out of range
+                        return chartHeight * 10;
+                    }
+                
                     var ret = (d * lineBottom) + panelBottom;
                     if (ret <= maxYTick && ret >= minYTick) {
                         return ret;
@@ -223,18 +247,6 @@ public class VLineChartComponent extends Widget implements Paintable {
                 }).textStyle(axisColor);
             }
         }
-        
-        var panel = vis.add($wnd.pv.Panel).data(data).bottom(panelBottom).left(panelLeft); 
-        var line = panel.add($wnd.pv.Line).data(function(d) {return d;})
-        
-        var lineBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineBottom()();
-        var lineLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineLeft()();
-        
-        line.left(function(d) {return d.x * lineLeft;});
-        line.bottom(function(d) {return d.y * lineBottom;});
-        line.lineWidth(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineWidth()());
-        line.interpolate(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getInterpolationMode()());
-        line.strokeStyle(function() {return colors.range()[this.parent.index];});
         
         //Legend management
         if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isLegendEnabled()) {
@@ -321,47 +333,55 @@ public class VLineChartComponent extends Widget implements Paintable {
         return ret.toString();
     }
     
-    public boolean isHorizontalAxisEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_ENABLED);
+    public boolean isXAxisEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_X_AXIS_ENABLED);
     }
     
-    public boolean isHorizontalAxisLabelEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_ENABLED);
+    public boolean isXAxisLabelEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_X_AXIS_LABEL_ENABLED);
     }
     
-    public boolean isHorizontalAxisGridEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_GRID_ENABLED);
+    public boolean isXAxisLabelZeroEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_X_AXIS_LABEL_ZERO_ENABLED);
     }
     
-    public String getHorizontalAxisLabelRangeDValues() {
-        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_RANGE_D_VALUES);
+    public boolean isXAxisGridEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_X_AXIS_GRID_ENABLED);
+    }
+    
+    public String getXAxisLabelRangeDValues() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_X_AXIS_LABEL_RANGE_D_VALUES);
         return UIDLUtil.getJSArray(values, false);
     }
     
-    public String getHorizontalAxisLabelRangeSValues() {
-        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_HORIZONTAL_AXIS_LABEL_RANGE_S_VALUES);
+    public String getXAxisLabelRangeSValues() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_X_AXIS_LABEL_RANGE_S_VALUES);
         return UIDLUtil.getJSArray(values, true);
     }
 
-    public boolean isVerticalAxisEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_ENABLED);
+    public boolean isYAxisEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_Y_AXIS_ENABLED);
     }
     
-    public boolean isVerticalAxisLabelEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_ENABLED);
+    public boolean isYAxisLabelEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_Y_AXIS_LABEL_ENABLED);
     }
     
-    public boolean isVerticalAxisGridEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_VERTICAL_AXIS_GRID_ENABLED);
+    public boolean isYAxisLabelZeroEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_Y_AXIS_LABEL_ZERO_ENABLED);
     }
     
-    public String getVerticalAxisLabelRangeDValues() {
-        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_D_VALUES);
+    public boolean isYAxisGridEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_Y_AXIS_GRID_ENABLED);
+    }
+    
+    public String getYAxisLabelRangeDValues() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_D_VALUES);
         return UIDLUtil.getJSArray(values, false);
     }
     
-    public String getVerticalAxisLabelRangeSValues() {
-        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_VERTICAL_AXIS_LABEL_RANGE_S_VALUES);
+    public String getYAxisLabelRangeSValues() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_S_VALUES);
         return UIDLUtil.getJSArray(values, true);
     }
     

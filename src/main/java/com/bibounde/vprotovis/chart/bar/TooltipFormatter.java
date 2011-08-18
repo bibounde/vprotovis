@@ -1,6 +1,8 @@
 package com.bibounde.vprotovis.chart.bar;
 
-public interface TooltipFormatter {
+import java.io.Serializable;
+
+public interface TooltipFormatter extends Serializable {
 
     /**
      * Returns tooltip content as HTML

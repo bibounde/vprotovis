@@ -1,6 +1,8 @@
 package com.bibounde.vprotovis.common;
 
-public interface AxisLabelFormatter {
+import java.io.Serializable;
+
+public interface AxisLabelFormatter extends Serializable{
 
     String format(double labelValue);
 }
