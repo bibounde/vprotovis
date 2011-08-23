@@ -3,7 +3,7 @@ package com.bibounde.vprotovis.chart.bar;
 import java.io.Serializable;
 
 /**
- * Data displayed in a chart
+ * Data displayed in a bar chart
  * @author bibounde
  *
  */
