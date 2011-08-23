@@ -2,6 +2,11 @@ package com.bibounde.vprotovis.chart.bar;
 
 import java.io.Serializable;
 
+/**
+ * Identifies components that can be used to format tooltip content
+ * @author bibounde
+ *
+ */
 public interface TooltipFormatter extends Serializable {
 
     /**

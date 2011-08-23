@@ -2,6 +2,11 @@ package com.bibounde.vprotovis.chart.bar;
 
 import java.io.Serializable;
 
+/**
+ * Data displayed in a chart
+ * @author bibounde
+ *
+ */
 public class Serie implements Serializable {
 
     private String name;

@@ -2,6 +2,11 @@ package com.bibounde.vprotovis.common;
 
 import java.io.Serializable;
 
+/**
+ * A point representing a location in (x, y) coordinate space, specified in double precision.
+ * @author bibounde
+ *
+ */
 public class Point implements Serializable {
 
     private double x, y;

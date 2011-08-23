@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.bibounde.vprotovis.common.Point;
 
+/**
+ * Data displayed in a line chart
+ * @author bibounde
+ *
+ */
 public class Serie implements Serializable {
 
 	private String name;
