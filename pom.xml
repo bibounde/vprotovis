@@ -74,7 +74,7 @@
 						<configuration>
 							<webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
 							<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-							<runTarget>demo</runTarget>
+							<runTarget>vprotovis</runTarget>
 							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 							<noServer>true</noServer>
 							<port>8080</port>

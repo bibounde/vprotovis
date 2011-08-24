@@ -32,7 +32,9 @@ public class Tooltip extends PopupPanel {
 		
 		rightArrrow = new HTML();
 		rightArrrow.setVisible(true);
+		rightArrrow.setStyleName("v-vprotovis-tooltip-arrow-right");
 		grid.setWidget(1, 2, rightArrrow);
+		grid.getFlexCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_TOP);
 		
 		bottomArrow = new HTML();
 		bottomArrow.setVisible(true);
@@ -76,6 +78,12 @@ public class Tooltip extends PopupPanel {
 			this.rightArrrow.setVisible(false);
 			this.bottomArrow.setVisible(false);
 			break;
+		case RIGHT:
+            this.topArrow.setVisible(false);
+            this.leftArrow.setVisible(false);
+            this.rightArrrow.setVisible(true);
+            this.bottomArrow.setVisible(false);
+            break;
 		default:
 			this.topArrow.setVisible(false);
 			this.leftArrow.setVisible(false);

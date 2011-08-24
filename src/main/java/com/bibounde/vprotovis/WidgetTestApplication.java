@@ -1,6 +1,8 @@
 package com.bibounde.vprotovis;
 
 import com.bibounde.vprotovis.chart.bar.TooltipFormatter;
+import com.bibounde.vprotovis.chart.pie.PieLabelFormatter;
+import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.Point;
 import com.vaadin.Application;
@@ -19,7 +21,8 @@ public class WidgetTestApplication extends Application {
         setMainWindow(window);
 
         //this.runBar();
-        this.runLine();
+        //this.runLine();
+        this.runPie();
     }
     
     private void runBar() {
@@ -107,5 +110,53 @@ public class WidgetTestApplication extends Application {
         line.setYAxisGridVisible(true);
         
         window.addComponent(line);
+    }
+    
+    private void runPie() {
+        
+        PieChartComponent pie = new PieChartComponent();
+        
+        pie.addSerie("MacOs", 123d);
+        pie.addSerie("Linux", 64d);
+        pie.addSerie("Windows", 13d, true);
+        
+        final double total = 200d;
+        
+        pie.setId("protovis");
+        pie.setChartWidth(250);
+        pie.setChartHeight(200);
+        
+        pie.setMarginLeft(50d);
+        
+        pie.setLabelVisible(true);
+        pie.setLabelColor("#FFFFFF");
+        
+        pie.setLabelFormatter(new PieLabelFormatter() {
+            
+            public boolean isVisible(double labelValue) {
+                return labelValue > 10d;
+            }
+            
+            public String format(double labelValue) {
+                return Double.valueOf(labelValue / total * 100).intValue() + "%";
+            }
+        });
+        
+        pie.setTooltipFormatter(new PieTooltipFormatter() {
+            
+            public boolean isVisible(String serieName, double value) {
+                return true;//return value > 15d;
+            }
+            
+            public String getTooltipHTML(String serieName, double value) {
+                StringBuilder ret = new StringBuilder();
+                ret.append("<b>").append(serieName).append("</b><br/>");
+                ret.append(Double.valueOf(value / total * 100).intValue() + "%");
+                
+                return ret.toString();
+            }
+        });
+        
+        window.addComponent(pie);
     }
 }

@@ -40,3 +40,11 @@
 	border-top: 10px solid #E2E2E2;
 	margin-top: 5px;
 }
+
+.v-vprotovis-tooltip-arrow-right {
+    width: 0;
+    height: 0;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #E2E2E2;
+    margin-top: 5px;
+}

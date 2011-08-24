@@ -135,7 +135,7 @@ public class VBarChartComponent extends Widget implements Paintable {
         var paddingBottom = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPaddingBottom()();
         var paddingTop = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getPaddingTop()();
         
-        var legendAreaWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getLegendAreaWidth()();;
+        var legendAreaWidth = this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::getLegendAreaWidth()();
         
         var maxYTick = chartHeight - marginTop;
         var minYTick = marginBottom;

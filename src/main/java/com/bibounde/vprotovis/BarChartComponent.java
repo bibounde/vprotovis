@@ -321,7 +321,6 @@ public class BarChartComponent extends AbstractComponent {
         }
 
         // Tooltips
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED, this.chart.isTooltipEnabled());
         if (this.chart.isTooltipEnabled()) {
             index = 0;
             for (List<String> values : tooltipMap.values()) {
@@ -374,6 +373,8 @@ public class BarChartComponent extends AbstractComponent {
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_S_VALUES, rangeYSValues);
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_GRID_ENABLED, this.chart.isYAxisGridEnabled());
 
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED, this.chart.isTooltipEnabled());
+        
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_COLORS, this.chart.getColors());
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_LEGEND_ENABLED, this.chart.isLegendEnabled());
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.chart.getLegendAreaWidth());
