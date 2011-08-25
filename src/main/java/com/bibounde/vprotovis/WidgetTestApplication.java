@@ -124,12 +124,13 @@ public class WidgetTestApplication extends Application {
         
         pie.setId("protovis");
         pie.setChartWidth(250);
-        pie.setChartHeight(200);
+        pie.setChartHeight(250);
         
         pie.setMarginLeft(50d);
+        pie.setMarginTop(50d);
         
-        pie.setLabelVisible(true);
-        pie.setLabelColor("#FFFFFF");
+        //pie.setLabelVisible(true);
+        //pie.setLabelColor("#FFFFFF");
         
         pie.setLabelFormatter(new PieLabelFormatter() {
             
@@ -155,7 +156,7 @@ public class WidgetTestApplication extends Application {
                 
                 return ret.toString();
             }
-        });
+        }, true);
         
         window.addComponent(pie);
     }

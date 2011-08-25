@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bibounde.vprotovis.gwt.util.ColorUtil;
+import com.bibounde.vprotovis.util.ColorUtil;
 
 public class PieChart implements Serializable {
 
@@ -20,6 +20,7 @@ public class PieChart implements Serializable {
     private boolean labelVisible = false;
     private String labelColor = COLOR_BLACK;
     private boolean tooltipEnabled = true;
+    private boolean tooltipPermanent = false;
     
     /**
      * @return the width
@@ -198,5 +199,17 @@ public class PieChart implements Serializable {
      */
     public void setTooltipEnabled(boolean tooltipEnabled) {
         this.tooltipEnabled = tooltipEnabled;
+    }
+    /**
+     * @return the tooltipPermanent
+     */
+    public boolean isTooltipPermanent() {
+        return tooltipPermanent;
+    }
+    /**
+     * @param tooltipPermanent the tooltipPermanent to set
+     */
+    public void setTooltipPermanent(boolean tooltipPermanent) {
+        this.tooltipPermanent = tooltipPermanent;
     }
 }

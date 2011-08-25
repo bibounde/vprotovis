@@ -1,14 +1,16 @@
 package com.bibounde.vprotovis.gwt.client.pie;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import com.bibounde.vprotovis.gwt.client.Tooltip;
+import com.bibounde.vprotovis.gwt.client.UIRectangle;
 import com.bibounde.vprotovis.gwt.client.Tooltip.ArrowStyle;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
@@ -39,6 +41,7 @@ public class VPieChartComponent extends Widget implements Paintable {
     public static final String UIDL_OPTIONS_LEGEND_ENABLED = "vprotovis.options.legend.enabled";
     public static final String UIDL_OPTIONS_LEGEND_AREA_WIDTH = "vprotovis.options.legend.area.width";
     public static final String UIDL_OPTIONS_TOOLTIPS_ENABLED = "vprotovis.options.tooltips.enabled";
+    public static final String UIDL_OPTIONS_TOOLTIPS_PERMANENT = "vprotovis.options.tooltips.permanent";
     public static final String UIDL_OPTIONS_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled.";
     public static final String UIDL_OPTIONS_LABEL_ENABLED = "vprotovis.options.label.enabled";
     public static final String UIDL_OPTIONS_LABEL_COLOR = "vprotovis.options.label.color";
@@ -56,8 +59,7 @@ public class VPieChartComponent extends Widget implements Paintable {
     ApplicationConnection client;
     
     private UIDL currentUIDL;
-    private Tooltip currentTooltip;
-    private int currentTooltipIndex = -1;
+    private Map<Integer, Tooltip> tooltipMap = new HashMap<Integer, Tooltip>();
 
     /**
      * The constructor should first call super() to initialize the component and
@@ -147,90 +149,122 @@ public class VPieChartComponent extends Widget implements Paintable {
             var tooltipLeft = new Array();
             var tooltipTop = new Array();
             var coordLabel = wedge.anchor("outer").add($wnd.pv.Label);
-            label.textAngle(0);
             coordLabel.text(function() {
                 tooltipLeft.push(this.left());
                 tooltipTop.push(this.top());
+            
+                if (vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isTooltipsPermanent()()) {
+                    //Display permanent tooltip
+                    vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::showTooltip(III)(this.left(), this.top(), this.index);
+                }
                 return "";
             });
-        
-            var tooltipValues = eval(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getTooltipValues()());
-            wedge.event("mouseover", function() {
-                if (vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isTooltipEnabled(I)(this.index)) {
-                    var x = tooltipLeft[this.index];
-                    var y = tooltipTop[this.index];
-                    vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::showTooltip(IIDDILjava/lang/String;)(x, y, wedgeLeft, wedgeBottom, this.index, tooltipValues[this.index]);
-                }
+            
+            if (!this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isTooltipsPermanent()()) {
+                //Register dynamic tooltips
+                wedge.event("mouseover", function() {
+                    if (vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isTooltipEnabled(I)(this.index)) {
+                        var x = tooltipLeft[this.index];
+                        var y = tooltipTop[this.index];
+                        vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::showTooltip(III)(x, y, this.index);
+                    }
                 
-                return this;
-            });
-            wedge.event('mouseout', function() {
-                vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::hideTooltip()();
-                return this;
-            });
+                    return this;
+                });
+                wedge.event('mouseout', function() {
+                    vpiechart.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::hideTooltip(I)(this.index);
+                    return this;
+                });
+            }
         }
         
         vis.render();
     }-*/;
     
-    public void showTooltip(int x, int y, double wedgeLeft, double wedgeBottom, int tooltipIndex, String tooltipText) {
-        if (this.currentTooltipIndex == tooltipIndex) {
+    public void showTooltip(int x, int y, final int tooltipIndex) {
+        if (this.tooltipMap.containsKey(tooltipIndex)) {
             return;
         }
-        this.currentTooltipIndex = tooltipIndex;
         
-        int arrowOffset = 10;        
-        int top = this.getElement().getAbsoluteTop() + y;
-        int left = this.getElement().getAbsoluteLeft() + x;
+        //Center of the pie (Do not use bottom because 'this' could be not displayed)
+        double wedgeLeft = this.getWedgeLeft();
+        double wedgeBottom = this.getWedgeBottom();
+        double chartHeight = this.getChartHeight();
+        double centerLeft = this.getElement().getAbsoluteLeft() + wedgeLeft;
+        double centerTop = this.getElement().getAbsoluteTop() + chartHeight - wedgeBottom;
         
-        //Center of the pie
-        int centerLeft = this.getElement().getAbsoluteLeft() + Double.valueOf(wedgeLeft).intValue();
-        int centerTop = this.getElement().getAbsoluteBottom() - Double.valueOf(wedgeLeft).intValue();
+        Tooltip tooltip = this.tooltipMap.get(tooltipIndex); 
         
-        if (this.currentTooltip == null) {
-            this.currentTooltip = new Tooltip();
-            this.currentTooltip.addCloseHandler(new CloseHandler<PopupPanel>() {
+        if (tooltip == null) {
+            tooltip = new Tooltip();
+            tooltip.addCloseHandler(new CloseHandler<PopupPanel>() {
                 
                 public void onClose(CloseEvent<PopupPanel> event) {
-                    currentTooltipIndex = -1;
+                    tooltipMap.remove(tooltipIndex);
                 }
             });
+            this.tooltipMap.put(tooltipIndex, tooltip);
         }
-        this.currentTooltip.setText(tooltipText);
-        this.currentTooltip.initArrows();
+        tooltip.setText(this.getTooltipValues()[tooltipIndex]);
+        tooltip.initArrows();
         
         //Tooltip location calculation
-        this.currentTooltip.show();
+        tooltip.show();
         
-        if (left < centerLeft) {
-            //West
-            this.currentTooltip.setArrowStyle(ArrowStyle.RIGHT);
-            if (top < centerTop) {
-                //North
-                this.currentTooltip.setPopupPosition(left - this.currentTooltip.getOffsetWidth() + 5, top + 5);
-            } else {
-                //South
-                this.currentTooltip.setPopupPosition(left - this.currentTooltip.getOffsetWidth() + 5, top - 5);
-            }
-   
+        int top = this.getElement().getAbsoluteTop() + y;
+        int left = this.getElement().getAbsoluteLeft() + x;
+        int tooltipArrowOffset = 10;
+        int tooltipMarginOffset = 5;
+        double wedgeRadius = this.getWedgeRadius();
+        double wedgeHighlightOffset = this.getWedgeHighlightOffset();
+        double locationWidth = ((wedgeRadius + wedgeHighlightOffset) * 2) / 3;
+        double locationHeight = ((wedgeRadius + wedgeHighlightOffset) * 2) / 3;
+        
+        UIRectangle nw = new UIRectangle(centerLeft - wedgeRadius - wedgeHighlightOffset, centerTop - wedgeRadius - wedgeHighlightOffset, locationWidth, locationHeight);
+        UIRectangle n = new UIRectangle(nw.left + locationWidth, nw.top, locationWidth, locationHeight);
+        UIRectangle ne = new UIRectangle(n.left + locationWidth, n.top, locationWidth, locationHeight);
+        
+        UIRectangle w = new UIRectangle(nw.left, nw.top + locationHeight, locationWidth, locationHeight);
+        UIRectangle c = new UIRectangle(n.left, w.top, locationWidth, locationHeight);
+        UIRectangle e = new UIRectangle(ne.left, w.top,locationWidth, locationHeight);
+        
+        UIRectangle sw = new UIRectangle(w.left, w.top + locationHeight, locationWidth, locationHeight);
+        UIRectangle s = new UIRectangle(c.left, sw.top, locationWidth, locationHeight);
+        UIRectangle se = new UIRectangle(e.left, sw.top, locationWidth, locationHeight);
+        
+        if (nw.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.BOTTOM);
+            tooltip.setPopupPosition(left - tooltipArrowOffset + 5, top - tooltip.getOffsetHeight() + 5);
+        } else if (n.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.BOTTOM);
+            tooltip.setPopupPosition(left - tooltipArrowOffset, top - tooltip.getOffsetHeight() + 5);
+        } else if (ne.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.BOTTOM);
+            tooltip.setPopupPosition(left - tooltipArrowOffset - 5, top - tooltip.getOffsetHeight() + 5);
+        } else if (w.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.RIGHT);
+            tooltip.setPopupPosition(left - tooltip.getOffsetWidth() + 5, top - tooltipMarginOffset);
+        } else if (e.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.LEFT);
+            tooltip.setPopupPosition(left - 5, top - tooltipMarginOffset);
+        } else if (sw.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.TOP);
+            tooltip.setPopupPosition(left - tooltipArrowOffset + 5, top - tooltipArrowOffset - 5);
+        } else if (s.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.TOP);
+            tooltip.setPopupPosition(left - tooltipArrowOffset, top - tooltipArrowOffset - 5);
+        } else if (se.contains(left, top)) {
+            tooltip.setArrowStyle(ArrowStyle.TOP);
+            tooltip.setPopupPosition(left - tooltipArrowOffset - 5, top - tooltipArrowOffset - 5);
         } else {
-            //East
-            this.currentTooltip.setArrowStyle(ArrowStyle.LEFT);
-            if (top < centerTop) {
-                //North
-                this.currentTooltip.setPopupPosition(left -5, top + 5);
-            } else {
-                //South
-                this.currentTooltip.setPopupPosition(left - 5, top - 5);
-            }
-            
-            
+            tooltip.setArrowStyle(ArrowStyle.RIGHT);
+            tooltip.setPopupPosition(left - tooltip.getOffsetWidth(), top - tooltipMarginOffset);  
         }
     }
     
-    public void hideTooltip() {
-        if (this.currentTooltip != null) {
-            this.currentTooltip.hide();
+    public void hideTooltip(int tooltipIndex) {
+        if (this.tooltipMap.containsKey(tooltipIndex)) {
+            this.tooltipMap.get(tooltipIndex).hide();
         }
     }
     
@@ -362,22 +396,15 @@ public class VPieChartComponent extends Widget implements Paintable {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIPS_ENABLED);
     }
     
+    public boolean isTooltipsPermanent() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIPS_PERMANENT);
+    }
+    
     public boolean isTooltipEnabled(int index) {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIP_ENABLED + index);
     }
     
-    public String getTooltipValues() {
-        String[] tooltipValues = this.currentUIDL.getStringArrayVariable(UIDL_DATA_TOOLTIP_VALUES);
-        
-        StringBuilder ret = new StringBuilder("[");
-
-        for (int i = 0; i < tooltipValues.length; i++) {
-            if (i > 0) {
-                ret.append(", ");
-            }
-            ret.append("'").append(tooltipValues[i]).append("'");
-        }
-        ret.append("]");
-        return ret.toString();
+    public String[] getTooltipValues() {
+        return this.currentUIDL.getStringArrayVariable(UIDL_DATA_TOOLTIP_VALUES);
     }
 }

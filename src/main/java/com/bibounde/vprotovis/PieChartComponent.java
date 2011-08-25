@@ -8,7 +8,7 @@ import com.bibounde.vprotovis.chart.pie.PieLabelFormatter;
 import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.chart.pie.Serie;
 import com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent;
-import com.bibounde.vprotovis.gwt.util.ColorUtil;
+import com.bibounde.vprotovis.util.ColorUtil;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
@@ -217,11 +217,19 @@ public class PieChartComponent extends AbstractComponent {
      * @param pieTooltipFormatter tooltip formatter
      */
     public void setTooltipFormatter(PieTooltipFormatter pieTooltipFormatter) {
-        if (pieTooltipFormatter == null) {
-            this.tooltipFormatter = new DefaultPieTooltipFormatter();
-        } else {
-            this.tooltipFormatter = pieTooltipFormatter;
-        }
+        this.setTooltipFormatter(pieTooltipFormatter, false);
+    }
+    
+    /**
+     * Sets the tooltip formatter 
+     * @param pieTooltipFormatter tooltip formatter
+     * @param permanent if true, tooltip is always displayed. Otherwise, tooltip appears on mouseover
+     */
+    public void setTooltipFormatter(PieTooltipFormatter pieTooltipFormatter, boolean permanent) {
+        this.tooltipFormatter = pieTooltipFormatter;
+        this.chart.setTooltipEnabled(pieTooltipFormatter != null);
+        this.chart.setTooltipPermanent(permanent);
+            
     }
 
     @Override
@@ -287,6 +295,7 @@ public class PieChartComponent extends AbstractComponent {
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.chart.getLegendAreaWidth());
         
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_ENABLED, this.chart.isTooltipEnabled());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_PERMANENT, this.chart.isTooltipPermanent());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_ENABLED, this.chart.isLabelVisible());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_COLOR, this.chart.getLabelColor());
     }

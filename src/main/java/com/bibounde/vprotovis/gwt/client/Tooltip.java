@@ -11,43 +11,48 @@ public class Tooltip extends PopupPanel {
 	private HTML leftArrow, bottomArrow, rightArrrow, topArrow, message;
 	
 	public Tooltip() {
-		super(true, false);
-		
-		//setWidth("130px");
-		
-		FlexTable grid = new FlexTable();
-		grid.setCellPadding(0);
-		grid.setCellSpacing(0);
-		
-		topArrow = new HTML();
-		topArrow.setVisible(true);
-		topArrow.setStyleName("v-vprotovis-tooltip-arrow-top");
-		grid.setWidget(0, 1, topArrow);
-		
-		leftArrow = new HTML();
-		leftArrow.setVisible(true);
-		leftArrow.setStyleName("v-vprotovis-tooltip-arrow-left");
-		grid.setWidget(1, 0, leftArrow);
-		grid.getFlexCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_TOP);
-		
-		rightArrrow = new HTML();
-		rightArrrow.setVisible(true);
-		rightArrrow.setStyleName("v-vprotovis-tooltip-arrow-right");
-		grid.setWidget(1, 2, rightArrrow);
-		grid.getFlexCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_TOP);
-		
-		bottomArrow = new HTML();
-		bottomArrow.setVisible(true);
-		bottomArrow.setStyleName("v-vprotovis-tooltip-arrow-bottom");
-		grid.setWidget(2, 1, bottomArrow);
-		grid.getFlexCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_LEFT);
-		
-		this.message = new HTML();
-		this.message.setStyleName("v-vprotovis-tooltip-content");
-		grid.setWidget(1, 1, this.message);
-		//grid.getFlexCellFormatter().setWidth(1, 1, "100%");
-		
-		this.add(grid);
+        this(false);
+    }
+	
+	public Tooltip(boolean permanent) {
+        super(permanent, false);
+        this.init();
+    }
+	
+	private void init() {
+	    FlexTable grid = new FlexTable();
+        grid.setCellPadding(0);
+        grid.setCellSpacing(0);
+        
+        topArrow = new HTML();
+        topArrow.setVisible(true);
+        topArrow.setStyleName("v-vprotovis-tooltip-arrow-top");
+        grid.setWidget(0, 1, topArrow);
+        
+        leftArrow = new HTML();
+        leftArrow.setVisible(true);
+        leftArrow.setStyleName("v-vprotovis-tooltip-arrow-left");
+        grid.setWidget(1, 0, leftArrow);
+        grid.getFlexCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_TOP);
+        
+        rightArrrow = new HTML();
+        rightArrrow.setVisible(true);
+        rightArrrow.setStyleName("v-vprotovis-tooltip-arrow-right");
+        grid.setWidget(1, 2, rightArrrow);
+        grid.getFlexCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_TOP);
+        
+        bottomArrow = new HTML();
+        bottomArrow.setVisible(true);
+        bottomArrow.setStyleName("v-vprotovis-tooltip-arrow-bottom");
+        grid.setWidget(2, 1, bottomArrow);
+        grid.getFlexCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_LEFT);
+        
+        this.message = new HTML();
+        this.message.setStyleName("v-vprotovis-tooltip-content");
+        grid.setWidget(1, 1, this.message);
+        //grid.getFlexCellFormatter().setWidth(1, 1, "100%");
+        
+        this.add(grid);
 	}
 	
 	public void setText(String html) {

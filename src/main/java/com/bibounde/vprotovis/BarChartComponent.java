@@ -15,7 +15,7 @@ import com.bibounde.vprotovis.common.Padding;
 import com.bibounde.vprotovis.common.Range;
 import com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent;
 import com.bibounde.vprotovis.gwt.client.line.VLineChartComponent;
-import com.bibounde.vprotovis.gwt.util.ColorUtil;
+import com.bibounde.vprotovis.util.ColorUtil;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;

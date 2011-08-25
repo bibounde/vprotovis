@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
-import com.bibounde.vprotovis.gwt.util.ColorUtil;
+import com.bibounde.vprotovis.util.ColorUtil;
 
 public class BarChart implements Serializable {
 

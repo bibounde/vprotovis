@@ -1,4 +1,4 @@
-package com.bibounde.vprotovis.gwt.util;
+package com.bibounde.vprotovis.util;
 
 
 public class ColorUtil {
