@@ -154,10 +154,12 @@ public class PieChartComponent extends AbstractComponent {
             chart.setColors(colors);
         }
     }
-    
+
     /**
      * Sets highlight offset
-     * @param highlightOffset new value
+     * 
+     * @param highlightOffset
+     *            new value
      */
     public void setHighlightOffset(double highlightOffset) {
         chart.setHighlightOffset(highlightOffset);
@@ -183,26 +185,32 @@ public class PieChartComponent extends AbstractComponent {
     public void setLegendAreaWidth(double legendAreaWidth) {
         chart.setLegendAreaWidth(legendAreaWidth);
     }
-    
+
     /**
      * Sets label visibility
-     * @param visible label visibility
+     * 
+     * @param visible
+     *            label visibility
      */
     public void setLabelVisible(boolean visible) {
         this.chart.setLabelVisible(true);
     }
-    
+
     /**
      * Sets label color (default black)
-     * @param color new color to set
+     * 
+     * @param color
+     *            new color to set
      */
     public void setLabelColor(String color) {
         this.chart.setLabelColor(color);
     }
-    
+
     /**
      * Sets the label formatter
-     * @param pieLabelFormatter label formatter
+     * 
+     * @param pieLabelFormatter
+     *            label formatter
      */
     public void setLabelFormatter(PieLabelFormatter pieLabelFormatter) {
         if (pieLabelFormatter == null) {
@@ -211,25 +219,51 @@ public class PieChartComponent extends AbstractComponent {
             this.labelFormatter = pieLabelFormatter;
         }
     }
-    
+
     /**
      * Sets the tooltip formatter
-     * @param pieTooltipFormatter tooltip formatter
+     * 
+     * @param pieTooltipFormatter
+     *            tooltip formatter
      */
     public void setTooltipFormatter(PieTooltipFormatter pieTooltipFormatter) {
         this.setTooltipFormatter(pieTooltipFormatter, false);
     }
-    
+
     /**
-     * Sets the tooltip formatter 
-     * @param pieTooltipFormatter tooltip formatter
-     * @param permanent if true, tooltip is always displayed. Otherwise, tooltip appears on mouseover
+     * Sets the tooltip formatter
+     * 
+     * @param pieTooltipFormatter
+     *            tooltip formatter
+     * @param permanent
+     *            if true, tooltip is always displayed. Otherwise, tooltip
+     *            appears on mouseover
      */
     public void setTooltipFormatter(PieTooltipFormatter pieTooltipFormatter, boolean permanent) {
         this.tooltipFormatter = pieTooltipFormatter;
         this.chart.setTooltipEnabled(pieTooltipFormatter != null);
         this.chart.setTooltipPermanent(permanent);
-            
+
+    }
+
+    /**
+     * Sets thickness of the slice.For example, a quick way to separate wedges is
+     * to use a white border, at the expense of some accuracy in angle
+     * comparison (especially for small wedges)
+     * 
+     * @param width border width
+     */
+    public void setLineWidth(int width) {
+        this.chart.setLineWidth(width);
+    }
+    
+    /**
+     * Sets the line color
+     * @see PieChartComponent#setLineWidth(int) 
+     * @param color line color
+     */
+    public void setLineColor(String color) {
+        this.chart.setLineColor(color);
     }
 
     @Override
@@ -251,16 +285,19 @@ public class PieChartComponent extends AbstractComponent {
         String[] highlighted = new String[this.chart.getSeries().size()];
         String[] labelValues = new String[this.chart.getSeries().size()];
         String[] tooltips = new String[this.chart.getSeries().size()];
-        
+        String[] serieNames = new String[this.chart.getSeries().size()];
+
         for (Serie serie : this.chart.getSeries()) {
             target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIE_VALUE + index, String.valueOf(serie.getValue()));
 
             highlighted[index] = String.valueOf(serie.isHighlight());
             labelValues[index] = this.labelFormatter.isVisible(serie.getValue()) ? this.labelFormatter.format(serie.getValue()) : "";
-            
+
             tooltips[index] = this.tooltipFormatter.getTooltipHTML(serie.getName(), serie.getValue());
             target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED + index, this.tooltipFormatter.isVisible(serie.getName(), serie.getValue()));
-            
+
+            serieNames[index] = serie.getName();
+
             sum += serie.getValue();
             index++;
         }
@@ -270,6 +307,7 @@ public class PieChartComponent extends AbstractComponent {
         if (this.chart.isTooltipEnabled()) {
             target.addVariable(this, VPieChartComponent.UIDL_DATA_TOOLTIP_VALUES, tooltips);
         }
+        target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIES_NAMES, serieNames);
         target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIES_SUM, sum);
 
     }
@@ -293,11 +331,14 @@ public class PieChartComponent extends AbstractComponent {
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_COLORS, this.chart.getColors());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_ENABLED, this.chart.isLegendEnabled());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.chart.getLegendAreaWidth());
-        
+
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_ENABLED, this.chart.isTooltipEnabled());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_PERMANENT, this.chart.isTooltipPermanent());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_ENABLED, this.chart.isLabelVisible());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_COLOR, this.chart.getLabelColor());
+        
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LINE_WIDTH, this.chart.getLineWidth());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LINE_COLOR, this.chart.getLineColor());
     }
 
     private double getAutoRadius() {

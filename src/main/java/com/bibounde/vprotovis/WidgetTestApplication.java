@@ -118,12 +118,12 @@ public class WidgetTestApplication extends Application {
         
         pie.addSerie("MacOs", 123d);
         pie.addSerie("Linux", 64d);
-        pie.addSerie("Windows", 13d, true);
+        pie.addSerie("Windows", 13d, false);
         
         final double total = 200d;
         
         pie.setId("protovis");
-        pie.setChartWidth(250);
+        pie.setChartWidth(400);
         pie.setChartHeight(250);
         
         pie.setMarginLeft(50d);
@@ -157,6 +157,11 @@ public class WidgetTestApplication extends Application {
                 return ret.toString();
             }
         }, true);
+        
+        //pie.setLegendVisible(true);
+        //pie.setLegendAreaWidth(150d);
+        
+        //pie.setLineWidth(2);
         
         window.addComponent(pie);
     }

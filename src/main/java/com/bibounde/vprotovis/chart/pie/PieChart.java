@@ -9,6 +9,7 @@ import com.bibounde.vprotovis.util.ColorUtil;
 public class PieChart implements Serializable {
 
     private static final String COLOR_BLACK = "#000000";
+    private static final String COLOR_WHITE = "#FFFFFF";
     
     private double width = 150, height = 150;
     private double highlightOffset = 10d;
@@ -21,6 +22,8 @@ public class PieChart implements Serializable {
     private String labelColor = COLOR_BLACK;
     private boolean tooltipEnabled = true;
     private boolean tooltipPermanent = false;
+    private int lineWidth = 0;
+    private String lineColor= COLOR_WHITE;
     
     /**
      * @return the width
@@ -211,5 +214,29 @@ public class PieChart implements Serializable {
      */
     public void setTooltipPermanent(boolean tooltipPermanent) {
         this.tooltipPermanent = tooltipPermanent;
+    }
+    /**
+     * @return the lineWidth
+     */
+    public int getLineWidth() {
+        return lineWidth;
+    }
+    /**
+     * @param lineWidth the lineWidth to set
+     */
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+    /**
+     * @return the lineColor
+     */
+    public String getLineColor() {
+        return lineColor;
+    }
+    /**
+     * @param lineColor the lineColor to set
+     */
+    public void setLineColor(String lineColor) {
+        this.lineColor = lineColor == null ? COLOR_WHITE : lineColor;
     }
 }

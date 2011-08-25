@@ -50,7 +50,6 @@ public class Tooltip extends PopupPanel {
         this.message = new HTML();
         this.message.setStyleName("v-vprotovis-tooltip-content");
         grid.setWidget(1, 1, this.message);
-        //grid.getFlexCellFormatter().setWidth(1, 1, "100%");
         
         this.add(grid);
 	}

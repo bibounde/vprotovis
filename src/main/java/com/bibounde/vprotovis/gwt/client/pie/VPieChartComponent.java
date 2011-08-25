@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.bibounde.vprotovis.gwt.client.Tooltip;
-import com.bibounde.vprotovis.gwt.client.UIRectangle;
 import com.bibounde.vprotovis.gwt.client.Tooltip.ArrowStyle;
+import com.bibounde.vprotovis.gwt.client.UIDLUtil;
+import com.bibounde.vprotovis.gwt.client.UIRectangle;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -22,6 +23,7 @@ public class VPieChartComponent extends Widget implements Paintable {
     public static final String UIDL_DIV_ID = "vprotovis.div.id";
     public static final String UIDL_DATA_SERIES_COUNT = "vprotovis.data.series.count";
     public static final String UIDL_DATA_SERIES_SUM = "vprotovis.data.series.sum";
+    public static final String UIDL_DATA_SERIES_NAMES = "vprotovis.data.series.names";
     public static final String UIDL_DATA_SERIES_HIGHLIGHTED = "vprotovis.data.series.highlithed";
     public static final String UIDL_DATA_LABEL_VALUES = "vprotovis.data.label.values";
     public static final String UIDL_DATA_SERIE_VALUE = "vprotovis.data.serie.value.";
@@ -45,6 +47,8 @@ public class VPieChartComponent extends Widget implements Paintable {
     public static final String UIDL_OPTIONS_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled.";
     public static final String UIDL_OPTIONS_LABEL_ENABLED = "vprotovis.options.label.enabled";
     public static final String UIDL_OPTIONS_LABEL_COLOR = "vprotovis.options.label.color";
+    public static final String UIDL_OPTIONS_LINE_WIDTH = "vprotovis.options.line.width";
+    public static final String UIDL_OPTIONS_LINE_COLOR = "vprotovis.options.line.color";
     
     
     /** Set the CSS class name to allow styling. */
@@ -97,6 +101,9 @@ public class VPieChartComponent extends Widget implements Paintable {
     private native void execChart() /*-{
         var vpiechart = this;
 
+        var colors = eval(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getColors()());
+        var legendColor = $wnd.pv.color("#464646");
+
         var data = eval(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getData()());
         var sum = this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getSum()();
         var highlighted = eval(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getHighlighted()());
@@ -128,6 +135,9 @@ public class VPieChartComponent extends Widget implements Paintable {
         wedge.bottom(function() {
             return wedgeBottom - Math.sin(this.startAngle() + this.angle() / 2) * ((highlighted[this.index]) ? wedgeHighlightOffset : 0);
         });
+        wedge.fillStyle(colors.by($wnd.pv.index));
+        wedge.strokeStyle(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getLineColor()());
+        wedge.lineWidth(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getLineWidth()());
         
         
         //Label management
@@ -176,6 +186,20 @@ public class VPieChartComponent extends Widget implements Paintable {
                     return this;
                 });
             }
+        }
+        
+        //Legend management
+        if (this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isLegendEnabled()()) {
+            var serieNames = eval(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getSerieNames()());
+            //Use bar instead of DOT because msie-shim does not support it
+            var legend = vis.add($wnd.pv.Bar).data(serieNames);
+            legend.top(function(){
+                return marginTop + (this.index * 18);
+            });
+            //Offset = 20
+            legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + 20);
+            legend.fillStyle(colors.by($wnd.pv.index));
+            legend.anchor("left").add($wnd.pv.Label).textBaseline("middle").textMargin(16).textStyle(legendColor);
         }
         
         vis.render();
@@ -289,17 +313,8 @@ public class VPieChartComponent extends Widget implements Paintable {
     }
     
     public String getHighlighted() {
-        StringBuilder ret = new StringBuilder("[");
-        
         String[] highlighted = this.currentUIDL.getStringArrayVariable(UIDL_DATA_SERIES_HIGHLIGHTED);
-        for (int i = 0; i < highlighted.length; i++) {
-            if (i > 0) {
-                ret.append(", ");
-            }
-            ret.append(highlighted[i]);
-        }
-        ret.append("]");
-        return ret.toString();
+        return UIDLUtil.getJSArray(highlighted, false);
     }
     
     public double getSum() {
@@ -379,17 +394,7 @@ public class VPieChartComponent extends Widget implements Paintable {
     
     public String getLabelValues() {
         String[] labelValues = this.currentUIDL.getStringArrayVariable(UIDL_DATA_LABEL_VALUES);
-        
-        StringBuilder ret = new StringBuilder("[");
-
-        for (int i = 0; i < labelValues.length; i++) {
-            if (i > 0) {
-                ret.append(", ");
-            }
-            ret.append("'").append(labelValues[i]).append("'");
-        }
-        ret.append("]");
-        return ret.toString();
+        return UIDLUtil.getJSArray(labelValues, true);
     }
     
     public boolean isTooltipsEnabled() {
@@ -406,5 +411,18 @@ public class VPieChartComponent extends Widget implements Paintable {
     
     public String[] getTooltipValues() {
         return this.currentUIDL.getStringArrayVariable(UIDL_DATA_TOOLTIP_VALUES);
+    }
+    
+    public String getSerieNames() {
+        String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_SERIES_NAMES);
+        return UIDLUtil.getJSArray(values, true);
+    }
+    
+    public int getLineWidth() {
+        return this.currentUIDL.getIntVariable(UIDL_OPTIONS_LINE_WIDTH);
+    }
+    
+    public String getLineColor() {
+        return this.currentUIDL.getStringVariable(UIDL_OPTIONS_LINE_COLOR);
     }
 }
