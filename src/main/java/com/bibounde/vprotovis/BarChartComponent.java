@@ -248,8 +248,6 @@ public class BarChartComponent extends AbstractComponent {
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
 
-        target.addVariable(this, VBarChartComponent.UIDL_DIV_ID, this.id);
-
         int groupCount = 0;
         double minValue = 0d, maxValue = 0d;
         for (Serie serie : this.chart.getSeries()) {
@@ -263,6 +261,8 @@ public class BarChartComponent extends AbstractComponent {
 
         this.paintChartValues(target, groupCount);
         this.paintChartOptions(target, groupCount, minValue, maxValue, padding);
+        
+        target.addVariable(this, VBarChartComponent.UIDL_DIV_ID, this.id);
     }
 
     private void paintChartValues(PaintTarget target, int groupCount) throws PaintException {

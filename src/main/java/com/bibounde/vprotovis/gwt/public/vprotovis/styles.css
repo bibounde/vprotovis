@@ -7,44 +7,79 @@
 	border-color: #E2E2E2;
 	border-radius: 4px;
 	background-color: #FFFFFF;
-	font-size: 0.7em;
+	font-size: 11px;
 	padding: 3px;
 	font-family: arial;
 }
 
-.v-vprotovis-tooltip-arrow-bottom {
-	width:0; 
-	height:0; 
-	border-left: 0px solid transparent; 
-	border-right: 10px solid transparent;
-	border-top: 10px solid #E2E2E2;
-	border-bottom: 0;
-	margin-left: 10px;
+.v-vprotovis-tooltip-arrow-bottomleft {
+    width:0; 
+    height:0; 
+    border-left: 0px solid transparent; 
+    border-right: 10px solid transparent;
+    border-top: 10px solid #E2E2E2;
+    border-bottom: 0;
+    margin-left: 10px;
 }
 
-.v-vprotovis-tooltip-arrow-top {
-	width:0; 
-	height:0; 
-	border-left: 0px solid transparent; 
-	border-right: 10px solid transparent;
-	border-top: 0;
-	border-bottom: 10px solid #E2E2E2;
-	margin-left: 10px;
-}
-
-
-.v-vprotovis-tooltip-arrow-left {
+.v-vprotovis-tooltip-arrow-bottomright {
     width: 0;
-	height: 0;
-	border-left: 10px solid transparent;
-	border-top: 10px solid #E2E2E2;
-	margin-top: 5px;
+    height: 0;
+    border-right: 0px solid transparent;
+    border-left: 10px solid transparent;
+    border-top: 10px solid #E2E2E2;
+    border-bottom: 0;
+    margin-right: 10px;
 }
 
-.v-vprotovis-tooltip-arrow-right {
+.v-vprotovis-tooltip-arrow-topleft {
+    width:0; 
+    height:0; 
+    border-left: 0px solid transparent; 
+    border-right: 10px solid transparent;
+    border-top: 0;
+    border-bottom: 10px solid #E2E2E2;
+    margin-left: 10px;
+}
+
+.v-vprotovis-tooltip-arrow-topright {
+    width: 0;
+    height: 0;
+    border-right: 0px solid transparent;
+    border-left: 10px solid transparent;
+    border-top: 0;
+    border-bottom: 10px solid #E2E2E2;
+    margin-right: 10px;
+}
+
+.v-vprotovis-tooltip-arrow-middletopleft {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-top: 10px solid #E2E2E2;
+    margin-top: 5px;
+}
+
+.v-vprotovis-tooltip-arrow-middlebottomleft {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid #E2E2E2;
+    margin-bottom: 5px;
+}
+
+.v-vprotovis-tooltip-arrow-middletopright {
     width: 0;
     height: 0;
     border-right: 10px solid transparent;
     border-top: 10px solid #E2E2E2;
     margin-top: 5px;
+}
+
+.v-vprotovis-tooltip-arrow-middlebottomright {
+    width: 0;
+    height: 0;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #E2E2E2;
+    margin-bottom: 5px;
 }

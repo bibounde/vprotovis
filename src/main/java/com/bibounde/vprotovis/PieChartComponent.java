@@ -1,6 +1,5 @@
 package com.bibounde.vprotovis;
 
-import com.bibounde.vprotovis.chart.bar.TooltipFormatter;
 import com.bibounde.vprotovis.chart.pie.DefaultPieLabelFormatter;
 import com.bibounde.vprotovis.chart.pie.DefaultPieTooltipFormatter;
 import com.bibounde.vprotovis.chart.pie.PieChart;
@@ -293,8 +292,10 @@ public class PieChartComponent extends AbstractComponent {
             highlighted[index] = String.valueOf(serie.isHighlight());
             labelValues[index] = this.labelFormatter.isVisible(serie.getValue()) ? this.labelFormatter.format(serie.getValue()) : "";
 
-            tooltips[index] = this.tooltipFormatter.getTooltipHTML(serie.getName(), serie.getValue());
-            target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED + index, this.tooltipFormatter.isVisible(serie.getName(), serie.getValue()));
+            if (this.chart.isTooltipEnabled()) {
+                tooltips[index] = this.tooltipFormatter.getTooltipHTML(serie.getName(), serie.getValue());
+                target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED + index, this.tooltipFormatter.isVisible(serie.getName(), serie.getValue()));
+            }
 
             serieNames[index] = serie.getName();
 
@@ -319,8 +320,8 @@ public class PieChartComponent extends AbstractComponent {
         double radius = this.getAutoRadius();
 
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_RADIUS, radius);
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEFT, this.getAutoLeft(radius));
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_BOTTOM, this.getAutoBottom(radius));
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEFT, this.getAutoLeft());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_BOTTOM, this.getAutoBottom());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_HIGHLIGHT_OFFSET, this.chart.getHighlightOffset());
 
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_MARGIN_LEFT, this.chart.getMarginLeft());
@@ -348,11 +349,13 @@ public class PieChartComponent extends AbstractComponent {
         return (Math.min(availableWidth, availableHeight) - (this.chart.getHighlightOffset() * 2)) / 2;
     }
 
-    private double getAutoLeft(double radius) {
-        return radius + this.chart.getMarginLeft() + this.chart.getHighlightOffset();
+    private double getAutoLeft() {
+        double availableWidth = this.chart.getWidth() - this.chart.getMarginLeft() - this.chart.getMarginRight() - this.chart.getLegendAreaWidth() - (2 * this.chart.getHighlightOffset());
+        return (availableWidth / 2) + this.chart.getMarginLeft() + this.chart.getHighlightOffset();
     }
 
-    private double getAutoBottom(double radius) {
-        return radius + this.chart.getMarginBottom() + this.chart.getHighlightOffset();
+    private double getAutoBottom() {
+        double availableHeight = this.chart.getHeight() - this.chart.getMarginTop() - this.chart.getMarginBottom() - (2 * this.chart.getHighlightOffset());
+        return (availableHeight / 2) + this.chart.getMarginBottom() + this.chart.getHighlightOffset();
     }
 }

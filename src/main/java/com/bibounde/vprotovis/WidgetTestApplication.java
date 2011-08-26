@@ -6,6 +6,7 @@ import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.Point;
 import com.vaadin.Application;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Window;
 
 /**
@@ -20,9 +21,9 @@ public class WidgetTestApplication extends Application {
         window = new Window("Widget Test");
         setMainWindow(window);
 
-        //this.runBar();
+        this.runBar();
         //this.runLine();
-        this.runPie();
+        //this.runPie();
     }
     
     private void runBar() {
@@ -156,10 +157,10 @@ public class WidgetTestApplication extends Application {
                 
                 return ret.toString();
             }
-        }, true);
+        }, false);
         
-        //pie.setLegendVisible(true);
-        //pie.setLegendAreaWidth(150d);
+        pie.setLegendVisible(true);
+        pie.setLegendAreaWidth(150d);
         
         //pie.setLineWidth(2);
         

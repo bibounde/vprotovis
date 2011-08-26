@@ -3,8 +3,8 @@ package com.bibounde.vprotovis.gwt.client.bar;
 import java.util.logging.Logger;
 
 import com.bibounde.vprotovis.gwt.client.Tooltip;
+import com.bibounde.vprotovis.gwt.client.TooltipComposite.ArrowStyle;
 import com.bibounde.vprotovis.gwt.client.UIDLUtil;
-import com.bibounde.vprotovis.gwt.client.Tooltip.ArrowStyle;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
@@ -280,28 +280,26 @@ public class VBarChartComponent extends Widget implements Paintable {
             this.currentTooltip = new Tooltip();
         }
         this.currentTooltip.setText(tooltipText);
-        this.currentTooltip.initArrows();
         
         //Tooltip location calculation
         this.currentTooltip.show();
-        //TODO: manage left and right
         if (barBottom < 0) {
             //Bar with negative value
             if (bottom < this.currentTooltip.getOffsetHeight()) {
                 //Display at the right
-                this.currentTooltip.setArrowStyle(ArrowStyle.LEFT);
+                this.currentTooltip.setArrowStyle(ArrowStyle.MIDDLE_TOP_LEFT);
                 this.currentTooltip.setPopupPosition(tooltipLeft + Double.valueOf(barWidth).intValue() + 2, tooltipBottom - this.currentTooltip.getOffsetHeight());
             } else {
-                this.currentTooltip.setArrowStyle(ArrowStyle.TOP);
+                this.currentTooltip.setArrowStyle(ArrowStyle.TOP_LEFT);
                 this.currentTooltip.setPopupPosition(tooltipLeft - arrowOffset+ (Double.valueOf(barWidth).intValue() / 2), tooltipBottom);
             }
         } else {
             if (top < this.currentTooltip.getOffsetHeight()) {
                 //Display at the right
-                this.currentTooltip.setArrowStyle(ArrowStyle.LEFT);
+                this.currentTooltip.setArrowStyle(ArrowStyle.MIDDLE_TOP_LEFT);
                 this.currentTooltip.setPopupPosition(tooltipLeft + Double.valueOf(barWidth).intValue() + 2, tooltipTop);
             } else {
-                this.currentTooltip.setArrowStyle(ArrowStyle.BOTTOM);
+                this.currentTooltip.setArrowStyle(ArrowStyle.BOTTOM_LEFT);
                 this.currentTooltip.setPopupPosition(tooltipLeft - arrowOffset+ (Double.valueOf(barWidth).intValue() / 2), tooltipTop - this.currentTooltip.getOffsetHeight());
             }
         }

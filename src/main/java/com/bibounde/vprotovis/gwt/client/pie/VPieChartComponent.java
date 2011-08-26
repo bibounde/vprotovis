@@ -5,13 +5,14 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.bibounde.vprotovis.gwt.client.Tooltip;
-import com.bibounde.vprotovis.gwt.client.Tooltip.ArrowStyle;
+import com.bibounde.vprotovis.gwt.client.TooltipComposite;
+import com.bibounde.vprotovis.gwt.client.TooltipComposite.ArrowStyle;
+import com.bibounde.vprotovis.gwt.client.TooltipOptions;
 import com.bibounde.vprotovis.gwt.client.UIDLUtil;
 import com.bibounde.vprotovis.gwt.client.UIRectangle;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
@@ -64,14 +65,18 @@ public class VPieChartComponent extends Widget implements Paintable {
     
     private UIDL currentUIDL;
     private Map<Integer, Tooltip> tooltipMap = new HashMap<Integer, Tooltip>();
+    private AbsolutePanel content;
 
     /**
      * The constructor should first call super() to initialize the component and
      * then handle any initialization relevant to Vaadin.
      */
     public VPieChartComponent() {
-        DivElement canvas = Document.get().createDivElement();
-        setElement(canvas);
+        this.content = new AbsolutePanel();
+        
+        //DivElement canvas = Document.get().createDivElement();
+        //setElement(canvas);
+        setElement(content.getElement());
         setStyleName(CLASSNAME);
     }
     
@@ -191,10 +196,13 @@ public class VPieChartComponent extends Widget implements Paintable {
         //Legend management
         if (this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isLegendEnabled()()) {
             var serieNames = eval(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getSerieNames()());
+            
+            var legengTop = marginTop + (chartHeight - marginBottom - marginTop - (serieNames.length * 18)) / 2;
+            
             //Use bar instead of DOT because msie-shim does not support it
             var legend = vis.add($wnd.pv.Bar).data(serieNames);
             legend.top(function(){
-                return marginTop + (this.index * 18);
+                return legengTop + (this.index * 18);
             });
             //Offset = 20
             legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + 20);
@@ -206,83 +214,41 @@ public class VPieChartComponent extends Widget implements Paintable {
     }-*/;
     
     public void showTooltip(int x, int y, final int tooltipIndex) {
-        if (this.tooltipMap.containsKey(tooltipIndex)) {
-            return;
-        }
         
-        //Center of the pie (Do not use bottom because 'this' could be not displayed)
-        double wedgeLeft = this.getWedgeLeft();
-        double wedgeBottom = this.getWedgeBottom();
-        double chartHeight = this.getChartHeight();
-        double centerLeft = this.getElement().getAbsoluteLeft() + wedgeLeft;
-        double centerTop = this.getElement().getAbsoluteTop() + chartHeight - wedgeBottom;
-        
-        Tooltip tooltip = this.tooltipMap.get(tooltipIndex); 
-        
-        if (tooltip == null) {
-            tooltip = new Tooltip();
-            tooltip.addCloseHandler(new CloseHandler<PopupPanel>() {
-                
-                public void onClose(CloseEvent<PopupPanel> event) {
-                    tooltipMap.remove(tooltipIndex);
-                }
-            });
-            this.tooltipMap.put(tooltipIndex, tooltip);
-        }
-        tooltip.setText(this.getTooltipValues()[tooltipIndex]);
-        tooltip.initArrows();
-        
-        //Tooltip location calculation
-        tooltip.show();
-        
-        int top = this.getElement().getAbsoluteTop() + y;
-        int left = this.getElement().getAbsoluteLeft() + x;
-        int tooltipArrowOffset = 10;
-        int tooltipMarginOffset = 5;
-        double wedgeRadius = this.getWedgeRadius();
-        double wedgeHighlightOffset = this.getWedgeHighlightOffset();
-        double locationWidth = ((wedgeRadius + wedgeHighlightOffset) * 2) / 3;
-        double locationHeight = ((wedgeRadius + wedgeHighlightOffset) * 2) / 3;
-        
-        UIRectangle nw = new UIRectangle(centerLeft - wedgeRadius - wedgeHighlightOffset, centerTop - wedgeRadius - wedgeHighlightOffset, locationWidth, locationHeight);
-        UIRectangle n = new UIRectangle(nw.left + locationWidth, nw.top, locationWidth, locationHeight);
-        UIRectangle ne = new UIRectangle(n.left + locationWidth, n.top, locationWidth, locationHeight);
-        
-        UIRectangle w = new UIRectangle(nw.left, nw.top + locationHeight, locationWidth, locationHeight);
-        UIRectangle c = new UIRectangle(n.left, w.top, locationWidth, locationHeight);
-        UIRectangle e = new UIRectangle(ne.left, w.top,locationWidth, locationHeight);
-        
-        UIRectangle sw = new UIRectangle(w.left, w.top + locationHeight, locationWidth, locationHeight);
-        UIRectangle s = new UIRectangle(c.left, sw.top, locationWidth, locationHeight);
-        UIRectangle se = new UIRectangle(e.left, sw.top, locationWidth, locationHeight);
-        
-        if (nw.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.BOTTOM);
-            tooltip.setPopupPosition(left - tooltipArrowOffset + 5, top - tooltip.getOffsetHeight() + 5);
-        } else if (n.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.BOTTOM);
-            tooltip.setPopupPosition(left - tooltipArrowOffset, top - tooltip.getOffsetHeight() + 5);
-        } else if (ne.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.BOTTOM);
-            tooltip.setPopupPosition(left - tooltipArrowOffset - 5, top - tooltip.getOffsetHeight() + 5);
-        } else if (w.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.RIGHT);
-            tooltip.setPopupPosition(left - tooltip.getOffsetWidth() + 5, top - tooltipMarginOffset);
-        } else if (e.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.LEFT);
-            tooltip.setPopupPosition(left - 5, top - tooltipMarginOffset);
-        } else if (sw.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.TOP);
-            tooltip.setPopupPosition(left - tooltipArrowOffset + 5, top - tooltipArrowOffset - 5);
-        } else if (s.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.TOP);
-            tooltip.setPopupPosition(left - tooltipArrowOffset, top - tooltipArrowOffset - 5);
-        } else if (se.contains(left, top)) {
-            tooltip.setArrowStyle(ArrowStyle.TOP);
-            tooltip.setPopupPosition(left - tooltipArrowOffset - 5, top - tooltipArrowOffset - 5);
+        if (this.isTooltipsPermanent()) {
+            TooltipComposite composite = new TooltipComposite();
+            composite.setText(this.getTooltipValues()[tooltipIndex]);
+            
+            this.content.add(composite);
+            
+            TooltipOptions options = this.getTooltipOptions(composite.getOffsetWidth(), composite.getOffsetHeight(), x, y, true);
+            composite.setArrowStyle(options.arrowStyle);
+            this.content.setWidgetPosition(composite, options.left, options.top);
         } else {
-            tooltip.setArrowStyle(ArrowStyle.RIGHT);
-            tooltip.setPopupPosition(left - tooltip.getOffsetWidth(), top - tooltipMarginOffset);  
+            if (this.tooltipMap.containsKey(tooltipIndex)) {
+                return;
+            }
+            
+            Tooltip tooltip = this.tooltipMap.get(tooltipIndex); 
+            
+            if (tooltip == null) {
+                tooltip = new Tooltip();
+                tooltip.addCloseHandler(new CloseHandler<PopupPanel>() {
+                    
+                    public void onClose(CloseEvent<PopupPanel> event) {
+                        tooltipMap.remove(tooltipIndex);
+                    }
+                });
+                this.tooltipMap.put(tooltipIndex, tooltip);
+            }
+            tooltip.setText(this.getTooltipValues()[tooltipIndex]);
+            
+            //Tooltip location calculation
+            tooltip.show();
+            
+            TooltipOptions options = this.getTooltipOptions(tooltip.getOffsetWidth(), tooltip.getOffsetHeight(), x, y, false);
+            tooltip.setArrowStyle(options.arrowStyle);
+            tooltip.setPopupPosition(options.left, options.top);
         }
     }
     
@@ -424,5 +390,110 @@ public class VPieChartComponent extends Widget implements Paintable {
     
     public String getLineColor() {
         return this.currentUIDL.getStringVariable(UIDL_OPTIONS_LINE_COLOR);
+    }
+    
+    private TooltipOptions getTooltipOptions(int tooltipWidth, int tooltipHeight, int x, int y, boolean permanent) {
+        
+        //Center of the pie (Do not use bottom because 'this' could be not displayed)
+        double wedgeLeft = this.getWedgeLeft();
+        double wedgeBottom = this.getWedgeBottom();
+        double chartHeight = this.getChartHeight();
+        
+        double centerLeft = -1;
+        double centerTop = -1;
+        int left = -1;
+        int top = -1;
+        
+        if (permanent) {
+            left = x;
+            top = y;
+            centerLeft = wedgeLeft;
+            centerTop = chartHeight - wedgeBottom;
+        } else {
+            left = this.getElement().getAbsoluteLeft() + x;
+            top = this.getElement().getAbsoluteTop() + y;
+            centerLeft = this.getElement().getAbsoluteLeft() + wedgeLeft;
+            centerTop = this.getElement().getAbsoluteTop() + chartHeight - wedgeBottom;
+        }
+        
+        //TODO: Only tooltip need to know that
+        int tooltipArrowOffset = 9;
+        int tooltipMarginOffset = 5;
+        
+        TooltipOptions ret = new TooltipOptions();
+        
+        double r = this.getWedgeRadius() + this.getWedgeHighlightOffset();
+        double h = r / 2;
+        
+        UIRectangle topLeft = new UIRectangle(centerLeft - r, centerTop - r, r, h);
+        if (topLeft.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.BOTTOM_RIGHT;
+            ret.left = left - tooltipWidth + tooltipArrowOffset;
+            ret.top = top - tooltipHeight - tooltipArrowOffset;
+            return ret;
+        }
+        
+        UIRectangle topRight = new UIRectangle(centerLeft, centerTop - r, r, h);
+        if (topRight.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.BOTTOM_LEFT;
+            ret.left = left - tooltipArrowOffset;
+            ret.top = top - tooltipHeight - tooltipArrowOffset;
+            return ret;
+        }
+        
+        UIRectangle leftTop = new UIRectangle(centerLeft - r, centerTop - h, r, h);
+        if (leftTop.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.MIDDLE_BOTTOM_RIGHT;
+            ret.left = left - tooltipWidth - tooltipArrowOffset;
+            ret.top = top - tooltipHeight + tooltipMarginOffset;
+            
+            return ret;
+        }
+        
+        UIRectangle rightTop = new UIRectangle(centerLeft, centerTop - h, r, h);
+        if (rightTop.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.MIDDLE_BOTTOM_LEFT;
+            ret.left = left;
+            ret.top = top - tooltipHeight + tooltipMarginOffset;
+        }
+        
+        UIRectangle leftBottom = new UIRectangle(centerLeft - r, centerTop, r, h);
+        if (leftBottom.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.MIDDLE_TOP_RIGHT;
+            ret.left = left - tooltipWidth - tooltipArrowOffset;
+            ret.top = top - tooltipMarginOffset;
+            return ret;
+        }
+        
+        UIRectangle rightBottom = new UIRectangle(centerLeft, centerTop, r, h);
+        if (rightBottom.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.MIDDLE_TOP_LEFT;
+            ret.left = left;
+            ret.top = top - tooltipMarginOffset;
+            return ret;
+        }
+        
+        UIRectangle bottomLeft = new UIRectangle(centerLeft - r, centerTop + h, r, h);
+        if (bottomLeft.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.TOP_RIGHT;
+            ret.left = left - tooltipWidth + tooltipArrowOffset;
+            ret.top = top + tooltipArrowOffset;
+            return ret;
+        }
+        
+        UIRectangle bottomRight = new UIRectangle(centerLeft, centerTop + h, r, h);
+        if (bottomRight.contains(left, top)) {
+            ret.arrowStyle = ArrowStyle.TOP_LEFT;
+            ret.left = left - tooltipArrowOffset;
+            ret.top = top + tooltipArrowOffset;
+            return ret;
+        }
+        
+        //Default values
+        ret.arrowStyle = ArrowStyle.MIDDLE_TOP_LEFT;
+        ret.left = left;
+        ret.top = top - tooltipMarginOffset;
+        
+        return ret;
     }
 }
