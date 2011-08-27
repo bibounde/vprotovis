@@ -6,7 +6,7 @@ package com.bibounde.vprotovis.chart.bar;
  * @author bibounde
  *
  */
-public class DefaultTooltipFormatter implements TooltipFormatter {
+public class DefaultBarTooltipFormatter implements BarTooltipFormatter {
 
     public String getTooltipHTML(String serieName, double value, String groupName) {
         StringBuilder ret = new StringBuilder();
@@ -16,6 +16,10 @@ public class DefaultTooltipFormatter implements TooltipFormatter {
         ret.append(serieName).append(": ").append(value);
         
         return ret.toString();
+    }
+
+    public boolean isVisible(String serieName, double value, String groupName) {
+        return true;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.bibounde.vprotovis;
 
-import com.bibounde.vprotovis.chart.bar.TooltipFormatter;
+import com.bibounde.vprotovis.chart.bar.BarTooltipFormatter;
 import com.bibounde.vprotovis.chart.pie.PieLabelFormatter;
 import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
@@ -21,9 +21,9 @@ public class WidgetTestApplication extends Application {
         window = new Window("Widget Test");
         setMainWindow(window);
 
-        this.runBar();
+        //this.runBar();
         //this.runLine();
-        //this.runPie();
+        this.runPie();
     }
     
     private void runBar() {
@@ -57,7 +57,7 @@ public class WidgetTestApplication extends Application {
         bar.setLegendVisible(true);
         bar.setLegendAreaWidth(150);
         
-        TooltipFormatter tooltipFormatter = new TooltipFormatter() {
+        BarTooltipFormatter tooltipFormatter = new BarTooltipFormatter() {
             
             public String getTooltipHTML(String serieName, double value, String groupName) {
                 StringBuilder tooltipHTML = new StringBuilder();
@@ -74,6 +74,10 @@ public class WidgetTestApplication extends Application {
                 tooltipHTML.append("</td><tr></table>");
 
                 return tooltipHTML.toString();
+            }
+
+            public boolean isVisible(String serieName, double value, String groupName) {
+                return true;
             }
         };
         bar.setTooltipFormatter(tooltipFormatter);

@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.bibounde.vprotovis.chart.bar.BarChart;
-import com.bibounde.vprotovis.chart.bar.DefaultTooltipFormatter;
+import com.bibounde.vprotovis.chart.bar.DefaultBarTooltipFormatter;
 import com.bibounde.vprotovis.chart.bar.Serie;
-import com.bibounde.vprotovis.chart.bar.TooltipFormatter;
+import com.bibounde.vprotovis.chart.bar.BarTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.DefaultAxisLabelFormatter;
 import com.bibounde.vprotovis.common.Padding;
@@ -35,7 +35,7 @@ public class BarChartComponent extends AbstractComponent {
     private BarChart chart;
     private String id = "v-protovis-barchart-" + this.hashCode();
     private AxisLabelFormatter yAxisLabelFormatter = new DefaultAxisLabelFormatter();
-    private TooltipFormatter tooltipFormatter = new DefaultTooltipFormatter();
+    private BarTooltipFormatter tooltipFormatter = new DefaultBarTooltipFormatter();
 
     /**
      * Initializes a newly created BarChartComponent
@@ -239,7 +239,7 @@ public class BarChartComponent extends AbstractComponent {
      * Sets tooltip formatter
      * @param tooltipFormatter tooltip formatter
      */
-    public void setTooltipFormatter(TooltipFormatter tooltipFormatter) {
+    public void setTooltipFormatter(BarTooltipFormatter tooltipFormatter) {
         this.tooltipFormatter = tooltipFormatter;
         chart.setTooltipEnabled(tooltipFormatter != null);
     }
