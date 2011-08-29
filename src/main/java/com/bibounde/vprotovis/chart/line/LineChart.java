@@ -25,6 +25,7 @@ public class LineChart implements Serializable {
 	private String[] colors = ColorUtil.getDefaultColors();
 	private boolean legendEnabled = false;
 	private double legendAreaWidth = 0d;
+	private boolean tooltipEnabled = true;
 	
 	/**
 	 * @return the width
@@ -276,6 +277,18 @@ public class LineChart implements Serializable {
      */
     public void setLegendAreaWidth(double legendAreaWidth) {
         this.legendAreaWidth = legendAreaWidth;
+    }
+    /**
+     * @return the tooltipEnabled
+     */
+    public boolean isTooltipEnabled() {
+        return tooltipEnabled;
+    }
+    /**
+     * @param tooltipEnabled the tooltipEnabled to set
+     */
+    public void setTooltipEnabled(boolean tooltipEnabled) {
+        this.tooltipEnabled = tooltipEnabled;
     }
 	
 }

@@ -5,8 +5,12 @@
 	<!-- Inherit DefaultWidgetSet -->
 	<inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
 	
-	<script src="protovis-r3.2.js">
+	<!-- script src="protovis.min-3.3.1.js">
 	</script>
+	<script src="protovis-msie-shim.js">
+    </script-->
+    <script src="protovis-d3.2.js">
+    </script>
 
 	<!-- Widgetset default theme -->
 	<!-- This is relative to widgetset_directory/public -->

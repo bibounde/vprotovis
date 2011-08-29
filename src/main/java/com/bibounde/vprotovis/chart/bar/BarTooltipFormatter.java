@@ -8,17 +8,6 @@ import java.io.Serializable;
  *
  */
 public interface BarTooltipFormatter extends Serializable {
-
-    /**
-     * Returns true if tooltip must be visible for the specified value, serie name, and group name
-     * @param serieName serie name which is selected
-     * @param value selected value
-     * @param groupName selected group
-     * @return true if tooltip must be visible for the specified value and serie name, and group name
-     */
-    boolean isVisible(String serieName, double value, String groupName);
-    
-    
     /**
      * Returns tooltip content as HTML
      * @param serieName serie name which is selected

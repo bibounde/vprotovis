@@ -295,14 +295,16 @@ public class BarChartComponent extends AbstractComponent {
                 values.add(String.valueOf(serie.getValues()[i]));
 
                 // Tooltips
-                List<String> tooltips = null;
-                if (!tooltipMap.containsKey(i)) {
-                    tooltips = new ArrayList<String>();
-                    tooltipMap.put(i, tooltips);
-                } else {
-                    tooltips = tooltipMap.get(i);
+                if (this.chart.isTooltipEnabled()) {
+                    List<String> tooltips = null;
+                    if (!tooltipMap.containsKey(i)) {
+                        tooltips = new ArrayList<String>();
+                        tooltipMap.put(i, tooltips);
+                    } else {
+                        tooltips = tooltipMap.get(i);
+                    }
+                    tooltips.add(this.tooltipFormatter.getTooltipHTML(serie.getName(), serie.getValues()[i], groupNames[i]));
                 }
-                tooltips.add(this.tooltipFormatter.getTooltipHTML(serie.getName(), serie.getValues()[i], groupNames[i]));
             }
 
             target.addVariable(this, VBarChartComponent.UIDL_DATA_SERIE_NAME + serieIndex, serie.getName());

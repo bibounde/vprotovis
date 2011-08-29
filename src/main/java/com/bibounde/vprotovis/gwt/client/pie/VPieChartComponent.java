@@ -28,7 +28,7 @@ public class VPieChartComponent extends Widget implements Paintable {
     public static final String UIDL_DATA_SERIES_HIGHLIGHTED = "vprotovis.data.series.highlithed";
     public static final String UIDL_DATA_LABEL_VALUES = "vprotovis.data.label.values";
     public static final String UIDL_DATA_SERIE_VALUE = "vprotovis.data.serie.value.";
-    public static final String UIDL_DATA_TOOLTIP_VALUES = "vprotovis.data.tooltip.values.";
+    public static final String UIDL_DATA_TOOLTIP_VALUES = "vprotovis.data.tooltip.values";
     public static final String UIDL_OPTIONS_WIDTH = "vprotovis.options.width";
     public static final String UIDL_OPTIONS_HEIGHT = "vprotovis.options.height";
     public static final String UIDL_OPTIONS_BOTTOM = "vprotovis.options.bottom";

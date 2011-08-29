@@ -8,11 +8,7 @@ public class Tooltip extends PopupPanel {
     private TooltipComposite composite;
     
 	public Tooltip() {
-        this(false);
-    }
-	
-	public Tooltip(boolean permanent) {
-        super(permanent, false);
+	    super(true);
         this.init();
     }
 	

@@ -18,8 +18,4 @@ public class DefaultBarTooltipFormatter implements BarTooltipFormatter {
         return ret.toString();
     }
 
-    public boolean isVisible(String serieName, double value, String groupName) {
-        return true;
-    }
-
 }

@@ -1,10 +1,19 @@
 package com.bibounde.vprotovis.gwt.client.line;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import com.bibounde.vprotovis.gwt.client.Tooltip;
+import com.bibounde.vprotovis.gwt.client.TooltipOptions;
 import com.bibounde.vprotovis.gwt.client.UIDLUtil;
+import com.bibounde.vprotovis.gwt.client.UIRectangle;
+import com.bibounde.vprotovis.gwt.client.TooltipComposite.ArrowStyle;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
@@ -16,6 +25,7 @@ public class VLineChartComponent extends Widget implements Paintable {
     public static final String UIDL_DATA_SERIES_NAMES = "vprotovis.data.series.names";
     public static final String UIDL_DATA_SERIES_COUNT = "vprotovis.data.series.count";
     public static final String UIDL_DATA_SERIE_VALUES = "vprotovis.data.serie.values.";
+    public static final String UIDL_DATA_SERIE_TOOLTIP_VALUES = "vprotovis.data.serie.tooltip.values.";
     public static final String UIDL_OPTIONS_WIDTH = "vprotovis.options.width";
     public static final String UIDL_OPTIONS_HEIGHT = "vprotovis.options.height";
     public static final String UIDL_OPTIONS_BOTTOM = "vprotovis.options.bottom";
@@ -30,6 +40,7 @@ public class VLineChartComponent extends Widget implements Paintable {
     public static final String UIDL_OPTIONS_PADDING_RIGHT = "vprotovis.options.padding.right";
     public static final String UIDL_OPTIONS_PADDING_TOP= "vprotovis.options.padding.top";
     public static final String UIDL_OPTIONS_PADDING_BOTTOM = "vprotovis.options.padding.bottom";
+    public static final String UIDL_OPTIONS_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled";
     public static final String UIDL_OPTIONS_X_AXIS_ENABLED = "vprotovis.options.x.axis.enabled";
     public static final String UIDL_OPTIONS_X_AXIS_LABEL_ZERO_ENABLED = "vprotovis.options.x.axis.label.zero.enabled";
     public static final String UIDL_OPTIONS_X_AXIS_LABEL_ENABLED = "vprotovis.options.x.axis.label.enabled";
@@ -61,7 +72,9 @@ public class VLineChartComponent extends Widget implements Paintable {
     ApplicationConnection client;
 
     private UIDL currentUIDL;
-
+    
+    private Tooltip currentTooltip;
+    
     /**
      * The constructor should first call super() to initialize the component and
      * then handle any initialization relevant to Vaadin.
@@ -133,6 +146,14 @@ public class VLineChartComponent extends Widget implements Paintable {
         var panelBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getPanelBottom()();
         var panelLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getPanelLeft()();
         
+        //Init coord arrays
+        var leftValues = new Array();
+        var bottomValues = new Array();
+        for (i=0;i<=data.length;i++){
+            leftValues.push(new Array());
+            bottomValues.push(new Array());
+        }
+        
         var vis = new $wnd.pv.Panel().canvas(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getDivId()());
         vis.width(chartWidth);
         vis.height(chartHeight);
@@ -140,14 +161,12 @@ public class VLineChartComponent extends Widget implements Paintable {
         //Grid management
         if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(xRange);
+            grid.visible(function(d) {
+                var ret = (d * lineLeft) + panelLeft;
+                return ret <= maxXTick && ret >= minXTick;
+            });
             grid.left(function(d) {
-               var ret = (d * lineLeft) + panelLeft;
-               if (ret <= maxXTick && ret >= minXTick) {
-                   return ret;
-               } else {
-                   //Out of range
-                   return chartWidth * 10;
-               }
+               return (d * lineLeft) + panelLeft;
             });
             grid.bottom(0 + marginBottom);
             grid.height(chartHeight - marginBottom - marginTop);
@@ -156,28 +175,35 @@ public class VLineChartComponent extends Widget implements Paintable {
         
         if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isYAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(yRange);
-            grid.bottom(function(d) {
+            grid.visible(function(d) {
                 var ret = (d * lineBottom) + panelBottom;
-                if (ret <= maxYTick && ret >= minYTick) {
-                    return ret;
-                } else {
-                    //Out of range
-                    return chartHeight * 10;
-                }
+                return ret <= maxYTick && ret >= minYTick;
+            });
+            grid.bottom(function(d) {
+                return (d * lineBottom) + panelBottom;
             });
             grid.left(0 + marginLeft);
             grid.width(chartWidth - marginLeft - marginRight - legendAreaWidth);
             grid.strokeStyle(gridColor);
         }
         
-        var panel = vis.add($wnd.pv.Panel).data(data).bottom(panelBottom).left(panelLeft); 
-        var line = panel.add($wnd.pv.Line).data(function(d) {return d;})
+        var panel = vis.add($wnd.pv.Panel).data(data).bottom(panelBottom).left(panelLeft);
+         
+        var line = panel.add($wnd.pv.Line).data(function(d) {return d;});
         
         var lineBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineBottom()();
         var lineLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineLeft()();
         
-        line.left(function(d) {return d.x * lineLeft;});
-        line.bottom(function(d) {return d.y * lineBottom;});
+        line.left(function(d) {
+            var l = d.x * lineLeft;
+            leftValues[this.parent.index].push(l);
+            return l;
+        });
+        line.bottom(function(d) {
+            var b = d.y * lineBottom;
+            bottomValues[this.parent.index].push(b); 
+            return b;
+        });
         line.lineWidth(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineWidth()());
         line.interpolate(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getInterpolationMode()());
         line.strokeStyle(function() {return colors.range()[this.parent.index];});
@@ -193,19 +219,15 @@ public class VLineChartComponent extends Widget implements Paintable {
             if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(xRange);
-                tick.left(function(d) {
+                tick.visible(function(d) {
                     if (d == 0 && !vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisLabelZeroEnabled()()) {
-                        //Out of range
-                        return chartWidth * 10;
-                    } else {
-                        var ret = (d * lineLeft) + panelLeft;
-                        if (ret <= maxXTick && ret >= minXTick) {
-                            return ret;
-                        } else {
-                            //Out of range
-                            return chartWidth * 10;
-                        }
+                        return false;
                     }
+                    var ret = (d * lineLeft) + panelLeft;
+                    return (ret <= maxXTick && ret >= minXTick);
+                });
+                tick.left(function(d) {
+                    return (d * lineLeft) + panelLeft;
                 });
                 tick.bottom(panelBottom - 3);
                 tick.height(3);
@@ -225,19 +247,15 @@ public class VLineChartComponent extends Widget implements Paintable {
             if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isYAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(yRange);
-                tick.bottom(function(d) {
+                tick.visible(function(d) {
                     if (d == 0 && !vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isYAxisLabelZeroEnabled()()) {
-                        //Out of range
-                        return chartHeight * 10;
+                        return false;
                     }
-                
                     var ret = (d * lineBottom) + panelBottom;
-                    if (ret <= maxYTick && ret >= minYTick) {
-                        return ret;
-                    } else {
-                        //Out of range
-                        return chartHeight * 10;
-                    }
+                    return (ret <= maxYTick && ret >= minYTick);
+                });
+                tick.bottom(function(d) {
+                    return (d * lineBottom) + panelBottom;
                 });
                 tick.left(panelLeft - 3);
                 tick.width(3);
@@ -248,8 +266,50 @@ public class VLineChartComponent extends Widget implements Paintable {
             }
         }
         
+        //Tooltip management
+        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isTooltipEnabled()()) {
+            vis.def("valueIndex", -1).def("serieIndex", -1);
+            vis.event("mousemove", $wnd.pv.Behavior.point(10)); 
+            vis.events("all");
+        
+            var tooltips = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getTooltips()());
+        
+            line.event("point", function(){
+                vis.valueIndex(this.index);
+                vis.serieIndex(this.parent.index);
+                var left = panelLeft + leftValues[vis.serieIndex()][vis.valueIndex()];
+                var top = chartHeight - panelBottom - bottomValues[vis.serieIndex()][vis.valueIndex()];;
+            
+                vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::showTooltip(IILjava/lang/String;)(left, top, tooltips[vis.serieIndex()][vis.valueIndex()]);
+                return this.parent.parent;
+            });
+            line.event("unpoint", function(){
+                vis.valueIndex(-1);
+                vis.serieIndex(-1);
+                vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::hideTooltip()();
+                return this.parent.parent;
+            });
+            
+            var dot = vis.add($wnd.pv.Dot);
+            dot.visible(function() {
+                return vis.valueIndex() >= 0;
+            });
+            dot.left(function() {
+                return panelLeft + leftValues[vis.serieIndex()][vis.valueIndex()];
+            });
+            dot.bottom(function() {
+                return panelBottom + bottomValues[vis.serieIndex()][vis.valueIndex()];
+            });
+            dot.fillStyle(function() {
+                return $wnd.pv.color(colors.range()[vis.serieIndex()]).brighter(0.8).rgb();
+            });
+            dot.strokeStyle(function() {return colors.range()[vis.serieIndex()];});
+            dot.radius(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getRadiusWidth()());
+        }
+        
+        
         //Legend management
-        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isLegendEnabled()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isLegendEnabled()()) {
             //Use bar instead of DOT because msie-shim does not support it
             var legend = vis.add($wnd.pv.Bar).data(serieNames);
             legend.top(function(){
@@ -260,10 +320,30 @@ public class VLineChartComponent extends Widget implements Paintable {
             legend.fillStyle(colors.by($wnd.pv.index));
             legend.anchor("left").add($wnd.pv.Label).textBaseline("middle").textMargin(16).textStyle(legendColor);
         }
-        
-        vis.render();
+        vis.render();   
     }-*/;
-
+    
+    public void showTooltip(int x, int y, String tooltipText) {
+        this.hideTooltip();
+        this.currentTooltip = new Tooltip();
+        
+        this.currentTooltip.setText(tooltipText);
+        
+        //Tooltip location calculation
+        this.currentTooltip.show();
+        TooltipOptions options = this.getTooltipOptions(this.currentTooltip.getOffsetWidth(), this.currentTooltip.getOffsetHeight(), x, y);
+        
+        this.currentTooltip.setArrowStyle(options.arrowStyle);
+        this.currentTooltip.setPopupPosition(options.left, options.top);
+    }
+    
+    public void hideTooltip() {
+        if (this.currentTooltip != null) {
+            this.currentTooltip.hide();
+            this.currentTooltip = null;
+        }
+    }
+    
     public String getDivId() {
         return this.currentUIDL.getStringVariable(UIDL_DIV_ID);
     }
@@ -421,6 +501,11 @@ public class VLineChartComponent extends Widget implements Paintable {
     public int getLineWidth() {
         return this.currentUIDL.getIntVariable(UIDL_OPTIONS_LINE_WIDTH);
     }
+    
+    public int getRadiusWidth() {
+        return this.getLineWidth() + 2;
+    }
+    
     public boolean isLegendEnabled() {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_LEGEND_ENABLED);
     }
@@ -430,5 +515,47 @@ public class VLineChartComponent extends Widget implements Paintable {
     public String getSerieNames() {
         String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_SERIES_NAMES);
         return UIDLUtil.getJSArray(values, true);
+    }
+    
+    public boolean isTooltipEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIP_ENABLED);
+    }
+    
+    public String getTooltips() {
+        StringBuilder ret = new StringBuilder("[");
+        
+        int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_SERIES_COUNT);
+        for (int i = 0; i < serieCount; i++) {
+            if (i > 0) {
+                ret.append(", ");
+            }
+            String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_SERIE_TOOLTIP_VALUES + i);
+            
+            ret.append("[");
+            for (int j = 0; j < values.length; j++) {
+                if (j > 0) {
+                    ret.append(", ");
+                }
+                ret.append("'").append(values[j]).append("'");
+            }
+            ret.append("]");
+        }
+        ret.append("]");
+        return ret.toString();
+    }
+    
+    private TooltipOptions getTooltipOptions(int tooltipWidth, int tooltipHeight, int x, int y) {
+        
+        int left = this.getElement().getAbsoluteLeft() + x;
+        int top = this.getElement().getAbsoluteTop() + y;
+        
+        int tooltipArrowOffset = 10;
+        int tooltipMarginOffset = 5;
+        
+        TooltipOptions ret = new TooltipOptions();
+        ret.arrowStyle = ArrowStyle.BOTTOM_LEFT;
+        ret.left = left - tooltipArrowOffset;
+        ret.top = top - tooltipHeight - tooltipArrowOffset -  this.getRadiusWidth() - 2;
+        return ret;
     }
 }

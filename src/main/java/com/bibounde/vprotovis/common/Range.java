@@ -84,16 +84,16 @@ public class Range implements Serializable {
     public static  Range getAutoRange(double minValue, double maxValue, double step) {
         double start = 0d;
         double stop = maxValue + step;
-        
+        double autoStep = step == 0 ? Math.abs((maxValue - minValue)/4) : step; 
         if (minValue < 0) {
             //0 must be displayed
-            double initialStart = 1 - Math.max(Math.abs(minValue), maxValue) - step;
+            double initialStart = 1 - Math.max(Math.abs(minValue), maxValue) - autoStep;
             while(start > initialStart) {
-                start -= step;
+                start -= autoStep;
             }
             stop = 1 - start; 
         }
         
-        return new Range(start, stop, step);
+        return new Range(start, stop, autoStep);
     }
 }

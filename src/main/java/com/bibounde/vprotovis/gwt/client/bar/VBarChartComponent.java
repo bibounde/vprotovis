@@ -152,14 +152,12 @@ public class VBarChartComponent extends Widget implements Paintable {
         //Grid management
         if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isYAxisGridEnabled()()) {
             var grid = vis.add($wnd.pv.Rule).data(yRange);
-            grid.bottom(function(d) {
+            grid.visible(function(d) {
                 var ret = (d * barHeight) + panelBottom;
-                if (ret < maxYTick && ret >= minYTick) {;
-                    return ret;
-                } else {
-                    //Out of range
-                    return chartHeight * 10;
-                }
+                return ret < maxYTick && ret >= minYTick;
+            });
+            grid.bottom(function(d) {
+                return (d * barHeight) + panelBottom;
             });
             grid.left(0 + marginLeft);
             grid.width(chartWidth - marginLeft - marginRight - legendAreaWidth);
@@ -216,14 +214,12 @@ public class VBarChartComponent extends Widget implements Paintable {
             if (this.@com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent::isYAxisLabelEnabled()()) {
         
                 var tick = vis.add($wnd.pv.Rule).data(yRange);
-                tick.bottom(function(d) {
+                tick.visible(function(d) {
                     var ret = (d * barHeight) + panelBottom;
-                    if (ret <= maxYTick && ret >= minYTick) {
-                        return ret;
-                    } else {
-                        //Out of range
-                        return chartHeight * 10;
-                    }
+                    return ret <= maxYTick && ret >= minYTick;
+                });
+                tick.bottom(function(d) {
+                    return (d * barHeight) + panelBottom;
                 });
                 tick.left(panelLeft - 3);
                 tick.width(3);

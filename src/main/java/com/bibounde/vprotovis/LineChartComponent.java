@@ -1,10 +1,15 @@
 package com.bibounde.vprotovis;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.bibounde.vprotovis.chart.bar.BarTooltipFormatter;
+import com.bibounde.vprotovis.chart.line.DefaultLineTooltipFormatter;
 import com.bibounde.vprotovis.chart.line.InterpolationMode;
 import com.bibounde.vprotovis.chart.line.LineChart;
+import com.bibounde.vprotovis.chart.line.LineTooltipFormatter;
 import com.bibounde.vprotovis.chart.line.Serie;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.DefaultAxisLabelFormatter;
@@ -13,6 +18,7 @@ import com.bibounde.vprotovis.common.Point;
 import com.bibounde.vprotovis.common.Range;
 import com.bibounde.vprotovis.common.Rectangle;
 import com.bibounde.vprotovis.gwt.client.line.VLineChartComponent;
+import com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent;
 import com.bibounde.vprotovis.util.ColorUtil;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -36,6 +42,7 @@ public class LineChartComponent extends AbstractComponent {
     private String id = "v-protovis-linechart-" + this.hashCode();
     private AxisLabelFormatter xAxisLabelFormatter = new DefaultAxisLabelFormatter();
     private AxisLabelFormatter yAxisLabelFormatter = new DefaultAxisLabelFormatter();
+    private LineTooltipFormatter tooltipFormatter = new DefaultLineTooltipFormatter();
 
     /**
      * Initializes a newly created LineChartComponent
@@ -231,6 +238,15 @@ public class LineChartComponent extends AbstractComponent {
     public void setLegendAreaWidth(double legendAreaWidth) {
         chart.setLegendAreaWidth(legendAreaWidth);
     }
+    
+    /**
+     * Sets tooltip formatter
+     * @param tooltipFormatter tooltip formatter
+     */
+    public void setTooltipFormatter(LineTooltipFormatter tooltipFormatter) {
+        this.tooltipFormatter = tooltipFormatter;
+        chart.setTooltipEnabled(tooltipFormatter != null);
+    }
 
     
     @Override
@@ -258,16 +274,28 @@ public class LineChartComponent extends AbstractComponent {
     private void paintChartValues(PaintTarget target) throws PaintException {
 
         target.addVariable(this, VLineChartComponent.UIDL_DATA_SERIES_COUNT, this.chart.getSeries().size());
-
+        
         String[] serieNames = new String[this.chart.getSeries().size()];
 
         int index = 0;
         for (Serie serie : this.chart.getSeries()) {
             // Create data
             List<String> values = new ArrayList<String>();
+            
+            List<String> tooltips = new ArrayList<String>();
+            
+            int valIndex = 0;
             for (Point value : serie.getValues()) {
+                
                 values.add(String.valueOf(value.getX()) + "|" + String.valueOf(value.getY()));
+                
+                 // Tooltips
+                if (this.chart.isTooltipEnabled()) {
+                    tooltips.add(this.tooltipFormatter.getTooltipHTML(serie.getName(), serie.getValues()[valIndex]));
+                }
+                valIndex++;
             }
+            target.addVariable(this, VLineChartComponent.UIDL_DATA_SERIE_TOOLTIP_VALUES + index, tooltips.toArray(new String[tooltips.size()]));
 
             target.addVariable(this, VLineChartComponent.UIDL_DATA_SERIE_VALUES + index, values.toArray(new String[values.size()]));
 
@@ -299,6 +327,8 @@ public class LineChartComponent extends AbstractComponent {
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_PADDING_RIGHT, padding.getRight());
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_PADDING_TOP, padding.getTop());
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_PADDING_BOTTOM, padding.getBottom());
+        
+        target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED, this.chart.isTooltipEnabled());
 
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_X_AXIS_ENABLED, this.chart.isXAxisEnabled());
         target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_X_AXIS_LABEL_ENABLED, this.chart.isXAxisLabelEnabled());

@@ -1,6 +1,7 @@
 package com.bibounde.vprotovis;
 
 import com.bibounde.vprotovis.chart.bar.BarTooltipFormatter;
+import com.bibounde.vprotovis.chart.line.LineTooltipFormatter;
 import com.bibounde.vprotovis.chart.pie.PieLabelFormatter;
 import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
@@ -22,8 +23,8 @@ public class WidgetTestApplication extends Application {
         setMainWindow(window);
 
         //this.runBar();
-        //this.runLine();
-        this.runPie();
+        this.runLine();
+        //this.runPie();
     }
     
     private void runBar() {
@@ -40,7 +41,7 @@ public class WidgetTestApplication extends Application {
         //bar.setBarInset(2);
         //bar.setGroupBarInset(25);
         
-        bar.setXAxisLabelVisible(true);
+        //bar.setXAxisLabelVisible(true);
         
         bar.setMarginLeft(50);
         bar.setMarginBottom(20);
@@ -100,7 +101,8 @@ public class WidgetTestApplication extends Application {
         //line.setLineWidth(4);
         //line.setColors(new String[]{"#9c9ede", "#cedb9c", "#de9ed6"});
         
-        
+        line.setLegendVisible(true);
+        line.setLegendAreaWidth(150d);
         line.setXAxisVisible(true);
         line.setXAxisLabelVisible(true);
         line.setXAxisLabelStep(0.5);
