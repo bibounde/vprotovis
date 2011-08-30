@@ -129,8 +129,8 @@ public class TooltipComposite extends Composite {
     private void setMiddleTopRight() {
         this.rightArrrow.setStyleName("v-vprotovis-tooltip-arrow-middletopright");
         this.topArrow.setVisible(false);
-        this.leftArrow.setVisible(true);
-        this.rightArrrow.setVisible(false);
+        this.leftArrow.setVisible(false);
+        this.rightArrrow.setVisible(true);
         this.bottomArrow.setVisible(false);
         grid.getFlexCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_TOP);
     }

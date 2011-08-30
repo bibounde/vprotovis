@@ -192,7 +192,7 @@ public class PieChartComponent extends AbstractComponent {
      *            label visibility
      */
     public void setLabelVisible(boolean visible) {
-        this.chart.setLabelVisible(true);
+        this.chart.setLabelVisible(visible);
     }
 
     /**
@@ -217,6 +217,14 @@ public class PieChartComponent extends AbstractComponent {
         } else {
             this.labelFormatter = pieLabelFormatter;
         }
+    }
+    
+    /**
+     * Enables (or disables) the tooltip
+     * @param enabled  true to enable the tooltip, otherwise false
+     */
+    public void setTooltipEnabled(boolean enabled) {
+        this.chart.setTooltipEnabled(enabled);
     }
 
     /**

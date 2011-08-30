@@ -477,7 +477,7 @@ public class VPieChartComponent extends Widget implements Paintable {
         if (bottomLeft.contains(left, top)) {
             ret.arrowStyle = ArrowStyle.TOP_RIGHT;
             ret.left = left - tooltipWidth + tooltipArrowOffset;
-            ret.top = top + tooltipArrowOffset;
+            ret.top = top;
             return ret;
         }
         
@@ -485,7 +485,7 @@ public class VPieChartComponent extends Widget implements Paintable {
         if (bottomRight.contains(left, top)) {
             ret.arrowStyle = ArrowStyle.TOP_LEFT;
             ret.left = left - tooltipArrowOffset;
-            ret.top = top + tooltipArrowOffset;
+            ret.top = top;
             return ret;
         }
         

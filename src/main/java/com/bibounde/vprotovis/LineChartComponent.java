@@ -240,6 +240,14 @@ public class LineChartComponent extends AbstractComponent {
     }
     
     /**
+     * Enables (or disables) the tooltip
+     * @param enabled  true to enable the tooltip, otherwise false
+     */
+    public void setTooltipEnabled(boolean enabled) {
+        this.chart.setTooltipEnabled(enabled);
+    }
+    
+    /**
      * Sets tooltip formatter
      * @param tooltipFormatter tooltip formatter
      */

@@ -234,6 +234,14 @@ public class BarChartComponent extends AbstractComponent {
     public void setLegendAreaWidth(double legendAreaWidth) {
         chart.setLegendAreaWidth(legendAreaWidth);
     }
+    
+    /**
+     * Enables (or disables) the tooltip
+     * @param enabled  true to enable the tooltip, otherwise false
+     */
+    public void setTooltipEnabled(boolean enabled) {
+        this.chart.setTooltipEnabled(enabled);
+    }
 
     /**
      * Sets tooltip formatter
