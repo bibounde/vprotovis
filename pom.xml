@@ -6,7 +6,7 @@
 	<groupId>com.bibounde.vprotovis</groupId>
 	<artifactId>vprotovis</artifactId>
 	<packaging>jar</packaging>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3</version>
 	<name>Protovis wrapper for Vaadin Add-on</name>
 
 	<properties>
