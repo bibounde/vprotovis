@@ -10,11 +10,14 @@
 	<name>Protovis wrapper for Vaadin Add-on</name>
 
 	<properties>
+	    <!-- Deployment type : snapshots or releases-->
+	    <deployment.type>snapshots</deployment.type>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>6.6.0</vaadin.version>
 		<gwt.version>2.2.0</gwt.version>
 		<gwt.plugin.version>2.2.0</gwt.plugin.version>
 		<scm.add.files>${maven.scm.includes}</scm.add.files>
+		<altDeploymentRepository>snapshot-repo::default::file:target/checkout/${deployment.type}</altDeploymentRepository>
 	</properties>
 
 	<repositories>
