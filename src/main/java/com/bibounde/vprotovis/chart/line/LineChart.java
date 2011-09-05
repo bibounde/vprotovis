@@ -1,56 +1,24 @@
 package com.bibounde.vprotovis.chart.line;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bibounde.vprotovis.chart.AbstractChart;
 import com.bibounde.vprotovis.common.Point;
-import com.bibounde.vprotovis.util.ColorUtil;
 
-public class LineChart implements Serializable {
+public class LineChart extends AbstractChart {
 
-	private double width = 150, height = 150;
 	private List<Serie> series = new ArrayList<Serie>();
 	private boolean xAxisEnabled = false;
 	private boolean xAxisLabelEnabled = false;
 	private double xAxisLabelStep = 0d;
 	private boolean xAxisGridEnabled = false;
-	private double marginLeft = 10d, marginRight = 10d, marginTop = 10d, marginBottom = 10d;
 	private boolean yAxisEnabled = false;
 	private boolean yAxisLabelEnabled = false;
 	private double yAxisLabelStep = 0d;
 	private boolean yAxisGridEnabled = false;
 	private InterpolationMode interpolationMode = InterpolationMode.LINEAR;
 	private int lineWidth = 1;
-	private String[] colors = ColorUtil.getDefaultColors();
-	private boolean legendEnabled = false;
-	private double legendAreaWidth = 0d;
-	private boolean tooltipEnabled = true;
-	
-	/**
-	 * @return the width
-	 */
-	public double getWidth() {
-		return width;
-	}
-	/**
-	 * @param width the width to set
-	 */
-	public void setWidth(double width) {
-		this.width = width;
-	}
-	/**
-	 * @return the height
-	 */
-	public double getHeight() {
-		return height;
-	}
-	/**
-	 * @param height the height to set
-	 */
-	public void setHeight(double height) {
-		this.height = height;
-	}
 	
 	public int addSerie(String name, Point[] values) {
 		Serie s = new Serie();
@@ -71,18 +39,6 @@ public class LineChart implements Serializable {
 	 */
 	public void setSeries(List<Serie> series) {
 		this.series = series;
-	}
-	/**
-	 * @return the colors
-	 */
-	public String[] getColors() {
-		return colors;
-	}
-	/**
-	 * @param colors the colors to set
-	 */
-	public void setColors(String[] colors) {
-		this.colors = colors;
 	}
     /**
      * @return the xAxisEnabled
@@ -120,54 +76,6 @@ public class LineChart implements Serializable {
      */
     public void setXAxisLabelStep(double xAxisLabelStep) {
         this.xAxisLabelStep = xAxisLabelStep;
-    }
-    /**
-     * @return the marginLeft
-     */
-    public double getMarginLeft() {
-        return marginLeft;
-    }
-    /**
-     * @param marginLeft the marginLeft to set
-     */
-    public void setMarginLeft(double marginLeft) {
-        this.marginLeft = marginLeft;
-    }
-    /**
-     * @return the marginRight
-     */
-    public double getMarginRight() {
-        return marginRight;
-    }
-    /**
-     * @param marginRight the marginRight to set
-     */
-    public void setMarginRight(double marginRight) {
-        this.marginRight = marginRight;
-    }
-    /**
-     * @return the marginTop
-     */
-    public double getMarginTop() {
-        return marginTop;
-    }
-    /**
-     * @param marginTop the marginTop to set
-     */
-    public void setMarginTop(double marginTop) {
-        this.marginTop = marginTop;
-    }
-    /**
-     * @return the marginBottom
-     */
-    public double getMarginBottom() {
-        return marginBottom;
-    }
-    /**
-     * @param marginBottom the marginBottom to set
-     */
-    public void setMarginBottom(double marginBottom) {
-        this.marginBottom = marginBottom;
     }
     /**
      * @return the yAxisEnabled
@@ -254,41 +162,4 @@ public class LineChart implements Serializable {
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
     }
-    /**
-     * @return the legendEnabled
-     */
-    public boolean isLegendEnabled() {
-        return legendEnabled;
-    }
-    /**
-     * @param legendEnabled the legendEnabled to set
-     */
-    public void setLegendEnabled(boolean legendEnabled) {
-        this.legendEnabled = legendEnabled;
-    }
-    /**
-     * @return the legendAreaWidth
-     */
-    public double getLegendAreaWidth() {
-        return legendAreaWidth;
-    }
-    /**
-     * @param legendAreaWidth the legendAreaWidth to set
-     */
-    public void setLegendAreaWidth(double legendAreaWidth) {
-        this.legendAreaWidth = legendAreaWidth;
-    }
-    /**
-     * @return the tooltipEnabled
-     */
-    public boolean isTooltipEnabled() {
-        return tooltipEnabled;
-    }
-    /**
-     * @param tooltipEnabled the tooltipEnabled to set
-     */
-    public void setTooltipEnabled(boolean tooltipEnabled) {
-        this.tooltipEnabled = tooltipEnabled;
-    }
-	
 }

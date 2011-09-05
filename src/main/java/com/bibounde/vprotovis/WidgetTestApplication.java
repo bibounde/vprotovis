@@ -23,8 +23,9 @@ public class WidgetTestApplication extends Application {
         setMainWindow(window);
 
         //this.runBar();
-        this.runLine();
+        //this.runLine();
         //this.runPie();
+        this.runSpider();
     }
     
     private void runBar() {
@@ -171,5 +172,22 @@ public class WidgetTestApplication extends Application {
         //pie.setLineWidth(2);
         
         window.addComponent(pie);
+    }
+    
+    private void runSpider() {
+        SpiderChartComponent spider = new SpiderChartComponent();
+        
+        spider.setChartWidth(500);
+        spider.setChartHeight(500);
+        
+        spider.addSerie("Pierre", new double[]{1d, 2d, 3d, 4d, 5d});
+        spider.addSerie("Julien", new double[]{4d, 4d, 1d, 2d, 3d});
+        
+        spider.setAxisNames(new String[]{"GWT", "Protovis", "Vaadin", "Maven", "Jenkins"});
+        
+        spider.setLineWidth(2);
+        spider.setAreaOpacity(0.7d);
+        
+        window.addComponent(spider);
     }
 }

@@ -7,10 +7,8 @@ import com.bibounde.vprotovis.chart.pie.PieLabelFormatter;
 import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.chart.pie.Serie;
 import com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent;
-import com.bibounde.vprotovis.util.ColorUtil;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.ClientWidget;
 
 /**
@@ -21,10 +19,8 @@ import com.vaadin.ui.ClientWidget;
  * 
  */
 @ClientWidget(VPieChartComponent.class)
-public class PieChartComponent extends AbstractComponent {
+public class PieChartComponent extends AbstractChartComponent {
 
-    private PieChart chart;
-    private String id = "v-protovis-piechart-" + this.hashCode();
     private PieLabelFormatter labelFormatter = new DefaultPieLabelFormatter();
     private PieTooltipFormatter tooltipFormatter = new DefaultPieTooltipFormatter();
 
@@ -32,17 +28,12 @@ public class PieChartComponent extends AbstractComponent {
      * Initializes a newly created PieChartComponent
      */
     public PieChartComponent() {
-        chart = new PieChart();
+        super(new PieChart());
+        this.setId("v-protovis-piechart-" + this.hashCode());
     }
-
-    /**
-     * Sets the html element id
-     * 
-     * @param id
-     *            html element id
-     */
-    public void setId(String id) {
-        this.id = id;
+    
+    private PieChart getPieChart() {
+        return (PieChart) this.chart;
     }
 
     /**
@@ -55,7 +46,7 @@ public class PieChartComponent extends AbstractComponent {
      * @return serie index
      */
     public int addSerie(String name, double value) {
-        return this.chart.addSerie(name, value, false);
+        return this.getPieChart().addSerie(name, value, false);
     }
 
     /**
@@ -70,88 +61,14 @@ public class PieChartComponent extends AbstractComponent {
      * @return serie index
      */
     public int addSerie(String name, double value, boolean highlight) {
-        return this.chart.addSerie(name, value, highlight);
+        return this.getPieChart().addSerie(name, value, highlight);
     }
 
     /**
      * Clears all serie values
      */
     public void clearSeries() {
-        this.chart.getSeries().clear();
-    }
-
-    /**
-     * Sets chart width (unit : pixels)
-     * 
-     * @param width
-     *            new chart width (unit : pixels)
-     */
-    public void setChartWidth(double width) {
-        chart.setWidth(width);
-    }
-
-    /**
-     * Sets chart height (unit : pixels)
-     * 
-     * @param height
-     *            new chart height (unit : pixels)
-     */
-    public void setChartHeight(double height) {
-        chart.setHeight(height);
-    }
-
-    /**
-     * Sets left margin (unit : pixels)
-     * 
-     * @param marginLeft
-     *            left margin (unit : pixels)
-     */
-    public void setMarginLeft(double marginLeft) {
-        chart.setMarginLeft(marginLeft);
-    }
-
-    /**
-     * Sets right margin (unit : pixels)
-     * 
-     * @param marginRight
-     *            right margin (unit : pixels)
-     */
-    public void setMarginRight(double marginRight) {
-        chart.setMarginRight(marginRight);
-    }
-
-    /**
-     * Set top margin (unit : pixels)
-     * 
-     * @param marginTop
-     *            top margin (unit : pixels)
-     */
-    public void setMarginTop(double marginTop) {
-        chart.setMarginTop(marginTop);
-    }
-
-    /**
-     * Sets bottom margin (unit : pixels)
-     * 
-     * @param marginBottom
-     *            bottom margin (unit : pixels)
-     */
-    public void setMarginBottom(double marginBottom) {
-        chart.setMarginBottom(marginBottom);
-    }
-
-    /**
-     * Sets bar colors
-     * 
-     * @param colors
-     *            new bar colors
-     */
-    public void setColors(String[] colors) {
-        if (colors == null) {
-            chart.setColors(ColorUtil.getDefaultColors());
-        } else {
-            chart.setColors(colors);
-        }
+        this.getPieChart().getSeries().clear();
     }
 
     /**
@@ -161,28 +78,7 @@ public class PieChartComponent extends AbstractComponent {
      *            new value
      */
     public void setHighlightOffset(double highlightOffset) {
-        chart.setHighlightOffset(highlightOffset);
-    }
-
-    /**
-     * Sets legend visibility
-     * 
-     * @param visible
-     *            legend visibility
-     */
-    public void setLegendVisible(boolean visible) {
-        chart.setLegendEnabled(visible);
-        chart.setLegendAreaWidth(visible ? 150d : 0d);
-    }
-
-    /**
-     * Sets legend area width (unit : pixels)
-     * 
-     * @param legendAreaWidth
-     *            legend area width
-     */
-    public void setLegendAreaWidth(double legendAreaWidth) {
-        chart.setLegendAreaWidth(legendAreaWidth);
+        this.getPieChart().setHighlightOffset(highlightOffset);
     }
 
     /**
@@ -192,7 +88,7 @@ public class PieChartComponent extends AbstractComponent {
      *            label visibility
      */
     public void setLabelVisible(boolean visible) {
-        this.chart.setLabelVisible(visible);
+        this.getPieChart().setLabelVisible(visible);
     }
 
     /**
@@ -202,7 +98,7 @@ public class PieChartComponent extends AbstractComponent {
      *            new color to set
      */
     public void setLabelColor(String color) {
-        this.chart.setLabelColor(color);
+        this.getPieChart().setLabelColor(color);
     }
 
     /**
@@ -224,7 +120,7 @@ public class PieChartComponent extends AbstractComponent {
      * @param enabled  true to enable the tooltip, otherwise false
      */
     public void setTooltipEnabled(boolean enabled) {
-        this.chart.setTooltipEnabled(enabled);
+        this.getPieChart().setTooltipEnabled(enabled);
     }
 
     /**
@@ -248,8 +144,8 @@ public class PieChartComponent extends AbstractComponent {
      */
     public void setTooltipFormatter(PieTooltipFormatter pieTooltipFormatter, boolean permanent) {
         this.tooltipFormatter = pieTooltipFormatter;
-        this.chart.setTooltipEnabled(pieTooltipFormatter != null);
-        this.chart.setTooltipPermanent(permanent);
+        this.getPieChart().setTooltipEnabled(pieTooltipFormatter != null);
+        this.getPieChart().setTooltipPermanent(permanent);
 
     }
 
@@ -261,7 +157,7 @@ public class PieChartComponent extends AbstractComponent {
      * @param width border width
      */
     public void setLineWidth(int width) {
-        this.chart.setLineWidth(width);
+        this.getPieChart().setLineWidth(width);
     }
     
     /**
@@ -270,14 +166,12 @@ public class PieChartComponent extends AbstractComponent {
      * @param color line color
      */
     public void setLineColor(String color) {
-        this.chart.setLineColor(color);
+        this.getPieChart().setLineColor(color);
     }
 
     @Override
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
-
-        target.addVariable(this, VPieChartComponent.UIDL_DIV_ID, this.id);
 
         this.paintChartValues(target);
         this.paintChartOptions(target);
@@ -285,24 +179,24 @@ public class PieChartComponent extends AbstractComponent {
 
     private void paintChartValues(PaintTarget target) throws PaintException {
 
-        target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIES_COUNT, this.chart.getSeries().size());
+        target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIES_COUNT, this.getPieChart().getSeries().size());
 
         double sum = 0d;
         int index = 0;
-        String[] highlighted = new String[this.chart.getSeries().size()];
-        String[] labelValues = new String[this.chart.getSeries().size()];
-        String[] tooltips = new String[this.chart.getSeries().size()];
-        String[] serieNames = new String[this.chart.getSeries().size()];
+        String[] highlighted = new String[this.getPieChart().getSeries().size()];
+        String[] labelValues = new String[this.getPieChart().getSeries().size()];
+        String[] tooltips = new String[this.getPieChart().getSeries().size()];
+        String[] serieNames = new String[this.getPieChart().getSeries().size()];
 
-        for (Serie serie : this.chart.getSeries()) {
+        for (Serie serie : this.getPieChart().getSeries()) {
             target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIE_VALUE + index, String.valueOf(serie.getValue()));
 
             highlighted[index] = String.valueOf(serie.isHighlight());
             labelValues[index] = this.labelFormatter.isVisible(serie.getValue()) ? this.labelFormatter.format(serie.getValue()) : "";
 
-            if (this.chart.isTooltipEnabled()) {
+            if (this.getPieChart().isTooltipEnabled()) {
                 tooltips[index] = this.tooltipFormatter.getTooltipHTML(serie.getName(), serie.getValue());
-                target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED + index, this.tooltipFormatter.isVisible(serie.getName(), serie.getValue()));
+                target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_SINGLE_TOOLTIP_ENABLED + index, this.tooltipFormatter.isVisible(serie.getName(), serie.getValue()));
             }
 
             serieNames[index] = serie.getName();
@@ -313,7 +207,7 @@ public class PieChartComponent extends AbstractComponent {
 
         target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIES_HIGHLIGHTED, highlighted);
         target.addVariable(this, VPieChartComponent.UIDL_DATA_LABEL_VALUES, labelValues);
-        if (this.chart.isTooltipEnabled()) {
+        if (this.getPieChart().isTooltipEnabled()) {
             target.addVariable(this, VPieChartComponent.UIDL_DATA_TOOLTIP_VALUES, tooltips);
         }
         target.addVariable(this, VPieChartComponent.UIDL_DATA_SERIES_NAMES, serieNames);
@@ -322,48 +216,38 @@ public class PieChartComponent extends AbstractComponent {
     }
 
     private void paintChartOptions(PaintTarget target) throws PaintException {
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_WIDTH, this.chart.getWidth());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_HEIGHT, this.chart.getHeight());
 
         double radius = this.getAutoRadius();
 
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_RADIUS, radius);
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEFT, this.getAutoLeft());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_BOTTOM, this.getAutoBottom());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_HIGHLIGHT_OFFSET, this.chart.getHighlightOffset());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_HIGHLIGHT_OFFSET, this.getPieChart().getHighlightOffset());
 
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_MARGIN_LEFT, this.chart.getMarginLeft());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_MARGIN_BOTTOM, this.chart.getMarginBottom());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_MARGIN_RIGHT, this.chart.getMarginRight());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_MARGIN_TOP, this.chart.getMarginTop());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_ENABLED, this.getPieChart().isLegendEnabled());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.getPieChart().getLegendAreaWidth());
 
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_COLORS, this.chart.getColors());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_ENABLED, this.chart.isLegendEnabled());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.chart.getLegendAreaWidth());
-
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_ENABLED, this.chart.isTooltipEnabled());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_PERMANENT, this.chart.isTooltipPermanent());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_ENABLED, this.chart.isLabelVisible());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_COLOR, this.chart.getLabelColor());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_PERMANENT, this.getPieChart().isTooltipPermanent());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_COLOR, this.getPieChart().getLabelColor());
         
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LINE_WIDTH, this.chart.getLineWidth());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LINE_COLOR, this.chart.getLineColor());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LINE_WIDTH, this.getPieChart().getLineWidth());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LINE_COLOR, this.getPieChart().getLineColor());
     }
 
     private double getAutoRadius() {
-        double availableWidth = this.chart.getWidth() - this.chart.getMarginLeft() - this.chart.getMarginRight() - this.chart.getLegendAreaWidth();
-        double availableHeight = this.chart.getHeight() - this.chart.getMarginTop() - this.chart.getMarginBottom();
+        double availableWidth = this.getPieChart().getWidth() - this.getPieChart().getMarginLeft() - this.getPieChart().getMarginRight() - this.getPieChart().getLegendAreaWidth();
+        double availableHeight = this.getPieChart().getHeight() - this.getPieChart().getMarginTop() - this.getPieChart().getMarginBottom();
 
-        return (Math.min(availableWidth, availableHeight) - (this.chart.getHighlightOffset() * 2)) / 2;
+        return (Math.min(availableWidth, availableHeight) - (this.getPieChart().getHighlightOffset() * 2)) / 2;
     }
 
     private double getAutoLeft() {
-        double availableWidth = this.chart.getWidth() - this.chart.getMarginLeft() - this.chart.getMarginRight() - this.chart.getLegendAreaWidth() - (2 * this.chart.getHighlightOffset());
-        return (availableWidth / 2) + this.chart.getMarginLeft() + this.chart.getHighlightOffset();
+        double availableWidth = this.getPieChart().getWidth() - this.getPieChart().getMarginLeft() - this.getPieChart().getMarginRight() - this.getPieChart().getLegendAreaWidth() - (2 * this.getPieChart().getHighlightOffset());
+        return (availableWidth / 2) + this.getPieChart().getMarginLeft() + this.getPieChart().getHighlightOffset();
     }
 
     private double getAutoBottom() {
-        double availableHeight = this.chart.getHeight() - this.chart.getMarginTop() - this.chart.getMarginBottom() - (2 * this.chart.getHighlightOffset());
-        return (availableHeight / 2) + this.chart.getMarginBottom() + this.chart.getHighlightOffset();
+        double availableHeight = this.getPieChart().getHeight() - this.getPieChart().getMarginTop() - this.getPieChart().getMarginBottom() - (2 * this.getPieChart().getHighlightOffset());
+        return (availableHeight / 2) + this.getPieChart().getMarginBottom() + this.getPieChart().getHighlightOffset();
     }
 }

@@ -6,19 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.bibounde.vprotovis.chart.bar.BarChart;
+import com.bibounde.vprotovis.chart.bar.BarTooltipFormatter;
 import com.bibounde.vprotovis.chart.bar.DefaultBarTooltipFormatter;
 import com.bibounde.vprotovis.chart.bar.Serie;
-import com.bibounde.vprotovis.chart.bar.BarTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.DefaultAxisLabelFormatter;
 import com.bibounde.vprotovis.common.Padding;
 import com.bibounde.vprotovis.common.Range;
 import com.bibounde.vprotovis.gwt.client.bar.VBarChartComponent;
-import com.bibounde.vprotovis.gwt.client.line.VLineChartComponent;
-import com.bibounde.vprotovis.util.ColorUtil;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.ClientWidget;
 
 /**
@@ -30,10 +27,8 @@ import com.vaadin.ui.ClientWidget;
  * 
  */
 @ClientWidget(VBarChartComponent.class)
-public class BarChartComponent extends AbstractComponent {
+public class BarChartComponent extends AbstractChartComponent {
 
-    private BarChart chart;
-    private String id = "v-protovis-barchart-" + this.hashCode();
     private AxisLabelFormatter yAxisLabelFormatter = new DefaultAxisLabelFormatter();
     private BarTooltipFormatter tooltipFormatter = new DefaultBarTooltipFormatter();
 
@@ -41,15 +36,12 @@ public class BarChartComponent extends AbstractComponent {
      * Initializes a newly created BarChartComponent
      */
     public BarChartComponent() {
-        chart = new BarChart();
+        super(new BarChart());
+        this.setId("v-protovis-barchart-" + this.hashCode());
     }
-
-    /**
-     * Sets the html element id
-     * @param id html element id
-     */
-    public void setId(String id) {
-        this.id = id;
+    
+    private BarChart getBarChart() {
+        return (BarChart) this.chart;
     }
 
     /**
@@ -59,30 +51,14 @@ public class BarChartComponent extends AbstractComponent {
      * @return serie index
      */
     public int addSerie(String name, double[] values) {
-        return this.chart.addSerie(name, values);
+        return this.getBarChart().addSerie(name, values);
     }
 
     /**
      * Clears all serie values
      */
     public void clearSeries() {
-        this.chart.getSeries().clear();
-    }
-
-    /**
-     * Sets chart width (unit : pixels)
-     * @param width new chart width (unit : pixels)
-     */
-    public void setChartWidth(double width) {
-        chart.setWidth(width);
-    }
-
-    /**
-     * Sets chart height (unit : pixels)
-     * @param height new chart height (unit : pixels)
-     */
-    public void setChartHeight(double height) {
-        chart.setHeight(height);
+        this.getBarChart().getSeries().clear();
     }
 
     /**
@@ -90,7 +66,7 @@ public class BarChartComponent extends AbstractComponent {
      * @param groupNames new names of group
      */
     public void setGroupNames(String[] groupNames) {
-        chart.setGroupNames(groupNames);
+        this.getBarChart().setGroupNames(groupNames);
     }
 
     /**
@@ -98,7 +74,7 @@ public class BarChartComponent extends AbstractComponent {
      * @param groupInset space (unit : pixels) between groups
      */
     public void setGroupInset(double groupInset) {
-        chart.setGroupInset(groupInset);
+        this.getBarChart().setGroupInset(groupInset);
     }
 
     /**
@@ -106,7 +82,7 @@ public class BarChartComponent extends AbstractComponent {
      * @param barInset space (unit : pixels) between bar in each group
      */
     public void setBarInset(double barInset) {
-        chart.setBarInset(barInset);
+        this.getBarChart().setBarInset(barInset);
     }
 
     /**
@@ -114,8 +90,8 @@ public class BarChartComponent extends AbstractComponent {
      * @param visible x axis visibility
      */
     public void setXAxisVisisble(boolean visible) {
-        this.chart.setXAxisEnabled(visible);
-        this.chart.setXAxisLabelEnabled(false);
+        this.getBarChart().setXAxisEnabled(visible);
+        this.getBarChart().setXAxisLabelEnabled(false);
     }
 
     /**
@@ -123,8 +99,8 @@ public class BarChartComponent extends AbstractComponent {
      * @param visible x axis label visibility
      */
     public void setXAxisLabelVisible(boolean visible) {
-        this.chart.setXAxisEnabled(this.chart.isXAxisEnabled() || visible);
-        this.chart.setXAxisLabelEnabled(visible);
+        this.getBarChart().setXAxisEnabled(this.getBarChart().isXAxisEnabled() || visible);
+        this.getBarChart().setXAxisLabelEnabled(visible);
     }
 
     /**
@@ -132,8 +108,8 @@ public class BarChartComponent extends AbstractComponent {
      * @param visible y axis visibility
      */
     public void setYAxisVisible(boolean visible) {
-        this.chart.setYAxisEnabled(visible);
-        this.chart.setYAxisLabelEnabled(false);
+        this.getBarChart().setYAxisEnabled(visible);
+        this.getBarChart().setYAxisLabelEnabled(false);
     }
 
     /**
@@ -141,8 +117,8 @@ public class BarChartComponent extends AbstractComponent {
      * @param visible y axis label visibility
      */
     public void setYAxisLabelVisible(boolean visible) {
-        this.chart.setYAxisEnabled(this.chart.isYAxisEnabled() || visible);
-        this.chart.setYAxisLabelEnabled(visible);
+        this.getBarChart().setYAxisEnabled(this.getBarChart().isYAxisEnabled() || visible);
+        this.getBarChart().setYAxisLabelEnabled(visible);
     }
 
     /**
@@ -150,7 +126,7 @@ public class BarChartComponent extends AbstractComponent {
      * @param step y axis label step
      */
     public void setYAxisLabelStep(double step) {
-        this.chart.setYAxisLabelStep(step);
+        this.getBarChart().setYAxisLabelStep(step);
     }
 
     /**
@@ -158,40 +134,8 @@ public class BarChartComponent extends AbstractComponent {
      * @param visible horizontal line visibility
      */
     public void setYAxisGridVisible(boolean visible) {
-        this.chart.setYAxisEnabled(this.chart.isYAxisEnabled() || visible);
-        this.chart.setYAxisGridEnabled(visible);
-    }
-
-    /**
-     * Sets left margin (unit : pixels)
-     * @param marginLeft left margin (unit : pixels)
-     */
-    public void setMarginLeft(double marginLeft) {
-        chart.setMarginLeft(marginLeft);
-    }
-
-    /**
-     * Sets right margin (unit : pixels)
-     * @param marginRight right margin (unit : pixels)
-     */
-    public void setMarginRight(double marginRight) {
-        chart.setMarginRight(marginRight);
-    }
-
-    /**
-     * Set top margin (unit : pixels)
-     * @param marginTop top margin (unit : pixels)
-     */
-    public void setMarginTop(double marginTop) {
-        chart.setMarginTop(marginTop);
-    }
-
-    /**
-     * Sets bottom margin (unit : pixels)
-     * @param marginBottom bottom margin (unit : pixels)
-     */
-    public void setMarginBottom(double marginBottom) {
-        chart.setMarginBottom(marginBottom);
+        this.getBarChart().setYAxisEnabled(this.getBarChart().isYAxisEnabled() || visible);
+        this.getBarChart().setYAxisGridEnabled(visible);
     }
 
     /**
@@ -204,43 +148,6 @@ public class BarChartComponent extends AbstractComponent {
         } else {
             this.yAxisLabelFormatter = yAxisLabelFormatter;
         }
-    }
-
-    /**
-     * Sets bar colors
-     * @param colors new bar colors
-     */
-    public void setColors(String[] colors) {
-        if (colors == null) {
-            chart.setColors(ColorUtil.getDefaultColors());
-        } else {
-            chart.setColors(colors);
-        }
-    }
-
-    /**
-     * Sets legend visibility
-     * @param visible legend visibility
-     */
-    public void setLegendVisible(boolean visible) {
-        chart.setLegendEnabled(visible);
-        chart.setLegendAreaWidth(visible ? 150d : 0d);
-    }
-
-    /**
-     * Sets legend area width (unit : pixels)
-     * @param legendAreaWidth legend area width
-     */
-    public void setLegendAreaWidth(double legendAreaWidth) {
-        chart.setLegendAreaWidth(legendAreaWidth);
-    }
-    
-    /**
-     * Enables (or disables) the tooltip
-     * @param enabled  true to enable the tooltip, otherwise false
-     */
-    public void setTooltipEnabled(boolean enabled) {
-        this.chart.setTooltipEnabled(enabled);
     }
 
     /**
@@ -258,7 +165,7 @@ public class BarChartComponent extends AbstractComponent {
 
         int groupCount = 0;
         double minValue = 0d, maxValue = 0d;
-        for (Serie serie : this.chart.getSeries()) {
+        for (Serie serie : this.getBarChart().getSeries()) {
             for (int i = 0; i < serie.getValues().length; i++) {
                 minValue = minValue < serie.getValues()[i] ? minValue : serie.getValues()[i];
                 maxValue = maxValue < serie.getValues()[i] ? serie.getValues()[i] : maxValue;
@@ -269,12 +176,10 @@ public class BarChartComponent extends AbstractComponent {
 
         this.paintChartValues(target, groupCount);
         this.paintChartOptions(target, groupCount, minValue, maxValue, padding);
-        
-        target.addVariable(this, VBarChartComponent.UIDL_DIV_ID, this.id);
     }
 
     private void paintChartValues(PaintTarget target, int groupCount) throws PaintException {
-        target.addVariable(this, VBarChartComponent.UIDL_DATA_SERIES_COUNT, this.chart.getSeries().size());
+        target.addVariable(this, VBarChartComponent.UIDL_DATA_SERIES_COUNT, this.getBarChart().getSeries().size());
         target.addVariable(this, VBarChartComponent.UIDL_DATA_GROUPS_COUNT, groupCount);
 
         String[] groupNames = this.getGroupNames(groupCount);
@@ -287,10 +192,10 @@ public class BarChartComponent extends AbstractComponent {
         Map<Integer, List<String>> dataMap = new HashMap<Integer, List<String>>();
         Map<Integer, List<String>> tooltipMap = new HashMap<Integer, List<String>>();
 
-        String[] serieNames = new String[this.chart.getSeries().size()];
+        String[] serieNames = new String[this.getBarChart().getSeries().size()];
 
         int serieIndex = 0;
-        for (Serie serie : this.chart.getSeries()) {
+        for (Serie serie : this.getBarChart().getSeries()) {
             for (int i = 0; i < serie.getValues().length; i++) {
                 // Data
                 List<String> values = null;
@@ -303,7 +208,7 @@ public class BarChartComponent extends AbstractComponent {
                 values.add(String.valueOf(serie.getValues()[i]));
 
                 // Tooltips
-                if (this.chart.isTooltipEnabled()) {
+                if (this.getBarChart().isTooltipEnabled()) {
                     List<String> tooltips = null;
                     if (!tooltipMap.containsKey(i)) {
                         tooltips = new ArrayList<String>();
@@ -331,7 +236,7 @@ public class BarChartComponent extends AbstractComponent {
         }
 
         // Tooltips
-        if (this.chart.isTooltipEnabled()) {
+        if (this.getBarChart().isTooltipEnabled()) {
             index = 0;
             for (List<String> values : tooltipMap.values()) {
                 target.addVariable(this, VBarChartComponent.UIDL_DATA_GROUP_TOOLTIP_VALUES + index, values.toArray(new String[values.size()]));
@@ -342,38 +247,30 @@ public class BarChartComponent extends AbstractComponent {
 
     private void paintChartOptions(PaintTarget target, int groupCount, double minValue, double maxValue, Padding padding) throws PaintException {
 
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_WIDTH, this.chart.getWidth());
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_HEIGHT, this.chart.getHeight());
-
         double bottom = this.getAutoBottom(minValue);
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_BOTTOM, bottom);
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_LEFT, this.chart.getMarginLeft());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_LEFT, this.getBarChart().getMarginLeft());
 
         double groupWidth = this.getAutoGroupWidth(groupCount, padding);
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_GROUP_WIDTH, groupWidth);
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_GROUP_INSET, this.chart.getGroupInset());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_GROUP_INSET, this.getBarChart().getGroupInset());
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_BAR_HEIGHT, this.getAutoBarHeight(minValue, maxValue, bottom, padding));
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_BAR_WIDTH, this.getAutoBarWidth(groupWidth));
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_BAR_INSET, this.chart.getBarInset());
-
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_MARGIN_LEFT, this.chart.getMarginLeft());
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_MARGIN_BOTTOM, this.chart.getMarginBottom());
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_MARGIN_RIGHT, this.chart.getMarginRight());
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_MARGIN_TOP, this.chart.getMarginTop());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_BAR_INSET, this.getBarChart().getBarInset());
 
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_PADDING_LEFT, padding.getLeft());
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_PADDING_BOTTOM, padding.getBottom());
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_PADDING_RIGHT, padding.getRight());
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_PADDING_TOP, padding.getTop());
 
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_X_AXIS_ENABLED, this.chart.isXAxisEnabled());
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_X_AXIS_LABEL_ENABLED, this.chart.isXAxisLabelEnabled());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_X_AXIS_ENABLED, this.getBarChart().isXAxisEnabled());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_X_AXIS_LABEL_ENABLED, this.getBarChart().isXAxisLabelEnabled());
 
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_ENABLED, this.chart.isYAxisEnabled());
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_LABEL_ENABLED, this.chart.isYAxisLabelEnabled());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_ENABLED, this.getBarChart().isYAxisEnabled());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_LABEL_ENABLED, this.getBarChart().isYAxisLabelEnabled());
 
         // Add y axis values and their formatted text
-        Range rangeY = Range.getAutoRange(minValue, maxValue, this.chart.getYAxisLabelStep());
+        Range rangeY = Range.getAutoRange(minValue, maxValue, this.getBarChart().getYAxisLabelStep());
         Double[] rangeYValues = rangeY.getRangeArray();
         String[] rangeYSValues = new String[rangeYValues.length];
         for (int i = 0; i < rangeYValues.length; i++) {
@@ -381,28 +278,22 @@ public class BarChartComponent extends AbstractComponent {
         }
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_D_VALUES, rangeY.getRangeArrayAsString());
         target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_LABEL_RANGE_S_VALUES, rangeYSValues);
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_GRID_ENABLED, this.chart.isYAxisGridEnabled());
-
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_TOOLTIP_ENABLED, this.chart.isTooltipEnabled());
-        
-        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_COLORS, this.chart.getColors());
-        target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_LEGEND_ENABLED, this.chart.isLegendEnabled());
-        target.addVariable(this, VLineChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.chart.getLegendAreaWidth());
+        target.addVariable(this, VBarChartComponent.UIDL_OPTIONS_Y_AXIS_GRID_ENABLED, this.getBarChart().isYAxisGridEnabled());
     }
 
     protected String[] getGroupNames(int groupCount) {
 
         String[] ret = new String[groupCount];
 
-        if (this.chart.getGroupNames() == null) {
+        if (this.getBarChart().getGroupNames() == null) {
             for (int i = 0; i < groupCount; i++) {
                 ret[i] = "";
             }
         } else {
-            int namesCount = this.chart.getGroupNames().length;
+            int namesCount = this.getBarChart().getGroupNames().length;
             for (int i = 0; i < groupCount; i++) {
                 if (i < namesCount) {
-                    ret[i] = this.chart.getGroupNames()[i];
+                    ret[i] = this.getBarChart().getGroupNames()[i];
                 } else {
                     ret[i] = "";
                 }
@@ -415,21 +306,21 @@ public class BarChartComponent extends AbstractComponent {
     protected double getAutoBottom(double minValue) {
         if (minValue < 0) {
             // Axis is in the center of chart
-            return (this.chart.getHeight() - this.chart.getMarginBottom() - this.chart.getMarginTop()) / 2 + this.chart.getMarginBottom();
+            return (this.getBarChart().getHeight() - this.getBarChart().getMarginBottom() - this.getBarChart().getMarginTop()) / 2 + this.getBarChart().getMarginBottom();
         } else {
-            return 0d + this.chart.getMarginBottom();
+            return 0d + this.getBarChart().getMarginBottom();
         }
     }
 
     protected double getAutoGroupWidth(int groupCount, Padding padding) {
-        double availableWidth = this.chart.getWidth() - this.chart.getMarginLeft() - this.chart.getMarginRight() - padding.getRight() - padding.getLeft()
-                - this.chart.getLegendAreaWidth();
+        double availableWidth = this.getBarChart().getWidth() - this.getBarChart().getMarginLeft() - this.getBarChart().getMarginRight() - padding.getRight() - padding.getLeft()
+                - this.getBarChart().getLegendAreaWidth();
 
-        return (availableWidth - ((groupCount - 1) * this.chart.getGroupInset())) / groupCount;
+        return (availableWidth - ((groupCount - 1) * this.getBarChart().getGroupInset())) / groupCount;
     }
 
     protected double getAutoBarHeight(double minValue, double maxValue, double bottom, Padding padding) {
-        double availableHeight = this.chart.getHeight() - bottom - this.chart.getMarginTop() - padding.getTop() - padding.getBottom();
+        double availableHeight = this.getBarChart().getHeight() - bottom - this.getBarChart().getMarginTop() - padding.getTop() - padding.getBottom();
 
         double minAbs = Math.abs(minValue);
         double max = minAbs > maxValue ? minAbs : maxValue;
@@ -438,6 +329,6 @@ public class BarChartComponent extends AbstractComponent {
     }
 
     protected double getAutoBarWidth(double groupWidth) {
-        return (groupWidth - ((this.chart.getSeries().size() - 1) * this.chart.getBarInset())) / this.chart.getSeries().size();
+        return (groupWidth - ((this.getBarChart().getSeries().size() - 1) * this.getBarChart().getBarInset())) / this.getBarChart().getSeries().size();
     }
 }

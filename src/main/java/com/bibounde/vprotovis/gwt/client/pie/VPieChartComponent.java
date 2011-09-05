@@ -10,18 +10,14 @@ import com.bibounde.vprotovis.gwt.client.TooltipComposite.ArrowStyle;
 import com.bibounde.vprotovis.gwt.client.TooltipOptions;
 import com.bibounde.vprotovis.gwt.client.UIDLUtil;
 import com.bibounde.vprotovis.gwt.client.UIRectangle;
+import com.bibounde.vprotovis.gwt.client.VAbstractChartComponent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.Paintable;
-import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VPieChartComponent extends Widget implements Paintable {
+public class VPieChartComponent extends VAbstractChartComponent {
     
-    public static final String UIDL_DIV_ID = "vprotovis.div.id";
     public static final String UIDL_DATA_SERIES_COUNT = "vprotovis.data.series.count";
     public static final String UIDL_DATA_SERIES_SUM = "vprotovis.data.series.sum";
     public static final String UIDL_DATA_SERIES_NAMES = "vprotovis.data.series.names";
@@ -29,8 +25,6 @@ public class VPieChartComponent extends Widget implements Paintable {
     public static final String UIDL_DATA_LABEL_VALUES = "vprotovis.data.label.values";
     public static final String UIDL_DATA_SERIE_VALUE = "vprotovis.data.serie.value.";
     public static final String UIDL_DATA_TOOLTIP_VALUES = "vprotovis.data.tooltip.values";
-    public static final String UIDL_OPTIONS_WIDTH = "vprotovis.options.width";
-    public static final String UIDL_OPTIONS_HEIGHT = "vprotovis.options.height";
     public static final String UIDL_OPTIONS_BOTTOM = "vprotovis.options.bottom";
     public static final String UIDL_OPTIONS_LEFT = "vprotovis.options.left";
     public static final String UIDL_OPTIONS_RADIUS = "vprotovis.options.radius";
@@ -40,12 +34,8 @@ public class VPieChartComponent extends Widget implements Paintable {
     public static final String UIDL_OPTIONS_MARGIN_TOP= "vprotovis.options.margin.top";
     public static final String UIDL_OPTIONS_MARGIN_BOTTOM = "vprotovis.options.margin.bottom";
     public static final String UIDL_OPTIONS_PADDING_LEFT = "vprotovis.options.padding.left";
-    public static final String UIDL_OPTIONS_COLORS = "vprotovis.options.colors";
-    public static final String UIDL_OPTIONS_LEGEND_ENABLED = "vprotovis.options.legend.enabled";
-    public static final String UIDL_OPTIONS_LEGEND_AREA_WIDTH = "vprotovis.options.legend.area.width";
-    public static final String UIDL_OPTIONS_TOOLTIPS_ENABLED = "vprotovis.options.tooltips.enabled";
     public static final String UIDL_OPTIONS_TOOLTIPS_PERMANENT = "vprotovis.options.tooltips.permanent";
-    public static final String UIDL_OPTIONS_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled.";
+    public static final String UIDL_OPTIONS_SINGLE_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled.";
     public static final String UIDL_OPTIONS_LABEL_ENABLED = "vprotovis.options.label.enabled";
     public static final String UIDL_OPTIONS_LABEL_COLOR = "vprotovis.options.label.color";
     public static final String UIDL_OPTIONS_LINE_WIDTH = "vprotovis.options.line.width";
@@ -57,53 +47,20 @@ public class VPieChartComponent extends Widget implements Paintable {
     
     private Logger LOGGER = Logger.getLogger(VPieChartComponent.class.getName());
     
-    /** The client side widget identifier */
-    protected String paintableId;
-
-    /** Reference to the server connection object. */
-    ApplicationConnection client;
-    
-    private UIDL currentUIDL;
     private Map<Integer, Tooltip> tooltipMap = new HashMap<Integer, Tooltip>();
     private AbsolutePanel content;
-
-    /**
-     * The constructor should first call super() to initialize the component and
-     * then handle any initialization relevant to Vaadin.
-     */
-    public VPieChartComponent() {
-        this.content = new AbsolutePanel();
-        
-        //DivElement canvas = Document.get().createDivElement();
-        //setElement(canvas);
-        setElement(content.getElement());
-        setStyleName(CLASSNAME);
-    }
+    
+    
     
     /**
-     * Called whenever an update is received from the server 
+     * @see com.bibounde.vprotovis.gwt.client.VAbstractChartComponent#getClassName()
      */
-    public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
-        if (client.updateComponent(this, uidl, true)) {
-            // If client.updateComponent returns true there has been no changes and we
-            // do not need to update anything.
-            return;
-        }
-        
-        this.currentUIDL = uidl;
-
-        // Save reference to server connection object to be able to send
-        // user interaction later
-        this.client = client;
-
-        // Save the client side identifier (paintable id) for the widget
-        paintableId = uidl.getId();
-        getElement().setId(this.getDivId());
-        
-        execChart();
+    @Override
+    public String getClassName() {
+        return CLASSNAME;
     }
-    
-    private native void execChart() /*-{
+
+    public native void render() /*-{
         var vpiechart = this;
 
         var colors = eval(this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getColors()());
@@ -158,7 +115,7 @@ public class VPieChartComponent extends Widget implements Paintable {
         }
         
         //Tooltip management
-        if (this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isTooltipsEnabled()()) {
+        if (this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::isTooltipEnabled()()) {
         
             //Add anchor in order to obtain coordinates
             var tooltipLeft = new Array();
@@ -287,30 +244,6 @@ public class VPieChartComponent extends Widget implements Paintable {
         return this.currentUIDL.getDoubleVariable(UIDL_DATA_SERIES_SUM);
     }
     
-    public double getChartWidth() {
-        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_WIDTH);
-    }
-    
-    public double getChartHeight() {
-        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_HEIGHT);
-    }
-    
-    public double getMarginLeft() {
-        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_LEFT);
-    }
-    
-    public double getMarginRight() {
-        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_RIGHT);
-    }
-
-    public double getMarginTop() {
-        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_TOP);
-    }
-    
-    public double getMarginBottom() {
-        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_MARGIN_BOTTOM);
-    }
-    
     public double getWedgeBottom() {
         return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_BOTTOM);
     }
@@ -327,28 +260,6 @@ public class VPieChartComponent extends Widget implements Paintable {
         return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_RADIUS);
     }
     
-    public String getColors() {
-        String[] colors = this.currentUIDL.getStringArrayVariable(UIDL_OPTIONS_COLORS);
-        
-        StringBuilder ret = new StringBuilder("$wnd.pv.colors(");
-
-        for (int i = 0; i < colors.length; i++) {
-            if (i > 0) {
-                ret.append(", ");
-            }
-            ret.append("'").append(colors[i]).append("'");
-        }
-        ret.append(")");
-        return ret.toString();
-    }
-    
-    public boolean isLegendEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_LEGEND_ENABLED);
-    }
-    
-    public double getLegendAreaWidth() {
-        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LEGEND_AREA_WIDTH);
-    }
     
     public boolean isLabelEnabled() {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_LABEL_ENABLED);
@@ -363,16 +274,12 @@ public class VPieChartComponent extends Widget implements Paintable {
         return UIDLUtil.getJSArray(labelValues, true);
     }
     
-    public boolean isTooltipsEnabled() {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIPS_ENABLED);
-    }
-    
     public boolean isTooltipsPermanent() {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIPS_PERMANENT);
     }
     
     public boolean isTooltipEnabled(int index) {
-        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIP_ENABLED + index);
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_SINGLE_TOOLTIP_ENABLED + index);
     }
     
     public String[] getTooltipValues() {
