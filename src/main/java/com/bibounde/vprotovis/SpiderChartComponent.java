@@ -1,5 +1,6 @@
 package com.bibounde.vprotovis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bibounde.vprotovis.chart.spider.DefaultSpiderTooltipFormatter;
@@ -8,6 +9,7 @@ import com.bibounde.vprotovis.chart.spider.SpiderChart;
 import com.bibounde.vprotovis.chart.spider.SpiderTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.DefaultAxisLabelFormatter;
+import com.bibounde.vprotovis.common.Range;
 import com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -192,7 +194,23 @@ public class SpiderChartComponent extends AbstractChartComponent {
             }
             target.addVariable(this, VSpiderChartComponent.UIDL_DATA_SERIE_VALUE + i, sValues);
         }
+        target.addVariable(this, VSpiderChartComponent.UIDL_DATA_SERIES_NAMES, serieNames);
         target.addVariable(this, VSpiderChartComponent.UIDL_DATA_MAX_VALUE, maxValue);
+        
+        //Axis label management
+        if (this.getSpiderChart().isAxisLabelEnabled()) {
+            Range r = Range.getAutoRange(0, maxValue, this.getSpiderChart().getAxisLabelStep());
+            
+            Double[] rangeValues = r.getRangeArray();
+            String[] labels = new String[rangeValues.length];
+            String[] range = new String[rangeValues.length];
+            for (int i = 0; i < rangeValues.length; i++) {
+                labels[i] = this.axisLabelFormatter.format(rangeValues[i]);
+                range[i] = String.valueOf(rangeValues[i]);
+            }
+            target.addVariable(this, VSpiderChartComponent.UIDL_DATA_AXIS_LABEL_VALUES, labels);
+            target.addVariable(this, VSpiderChartComponent.UIDL_DATA_AXIS_LABEL_RANGE, range);
+        }
     }
     
     private void paintChartOptions(PaintTarget target) throws PaintException {

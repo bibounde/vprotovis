@@ -45,6 +45,7 @@ public abstract class AbstractChartComponent extends AbstractComponent {
         target.addVariable(this, VAbstractChartComponent.UIDL_OPTIONS_COLORS, this.chart.getColors());
         target.addVariable(this, VAbstractChartComponent.UIDL_OPTIONS_LEGEND_ENABLED, this.chart.isLegendEnabled());
         target.addVariable(this, VAbstractChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.chart.getLegendAreaWidth());
+        target.addVariable(this, VAbstractChartComponent.UIDL_OPTIONS_LEGEND_INSET_LEFT, this.chart.getLegendInsetLeft());
     }
 
     /**
@@ -130,5 +131,12 @@ public abstract class AbstractChartComponent extends AbstractComponent {
      */
     public void setTooltipEnabled(boolean enabled) {
         this.chart.setTooltipEnabled(enabled);
+    }
+    /**
+     * Sets legend's left inset value
+     * @param inset legend's left inset value
+     */
+    public void setLegendInsetLeft(double inset) {
+        this.chart.setLegendInsetLeft(inset);
     }
 }

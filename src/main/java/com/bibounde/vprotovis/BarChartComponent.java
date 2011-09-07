@@ -314,7 +314,7 @@ public class BarChartComponent extends AbstractChartComponent {
 
     protected double getAutoGroupWidth(int groupCount, Padding padding) {
         double availableWidth = this.getBarChart().getWidth() - this.getBarChart().getMarginLeft() - this.getBarChart().getMarginRight() - padding.getRight() - padding.getLeft()
-                - this.getBarChart().getLegendAreaWidth();
+                - this.getBarChart().getLegendAreaWidth() - this.chart.getLegendInsetLeft();
 
         return (availableWidth - ((groupCount - 1) * this.getBarChart().getGroupInset())) / groupCount;
     }

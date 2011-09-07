@@ -82,6 +82,7 @@ public class VPieChartComponent extends VAbstractChartComponent {
         var marginBottom = this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getMarginBottom()();
         var marginTop = this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getMarginTop()();
         var legendAreaWidth = this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getLegendAreaWidth()();
+        var legendInsetLeft = this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getLegendInsetLeft()();
         
         var wedgeBottom = this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getWedgeBottom()();
         var wedgeLeft = this.@com.bibounde.vprotovis.gwt.client.pie.VPieChartComponent::getWedgeLeft()();
@@ -161,8 +162,7 @@ public class VPieChartComponent extends VAbstractChartComponent {
             legend.top(function(){
                 return legengTop + (this.index * 18);
             });
-            //Offset = 20
-            legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + 20);
+            legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + legendInsetLeft);
             legend.fillStyle(colors.by($wnd.pv.index));
             legend.anchor("left").add($wnd.pv.Label).textBaseline("middle").textMargin(16).textStyle(legendColor);
         }

@@ -93,6 +93,18 @@ public interface Chart extends Serializable {
      * @param legendAreaWidth the legendAreaWidth to set
      */
     public void setLegendAreaWidth(double legendAreaWidth);
+    
+    /**
+     * Retrieves legend's left inset value
+     * @return legend's left inset value
+     */
+    public double getLegendInsetLeft();
+    
+    /**
+     * Sets legend's left inset value
+     * @param inset legend's left inset value
+     */
+    public void setLegendInsetLeft(double inset); 
 
     /**
      * @return the tooltipEnabled

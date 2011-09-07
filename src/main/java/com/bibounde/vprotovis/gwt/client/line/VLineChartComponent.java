@@ -78,10 +78,11 @@ public class VLineChartComponent extends VAbstractChartComponent {
         var paddingTop = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getPaddingTop()();
         
         var legendAreaWidth = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLegendAreaWidth()();
+        var legendInsetLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLegendInsetLeft()();
         
         var maxYTick = chartHeight - marginTop;
         var minYTick = marginBottom;
-        var maxXTick = chartWidth - marginRight - legendAreaWidth;
+        var maxXTick = chartWidth - marginRight - legendAreaWidth - legendInsetLeft;
         var minXTick = marginLeft;
         
         var xRange = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getXAxisLabelRangeDValues()());
@@ -130,7 +131,7 @@ public class VLineChartComponent extends VAbstractChartComponent {
                 return (d * lineBottom) + panelBottom;
             });
             grid.left(0 + marginLeft);
-            grid.width(chartWidth - marginLeft - marginRight - legendAreaWidth);
+            grid.width(chartWidth - marginLeft - marginRight - legendAreaWidth - legendInsetLeft);
             grid.strokeStyle(gridColor);
         }
         
@@ -160,7 +161,7 @@ public class VLineChartComponent extends VAbstractChartComponent {
         
             var rule = vis.add($wnd.pv.Rule);
             
-            rule.bottom(panelBottom).width(chartWidth - marginLeft - marginRight - legendAreaWidth).left(0 + marginLeft);
+            rule.bottom(panelBottom).width(chartWidth - marginLeft - marginRight - legendAreaWidth - legendInsetLeft).left(0 + marginLeft);
             rule.strokeStyle(axisColor);
         
             if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isXAxisLabelEnabled()()) {
@@ -262,8 +263,7 @@ public class VLineChartComponent extends VAbstractChartComponent {
             legend.top(function(){
                 return marginTop + (this.index * 18);
             });
-            //Offset = 20
-            legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + 20);
+            legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + legendInsetLeft);
             legend.fillStyle(colors.by($wnd.pv.index));
             legend.anchor("left").add($wnd.pv.Label).textBaseline("middle").textMargin(16).textStyle(legendColor);
         }

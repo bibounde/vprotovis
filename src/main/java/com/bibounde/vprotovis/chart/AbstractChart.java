@@ -10,6 +10,7 @@ public abstract class AbstractChart implements Chart {
     private boolean legendEnabled = false;
     private double legendAreaWidth = 0d;
     private boolean tooltipEnabled = true;
+    private double legendLeftInset = 20d;
     
     /**
      * @see com.bibounde.vprotovis.chart.Chart#getWidth()
@@ -150,5 +151,19 @@ public abstract class AbstractChart implements Chart {
     @Override
     public void setTooltipEnabled(boolean tooltipEnabled) {
         this.tooltipEnabled = tooltipEnabled;
+    }
+    /**
+     * @see com.bibounde.vprotovis.chart.Chart#getLegendLeftInset()
+     */
+    @Override
+    public double getLegendInsetLeft() {
+        return this.legendLeftInset;
+    }
+    /** (non-Javadoc)
+     * @see com.bibounde.vprotovis.chart.Chart#setLegendLeftInset(double)
+     */
+    @Override
+    public void setLegendInsetLeft(double inset) {
+        this.legendLeftInset = inset;
     }
 }

@@ -282,7 +282,7 @@ public class LineChartComponent extends AbstractChartComponent {
     protected double getAutoLeft(Rectangle dataRect) {
         if (dataRect.getX1() < 0) {
             // Axis is in the center of chart
-            return (this.getLineChart().getWidth() - this.getLineChart().getLegendAreaWidth() - this.getLineChart().getMarginLeft() - this.getLineChart().getMarginRight()) / 2 + this.getLineChart().getMarginLeft();
+            return (this.getLineChart().getWidth() - this.getLineChart().getLegendAreaWidth() - this.chart.getLegendInsetLeft() - this.getLineChart().getMarginLeft() - this.getLineChart().getMarginRight()) / 2 + this.getLineChart().getMarginLeft();
         } else {
             return 0 + this.getLineChart().getMarginLeft();
         }
@@ -298,7 +298,7 @@ public class LineChartComponent extends AbstractChartComponent {
     }
 
     protected double getAutoLineLeft(Rectangle dataRect, double left, Padding padding) {
-        double availableWidth = this.getLineChart().getWidth() - left - this.getLineChart().getMarginRight() - padding.getRight() - padding.getLeft() - this.getLineChart().getLegendAreaWidth();
+        double availableWidth = this.getLineChart().getWidth() - left - this.getLineChart().getMarginRight() - padding.getRight() - padding.getLeft() - this.getLineChart().getLegendAreaWidth() - this.chart.getLegendInsetLeft();
 
         double minAbs = Math.abs(dataRect.getX1());
         double max = minAbs > dataRect.getX2() ? minAbs : dataRect.getX2();

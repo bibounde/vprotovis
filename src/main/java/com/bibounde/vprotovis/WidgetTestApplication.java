@@ -36,7 +36,7 @@ public class WidgetTestApplication extends Application {
         
         bar.setGroupNames(new String[] { "2008", "2009", "2010", "2011" });
         bar.setId("protovis");
-        bar.setChartWidth(400);
+        bar.setChartWidth(550);
         bar.setChartHeight(300);
         
         //bar.setBarInset(2);
@@ -58,6 +58,7 @@ public class WidgetTestApplication extends Application {
         
         bar.setLegendVisible(true);
         bar.setLegendAreaWidth(150);
+        bar.setLegendInsetLeft(50);
         
         BarTooltipFormatter tooltipFormatter = new BarTooltipFormatter() {
             
@@ -104,6 +105,8 @@ public class WidgetTestApplication extends Application {
         
         line.setLegendVisible(true);
         line.setLegendAreaWidth(150d);
+        line.setLegendInsetLeft(50);
+        
         line.setXAxisVisible(true);
         line.setXAxisLabelVisible(true);
         line.setXAxisLabelStep(0.5);
@@ -168,6 +171,7 @@ public class WidgetTestApplication extends Application {
         
         pie.setLegendVisible(true);
         pie.setLegendAreaWidth(150d);
+        pie.setLegendInsetLeft(50);
         
         //pie.setLineWidth(2);
         
@@ -185,8 +189,14 @@ public class WidgetTestApplication extends Application {
         
         spider.setAxisNames(new String[]{"GWT", "Protovis", "Vaadin", "Maven", "Jenkins"});
         
+        spider.setMarginLeft(40);
+        spider.setMarginBottom(40);
+        spider.setMarginTop(40);
+        
         spider.setLineWidth(2);
-        spider.setAreaOpacity(0.7d);
+        //spider.setAreaOpacity(0.7d);
+        spider.setLegendInsetLeft(60);
+        spider.setLegendVisible(true);
         
         window.addComponent(spider);
     }

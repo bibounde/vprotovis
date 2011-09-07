@@ -224,9 +224,6 @@ public class PieChartComponent extends AbstractChartComponent {
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_BOTTOM, this.getAutoBottom());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_HIGHLIGHT_OFFSET, this.getPieChart().getHighlightOffset());
 
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_ENABLED, this.getPieChart().isLegendEnabled());
-        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LEGEND_AREA_WIDTH, this.getPieChart().getLegendAreaWidth());
-
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_PERMANENT, this.getPieChart().isTooltipPermanent());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_COLOR, this.getPieChart().getLabelColor());
         
@@ -235,14 +232,14 @@ public class PieChartComponent extends AbstractChartComponent {
     }
 
     private double getAutoRadius() {
-        double availableWidth = this.getPieChart().getWidth() - this.getPieChart().getMarginLeft() - this.getPieChart().getMarginRight() - this.getPieChart().getLegendAreaWidth();
+        double availableWidth = this.getPieChart().getWidth() - this.getPieChart().getMarginLeft() - this.getPieChart().getMarginRight() - this.getPieChart().getLegendAreaWidth() - this.chart.getLegendInsetLeft();
         double availableHeight = this.getPieChart().getHeight() - this.getPieChart().getMarginTop() - this.getPieChart().getMarginBottom();
 
         return (Math.min(availableWidth, availableHeight) - (this.getPieChart().getHighlightOffset() * 2)) / 2;
     }
 
     private double getAutoLeft() {
-        double availableWidth = this.getPieChart().getWidth() - this.getPieChart().getMarginLeft() - this.getPieChart().getMarginRight() - this.getPieChart().getLegendAreaWidth() - (2 * this.getPieChart().getHighlightOffset());
+        double availableWidth = this.getPieChart().getWidth() - this.getPieChart().getMarginLeft() - this.getPieChart().getMarginRight() - this.getPieChart().getLegendAreaWidth() - this.chart.getLegendInsetLeft() - (2 * this.getPieChart().getHighlightOffset());
         return (availableWidth / 2) + this.getPieChart().getMarginLeft() + this.getPieChart().getHighlightOffset();
     }
 

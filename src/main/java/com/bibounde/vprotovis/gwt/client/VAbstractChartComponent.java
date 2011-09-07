@@ -19,6 +19,7 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
     public static final String UIDL_OPTIONS_COLORS = "vprotovis.options.colors";
     public static final String UIDL_OPTIONS_LEGEND_ENABLED = "vprotovis.options.legend.enabled";
     public static final String UIDL_OPTIONS_LEGEND_AREA_WIDTH = "vprotovis.options.legend.area.width";
+    public static final String UIDL_OPTIONS_LEGEND_INSET_LEFT = "vprotovis.options.legend.inset.left";
     public static final String UIDL_OPTIONS_TOOLTIP_ENABLED = "vprotovis.options.tooltip.enabled";
     
     /** The client side widget identifier */
@@ -115,6 +116,10 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
     
     public boolean isTooltipEnabled() {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_TOOLTIP_ENABLED);
+    }
+    
+    public double getLegendInsetLeft() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LEGEND_INSET_LEFT);
     }
 
 }

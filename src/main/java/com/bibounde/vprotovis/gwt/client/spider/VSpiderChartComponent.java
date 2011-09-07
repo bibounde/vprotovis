@@ -13,6 +13,8 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
     public static final String UIDL_DATA_SERIE_VALUE = "vprotovis.data.serie.value.";
     public static final String UIDL_DATA_AXIS_VALUES = "vprotovis.data.axis.values";
     public static final String UIDL_DATA_AXIS_COUNT = "vprotovis.data.axis.count";
+    public static final String UIDL_DATA_AXIS_LABEL_VALUES = "vprotovis.data.axis.label.values";
+    public static final String UIDL_DATA_AXIS_LABEL_RANGE = "vprotovis.data.axis.label.range";
     public static final String UIDL_DATA_MAX_VALUE = "vprotovis.data.max.value";
     public static final String UIDL_OPTIONS_BOTTOM = "vprotovis.options.bottom";
     public static final String UIDL_OPTIONS_LEFT = "vprotovis.options.left";
@@ -99,7 +101,7 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
         
         }
         
-        function createTicks(range, step) {
+        function createTicks(range, labels, step) {
             var rule = vis.add($wnd.pv.Rule).data(range);
             rule.width(5);
             rule.left(centerLeft - 2);
@@ -108,6 +110,9 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             });
             rule.strokeStyle(axisColor);
             var label = rule.anchor("center").add($wnd.pv.Label);
+            label.text(function() {
+                return labels[this.index];
+            });
             label.textAlign("right");
             label.textMargin(5);
             label.textStyle(axisColor);
@@ -127,10 +132,23 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             }
             line.lineWidth(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getLineWidth()());
         }
+        
+        function createLegend() {
+            var legengTop = marginTop + (chartHeight - marginBottom - marginTop - (serieNames.length * 18)) / 2;
+            //Use bar instead of DOT because msie-shim does not support it
+            var legend = vis.add($wnd.pv.Bar).data(serieNames);
+            legend.top(function(){
+                return legengTop + (this.index * 18);
+            });
+            legend.width(11).height(11).left(chartWidth - marginRight - legendAreaWidth + legendInsetLeft);
+            legend.fillStyle(colors.by($wnd.pv.index));
+            legend.anchor("left").add($wnd.pv.Label).textBaseline("middle").textMargin(16).textStyle(legendColor);
+        }
     
         var data = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getData()());
         var colors = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getColors()());
         var axisColor = $wnd.pv.color("#969696");
+        var legendColor = $wnd.pv.color("#464646");
         var columns = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getAxisNames()());
         var serieNames = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getSerieNames()());
         var ruleWidth = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getRuleWidth()();
@@ -140,6 +158,11 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
         var maxValue = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getMaxValue()();
         var axisOffset = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getAxisOffset()();
         var dataStep = (ruleWidth - axisOffset)/maxValue;
+        
+        var marginLeft = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getMarginLeft()();
+        var marginRight = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getMarginRight()();
+        var marginBottom = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getMarginBottom()();
+        var marginTop = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getMarginTop()();
         
         var chartWidth = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getChartWidth()();
         var chartHeight = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getChartHeight()();
@@ -166,15 +189,22 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             
             if (this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isAxisLabelEnabled()()) {
                 //Create ticks
-                var rangeStop = maxValue + axisStep;
-                var rangeStep = axisStep;
-                createTicks($wnd.pv.range(0, rangeStop, rangeStep), gridStep);
+                var range = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getAxisRange()());
+                var labels = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getAxisLabels()());
+                createTicks(range, labels, gridStep);
             }
         }
         
         //Display data
         for (i=0; i<data.length; i++) {
             createDataLine(data[i], colors.range()[i]);
+        }
+        
+        //Legend management
+        if (this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isLegendEnabled()()) {
+            var legendAreaWidth = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getLegendAreaWidth()();
+            var legendInsetLeft = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getLegendInsetLeft()();
+            createLegend();
         }
         
         vis.render();
@@ -251,5 +281,12 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
     }
     public double getAreaOpacity() {
         return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_AREA_OPACITY);
+    }
+    public String getAxisLabels() {
+        return UIDLUtil.getJSArray(this.currentUIDL.getStringArrayVariable(UIDL_DATA_AXIS_LABEL_VALUES), true);
+    }
+    
+    public String getAxisRange() {
+        return UIDLUtil.getJSArray(this.currentUIDL.getStringArrayVariable(UIDL_DATA_AXIS_LABEL_RANGE), false);
     }
 }
