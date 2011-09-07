@@ -182,12 +182,13 @@ public class WidgetTestApplication extends Application {
         SpiderChartComponent spider = new SpiderChartComponent();
         
         spider.setChartWidth(500);
-        spider.setChartHeight(500);
+        spider.setChartHeight(300);
         
         spider.addSerie("Pierre", new double[]{1d, 2d, 3d, 4d, 5d});
         spider.addSerie("Julien", new double[]{4d, 4d, 1d, 2d, 3d});
         
         spider.setAxisNames(new String[]{"GWT", "Protovis", "Vaadin", "Maven", "Jenkins"});
+        //spider.setAxisCaptionVisible(false);
         
         spider.setMarginLeft(40);
         spider.setMarginBottom(40);
@@ -197,6 +198,7 @@ public class WidgetTestApplication extends Application {
         //spider.setAreaOpacity(0.7d);
         spider.setLegendInsetLeft(60);
         spider.setLegendVisible(true);
+        
         
         window.addComponent(spider);
     }

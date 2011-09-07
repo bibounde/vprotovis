@@ -87,6 +87,15 @@ public class SpiderChartComponent extends AbstractChartComponent {
     }
     
     /**
+     * Sets visibility of axis caption
+     * @param visible axis caption visibility
+     */
+    public void setAxisCaptionVisible(boolean visible) {
+        this.getSpiderChart().setAxisEnabled(this.getSpiderChart().isAxisEnabled() || visible);
+        this.getSpiderChart().setAxisCaptionEnabled(visible);
+    }
+    
+    /**
      * Sets visibility of grid
      * @param visible grid visibility
      */
@@ -226,6 +235,7 @@ public class SpiderChartComponent extends AbstractChartComponent {
         target.addVariable(this, VSpiderChartComponent.UIDL_OPTIONS_AXIS_ENABLED, this.getSpiderChart().isAxisEnabled());
         target.addVariable(this, VSpiderChartComponent.UIDL_OPTIONS_AXIS_GRID_ENABLED, this.getSpiderChart().isAxisGridEnabled());
         target.addVariable(this, VSpiderChartComponent.UIDL_OPTIONS_AXIS_LABEL_ENABLED, this.getSpiderChart().isAxisLabelEnabled());
+        target.addVariable(this, VSpiderChartComponent.UIDL_OPTIONS_AXIS_CAPTION_ENABLED, this.getSpiderChart().isAxisCaptionEnabled());
         target.addVariable(this, VSpiderChartComponent.UIDL_OPTIONS_AXIS_OFFSET, this.getSpiderChart().getAxisOffset());
         target.addVariable(this, VSpiderChartComponent.UIDL_OPTIONS_AXIS_STEP, this.getSpiderChart().getAxisLabelStep());
         target.addVariable(this, VSpiderChartComponent.UIDL_OPTIONS_LINE_WIDTH, this.getSpiderChart().getLineWidth());

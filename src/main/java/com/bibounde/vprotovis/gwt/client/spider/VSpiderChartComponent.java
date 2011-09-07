@@ -22,6 +22,7 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
     public static final String UIDL_OPTIONS_AREA_ENABLED = "vprotovis.options.area.enabled";
     public static final String UIDL_OPTIONS_AREA_OPACITY = "vprotovis.options.area.opacity";
     public static final String UIDL_OPTIONS_AXIS_ENABLED = "vprotovis.options.axis.enabled";
+    public static final String UIDL_OPTIONS_AXIS_CAPTION_ENABLED = "vprotovis.options.axis.caption.enabled";
     public static final String UIDL_OPTIONS_AXIS_LABEL_ENABLED = "vprotovis.options.axis.label.enabled";
     public static final String UIDL_OPTIONS_AXIS_GRID_ENABLED = "vprotovis.options.axis.grid.enabled";
     public static final String UIDL_OPTIONS_AXIS_STEP = "vprotovis.options.axis.step";
@@ -64,27 +65,29 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             axis.lineWidth(1);
             axis.strokeStyle(axisColor);
             
-            var label = axis.anchor("center").add($wnd.pv.Label);
-            label.visible(function() {
-                return this.index > 0;
-            });
-            label.text(labelText);
-            label.textMargin(2);
+            if (vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isAxisCaptionEnabled()()) {
+                var label = axis.anchor("center").add($wnd.pv.Label);
+                label.visible(function() {
+                    return this.index > 0;
+                });
+                label.text(labelText);
+                label.textMargin(2);
             
-            if (angle > 0 && angle < 180) {
-                label.textAlign("right");
-            } else if (angle > 180) {
-                label.textAlign("left");
-            } else {
-                label.textAlign("center");
-            }
+                if (angle > 0 && angle < 180) {
+                    label.textAlign("right");
+                } else if (angle > 180) {
+                    label.textAlign("left");
+                } else {
+                    label.textAlign("center");
+                }
             
-            if ((angle >= 0 && angle <= 45) || (angle >= 315)) {
+                if ((angle >= 0 && angle <= 45) || (angle >= 315)) {
                 label.textBaseline("bottom");
-            } else if ((angle > 45 && angle <= 135) || (angle >= 225 && angle < 315)) {
-                label.textBaseline("middle");
-            } else {
-                label.textBaseline("top");
+                } else if ((angle > 45 && angle <= 135) || (angle >= 225 && angle < 315)) {
+                    label.textBaseline("middle");
+                } else {
+                    label.textBaseline("top");
+                }
             }
         }
         
@@ -270,6 +273,10 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
     
     public boolean isAxisLabelEnabled() {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_AXIS_LABEL_ENABLED);
+    }
+    
+    public boolean isAxisCaptionEnabled() {
+        return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_AXIS_CAPTION_ENABLED);
     }
     
     public int getLineWidth() {

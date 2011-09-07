@@ -12,6 +12,7 @@ public class SpiderChart extends AbstractChart {
     private boolean axisEnabled = true;
     private double axisOffset = 10d;
     private boolean axisLabelEnabled = true;
+    private boolean axisCaptionEnabled = true;
     private double axisLabelStep = 1d;
     private boolean axisGridEnabled = true;
     private int lineWidth = 1;
@@ -146,5 +147,17 @@ public class SpiderChart extends AbstractChart {
      */
     public void setAxisOffset(double axisOffset) {
         this.axisOffset = axisOffset;
+    }
+    /**
+     * @return the axisCaptionEnabled
+     */
+    public boolean isAxisCaptionEnabled() {
+        return axisCaptionEnabled;
+    }
+    /**
+     * @param axisCaptionEnabled the axisCaptionEnabled to set
+     */
+    public void setAxisCaptionEnabled(boolean axisCaptionEnabled) {
+        this.axisCaptionEnabled = axisCaptionEnabled;
     }
 }
