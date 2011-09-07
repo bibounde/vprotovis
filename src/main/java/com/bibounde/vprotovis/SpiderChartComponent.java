@@ -187,12 +187,21 @@ public class SpiderChartComponent extends AbstractChartComponent {
             serieNames[i] = s.getName();
             
             String[] sValues = new String[this.getSpiderChart().getAxisNames().length + 1];
+            String[] tooltips = new String[this.getSpiderChart().getAxisNames().length];
             for (int j = 0; j < sValues.length; j++) {
-                if (j >= s.getValues().length) {
-                    sValues[j] = String.valueOf(0d);
-                } else {
-                    maxValue = Math.max(maxValue, s.getValues()[j]);
-                    sValues[j] = String.valueOf(s.getValues()[j]);
+                double val = 0d;
+                if (j < s.getValues().length) {
+                    val = s.getValues()[j];
+                    maxValue = Math.max(maxValue, val);
+                }
+                sValues[j] = String.valueOf(val);
+                
+                if (this.chart.isTooltipEnabled() && j < tooltips.length) {
+                    if (this.getSpiderChart().getAxisNames() != null && j < this.getSpiderChart().getAxisNames().length) {
+                        tooltips[j] = this.tooltipFormatter.getTooltipHTML(this.getSpiderChart().getAxisNames()[j], s.getName(), val);
+                    } else {
+                        tooltips[j] = this.tooltipFormatter.getTooltipHTML("", s.getName(), val);
+                    }
                 }
             }
             //Need to add first value for circle completion
@@ -202,6 +211,7 @@ public class SpiderChartComponent extends AbstractChartComponent {
                 sValues[this.getSpiderChart().getAxisNames().length] = String.valueOf(0d);
             }
             target.addVariable(this, VSpiderChartComponent.UIDL_DATA_SERIE_VALUE + i, sValues);
+            target.addVariable(this, VSpiderChartComponent.UIDL_DATA_SERIE_TOOLTIP_VALUES + i, tooltips);
         }
         target.addVariable(this, VSpiderChartComponent.UIDL_DATA_SERIES_NAMES, serieNames);
         target.addVariable(this, VSpiderChartComponent.UIDL_DATA_MAX_VALUE, maxValue);

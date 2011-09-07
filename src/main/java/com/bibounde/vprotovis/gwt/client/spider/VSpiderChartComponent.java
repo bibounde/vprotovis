@@ -3,14 +3,17 @@ package com.bibounde.vprotovis.gwt.client.spider;
 import java.util.logging.Logger;
 
 import com.bibounde.vprotovis.gwt.client.Tooltip;
+import com.bibounde.vprotovis.gwt.client.TooltipOptions;
 import com.bibounde.vprotovis.gwt.client.UIDLUtil;
 import com.bibounde.vprotovis.gwt.client.VAbstractChartComponent;
+import com.bibounde.vprotovis.gwt.client.TooltipComposite.ArrowStyle;
 
 public class VSpiderChartComponent extends VAbstractChartComponent {
 
     public static final String UIDL_DATA_SERIES_COUNT = "vprotovis.data.series.count";
     public static final String UIDL_DATA_SERIES_NAMES = "vprotovis.data.series.names";
     public static final String UIDL_DATA_SERIE_VALUE = "vprotovis.data.serie.value.";
+    public static final String UIDL_DATA_SERIE_TOOLTIP_VALUES = "vprotovis.data.serie.tooltip.values.";
     public static final String UIDL_DATA_AXIS_VALUES = "vprotovis.data.axis.values";
     public static final String UIDL_DATA_AXIS_COUNT = "vprotovis.data.axis.count";
     public static final String UIDL_DATA_AXIS_LABEL_VALUES = "vprotovis.data.axis.label.values";
@@ -121,19 +124,64 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             label.textStyle(axisColor);
         }
         
-        function createDataLine(data, color) {
+        function createDataLine(serieIndex, data, color) {
             var line = vis.add($wnd.pv.Line).data(data);
             line.left( function(d) {
-                return centerLeft + Math.cos(theta(this.index * angle)) * (dataStep * d);
+                var left = centerLeft + Math.cos(theta(this.index * angle)) * (dataStep * d);
+                leftValues[serieIndex][this.index] = left;
+                return left;
             });
             line.bottom(function(d) {
-                return centerBottom + Math.sin(theta(this.index * angle)) * (dataStep * d);
+                var bottom = centerBottom + Math.sin(theta(this.index * angle)) * (dataStep * d);
+                bottomValues[serieIndex][this.index] = bottom;
+                return bottom;
             });
             line.strokeStyle(color);
             if (vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isAreaEnabled()()) {
                 line.fillStyle(color.rgb().alpha(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getAreaOpacity()()));
             }
             line.lineWidth(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getLineWidth()());
+            
+            //Tooltip management
+            if (vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isTooltipEnabled()()) {
+                line.event("point", function(){
+                    if (this.index < columns.length) {
+                        vis.valueIndex(this.index);
+                        vis.serieIndex(serieIndex);
+                        var left = leftValues[vis.serieIndex()][vis.valueIndex()];
+                        var top = chartHeight - bottomValues[vis.serieIndex()][vis.valueIndex()];
+                        var text = tooltips[vis.serieIndex()][vis.valueIndex()];
+                        vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::showTooltip(IILjava/lang/String;)(left, top, text);
+                    } else {
+                        vis.valueIndex(-1);
+                        vis.serieIndex(-1);
+                    }
+                    
+                    return this.parent;
+                });
+                line.event("unpoint", function(){
+                    vis.valueIndex(-1);
+                    vis.serieIndex(-1);
+                    vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::hideTooltip()();
+                    return this.parent;
+                });
+                
+                var dot = vis.add($wnd.pv.Dot);
+                dot.visible(function() {
+                    return vis.valueIndex() >= 0;
+                });
+                dot.left(function() {
+                    return leftValues[vis.serieIndex()][vis.valueIndex()];
+                });
+                dot.bottom(function() {
+                    return bottomValues[vis.serieIndex()][vis.valueIndex()];
+                });
+                dot.fillStyle(function() {
+                    return $wnd.pv.color(colors.range()[vis.serieIndex()]).brighter(0.8).rgb();
+                });
+                dot.strokeStyle(function() {return colors.range()[vis.serieIndex()];});
+                dot.radius(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getRadiusWidth()());
+            }
         }
         
         function createLegend() {
@@ -198,9 +246,25 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             }
         }
         
+        //Tooltip initialisation
+        if (this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isTooltipEnabled()()) {
+            vis.def("valueIndex", -1).def("serieIndex", -1);
+            vis.event("mousemove", $wnd.pv.Behavior.point(10)); 
+            vis.events("all");
+            
+            var tooltips = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getTooltips()());
+        }
+        //Init coord arrays for tooltip
+        var leftValues = new Array();
+        var bottomValues = new Array();
+        for (i=0;i<=data.length;i++){
+            leftValues.push(new Array());
+            bottomValues.push(new Array());
+        }
+        
         //Display data
         for (i=0; i<data.length; i++) {
-            createDataLine(data[i], colors.range()[i]);
+            createDataLine(i, data[i], colors.range()[i]);
         }
         
         //Legend management
@@ -213,6 +277,26 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
         vis.render();
     }-*/;
     
+    public void showTooltip(int x, int y, String tooltipText) {
+        this.hideTooltip();
+        this.currentTooltip = new Tooltip();
+        
+        this.currentTooltip.setText(tooltipText);
+        
+        //Tooltip location calculation
+        this.currentTooltip.show();
+        TooltipOptions options = this.getTooltipOptions(this.currentTooltip.getOffsetWidth(), this.currentTooltip.getOffsetHeight(), x, y);
+        
+        this.currentTooltip.setArrowStyle(options.arrowStyle);
+        this.currentTooltip.setPopupPosition(options.left, options.top);
+    }
+    
+    public void hideTooltip() {
+        if (this.currentTooltip != null) {
+            this.currentTooltip.hide();
+            this.currentTooltip = null;
+        }
+    }
     
     public String getData() {
         int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_SERIES_COUNT);
@@ -225,6 +309,23 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             }
             String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_SERIE_VALUE + i);
             ret.append(UIDLUtil.getJSArray(values, false));
+        }
+        
+        ret.append("]");
+        return ret.toString();
+    }
+    
+    public String getTooltips() {
+        int serieCount = this.currentUIDL.getIntVariable(UIDL_DATA_SERIES_COUNT);
+        
+        StringBuilder ret = new StringBuilder("[");
+        
+        for (int i = 0; i < serieCount; i++) {
+            if (i > 0) {
+                ret.append(",");
+            }
+            String[] values = this.currentUIDL.getStringArrayVariable(UIDL_DATA_SERIE_TOOLTIP_VALUES + i);
+            ret.append(UIDLUtil.getJSArray(values, true));
         }
         
         ret.append("]");
@@ -295,5 +396,24 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
     
     public String getAxisRange() {
         return UIDLUtil.getJSArray(this.currentUIDL.getStringArrayVariable(UIDL_DATA_AXIS_LABEL_RANGE), false);
+    }
+    
+    public int getRadiusWidth() {
+        return this.getLineWidth() + 2;
+    }
+    
+    private TooltipOptions getTooltipOptions(int tooltipWidth, int tooltipHeight, int x, int y) {
+        
+        int left = this.getElement().getAbsoluteLeft() + x;
+        int top = this.getElement().getAbsoluteTop() + y;
+        
+        int tooltipArrowOffset = 10;
+        int tooltipMarginOffset = 5;
+        
+        TooltipOptions ret = new TooltipOptions();
+        ret.arrowStyle = ArrowStyle.BOTTOM_LEFT;
+        ret.left = left - tooltipArrowOffset;
+        ret.top = top - tooltipHeight - tooltipArrowOffset -  this.getRadiusWidth() - 2;
+        return ret;
     }
 }
