@@ -1,11 +1,13 @@
 package com.bibounde.vprotovis.chart.spider;
 
+import java.io.Serializable;
+
 /**
  * Identifies components that can be used to format tooltip content
  * @author bibounde
  *
  */
-public interface SpiderTooltipFormatter {
+public interface SpiderTooltipFormatter extends Serializable{
 
     /**
      * Returns tooltip content as HTML

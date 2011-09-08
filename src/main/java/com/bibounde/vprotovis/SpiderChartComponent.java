@@ -34,6 +34,7 @@ public class SpiderChartComponent extends AbstractChartComponent {
     public SpiderChartComponent() {
         super(new SpiderChart());
         this.setId("v-protovis-spiderchart-" + this.hashCode());
+        this.chart.setTooltipEnabled(false);
     }
     
     private SpiderChart getSpiderChart() {
@@ -51,6 +52,13 @@ public class SpiderChartComponent extends AbstractChartComponent {
      */
     public int addSerie(String name, double[] values) {
         return this.getSpiderChart().addSerie(name, values);
+    }
+    
+    /**
+     * Clears all serie values
+     */
+    public void clearSeries() {
+        this.getSpiderChart().getSeries().clear();
     }
     
     /**
