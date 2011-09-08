@@ -185,7 +185,7 @@ public class WidgetTestApplication extends Application {
         spider.setChartHeight(300);
         
         spider.addSerie("Pierre", new double[]{1d, 2d, 3d, 4d, 5d});
-        spider.addSerie("Julien", new double[]{4d, 4d, 1d, 2d, 3d});
+        spider.addSerie("Julien", new double[]{4d, 4d, 1d, 4d, 3d});
         
         spider.setAxisNames(new String[]{"GWT", "Protovis", "Vaadin", "Maven", "Jenkins"});
         //spider.setAxisCaptionVisible(false);
@@ -198,6 +198,7 @@ public class WidgetTestApplication extends Application {
         //spider.setAreaOpacity(0.7d);
         spider.setLegendInsetLeft(60);
         spider.setLegendVisible(true);
+        spider.setTooltipEnabled(true);
         
         
         window.addComponent(spider);

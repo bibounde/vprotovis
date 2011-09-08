@@ -124,6 +124,26 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             label.textStyle(axisColor);
         }
         
+        function getTooltipInfo(valueIndex, value) {
+            for(var i=0;i<enabledTooltips.length;i++) {
+                var coords = enabledTooltips[i];
+                if (coords[1] == valueIndex && coords[2] == value) {
+                    return coords;
+                }
+            }
+            return new Array(-1, -1, -1);
+        }
+        
+        function enabledTooltipContains(valueIndex, value) {
+            for(var i=0;i<enabledTooltips.length;i++) {
+                var coords = enabledTooltips[i];
+                if (coords[1] == valueIndex && coords[2] == value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         function createDataLine(serieIndex, data, color) {
             var line = vis.add($wnd.pv.Line).data(data);
             line.left( function(d) {
@@ -142,46 +162,54 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             }
             line.lineWidth(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getLineWidth()());
             
-            //Tooltip management
             if (vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isTooltipEnabled()()) {
-                line.event("point", function(){
-                    if (this.index < columns.length) {
-                        vis.valueIndex(this.index);
-                        vis.serieIndex(serieIndex);
-                        var left = leftValues[vis.serieIndex()][vis.valueIndex()];
-                        var top = chartHeight - bottomValues[vis.serieIndex()][vis.valueIndex()];
-                        var text = tooltips[vis.serieIndex()][vis.valueIndex()];
-                        vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::showTooltip(IILjava/lang/String;)(left, top, text);
-                    } else {
-                        vis.valueIndex(-1);
-                        vis.serieIndex(-1);
-                    }
+                enableTooltip(line, serieIndex, data, color);
+            }
+        }
+        
+        function enableTooltip(line, serieIndex, data, color) {
+            line.event("point", function(){
+                var val = data[this.index];
+                
+                //Retrieves coords for top tooltip
+                var coords = getTooltipInfo(this.index, val);
                     
-                    return this.parent;
-                });
-                line.event("unpoint", function(){
+                if (this.index < columns.length) {
+                    vis.valueIndex(coords[1]);
+                    vis.serieIndex(coords[0]);
+                    var left = leftValues[vis.serieIndex()][vis.valueIndex()];
+                    var top = chartHeight - bottomValues[vis.serieIndex()][vis.valueIndex()];
+                    var text = tooltips[vis.serieIndex()][vis.valueIndex()];
+                    vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::showTooltip(IILjava/lang/String;)(left, top, text);
+                } else {
                     vis.valueIndex(-1);
                     vis.serieIndex(-1);
-                    vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::hideTooltip()();
-                    return this.parent;
-                });
+                }
+                    
+                return this.parent;
+            });
+            line.event("unpoint", function(){
+                vis.valueIndex(-1);
+                vis.serieIndex(-1);
+                vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::hideTooltip()();
+                return this.parent;
+            });
                 
-                var dot = vis.add($wnd.pv.Dot);
-                dot.visible(function() {
-                    return vis.valueIndex() >= 0;
-                });
-                dot.left(function() {
-                    return leftValues[vis.serieIndex()][vis.valueIndex()];
-                });
-                dot.bottom(function() {
-                    return bottomValues[vis.serieIndex()][vis.valueIndex()];
-                });
-                dot.fillStyle(function() {
-                    return $wnd.pv.color(colors.range()[vis.serieIndex()]).brighter(0.8).rgb();
-                });
-                dot.strokeStyle(function() {return colors.range()[vis.serieIndex()];});
-                dot.radius(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getRadiusWidth()());
-            }
+            var dot = vis.add($wnd.pv.Dot);
+            dot.visible(function() {
+                return vis.valueIndex() >= 0;
+            });
+            dot.left(function() {
+                return leftValues[vis.serieIndex()][vis.valueIndex()];
+            });
+            dot.bottom(function() {
+                return bottomValues[vis.serieIndex()][vis.valueIndex()];
+            });
+            dot.fillStyle(function() {
+                return $wnd.pv.color(colors.range()[vis.serieIndex()]).brighter(0.8).rgb();
+            });
+            dot.strokeStyle(function() {return colors.range()[vis.serieIndex()];});
+            dot.radius(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getRadiusWidth()());
         }
         
         function createLegend() {
@@ -253,6 +281,16 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             vis.events("all");
             
             var tooltips = eval(this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getTooltips()());
+            
+            //Display only one tooltip for same value. Only tooltip for top line is displayed
+            var enabledTooltips = new Array();
+            for (i=data.length - 1; i>=0; i--) {
+                for(j=0;j<data[i].length;j++) {
+                    if (!enabledTooltipContains(j, data[i][j])) {
+                        enabledTooltips.push(new Array(i, j, data[i][j]));
+                    }
+                } 
+            }
         }
         //Init coord arrays for tooltip
         var leftValues = new Array();
