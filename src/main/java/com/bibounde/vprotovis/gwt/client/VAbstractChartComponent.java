@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
@@ -34,6 +37,8 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
     
     protected UIDL currentUIDL;
     
+    private int mouseX = -1;
+    private int mouseY = -1;
     private Map<UIRectangle, int[]> behaviorPointInfoMap = new HashMap<UIRectangle, int[]>();
      
     
@@ -41,6 +46,16 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
         DivElement canvas = Document.get().createDivElement();
         setElement(canvas);
         setStyleName(this.getClassName());
+        
+        Event.addNativePreviewHandler(new NativePreviewHandler(){
+            public void onPreviewNativeEvent(NativePreviewEvent event) {
+                if (event.getNativeEvent().getType().equals("mousemove"))
+                {
+                    mouseX = event.getNativeEvent().getClientX();
+                    mouseY = event.getNativeEvent().getClientY();
+                }
+            }
+        });
     }
     
     public abstract String getClassName();
@@ -131,17 +146,15 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
     }
     
     public void putBehaviorPointInfo(int top, int left, int parentIndex, int valueIndex) {
-        int fixedLeft = left - this.getElement().getAbsoluteLeft();
-        int fixedTop = top - this.getElement().getAbsoluteTop();
-        UIRectangle r = new UIRectangle(fixedLeft-10, fixedTop-10, 20, 20);
+        UIRectangle r = new UIRectangle(left-10, top-10, 20, 20);
         //System.out.println("On put [" + parentIndex + ", " + valueIndex + "] avec pour valeur initiale ([" + left + ", " + top + "])dans " + r  + " avec un top absolu a " + this.getElement().getAbsoluteTop());
         this.behaviorPointInfoMap.put(r, new int[]{parentIndex, valueIndex});
     }
     
-    public String getClosestBehaviorPointInfo(int top, int left) {
-        //System.out.println("Tentative avec pour valeur initiale ([" + left + ", " + top + "]) avec un top absolu a " + this.getElement().getAbsoluteTop());
-        int fixedLeft = left - this.getElement().getAbsoluteLeft();
-        int fixedTop = top - this.getElement().getAbsoluteTop();
+    public String getClosestBehaviorPointInfo() {
+        //System.out.println("Tentative avec pour valeur initiale ([" + mouseX + ", " + mouseY + "]) avec un top absolu a " + this.getElement().getAbsoluteTop());
+        int fixedLeft = mouseX - this.getElement().getAbsoluteLeft();
+        int fixedTop = mouseY - this.getElement().getAbsoluteTop();
         Iterator<UIRectangle> it = this.behaviorPointInfoMap.keySet().iterator();
         while (it.hasNext()) {
             UIRectangle r = (UIRectangle) it.next();

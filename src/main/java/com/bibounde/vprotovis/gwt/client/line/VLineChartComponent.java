@@ -231,7 +231,7 @@ public class VLineChartComponent extends VAbstractChartComponent {
         
             var tooltips = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getTooltips()());
             vis.event("mousemove", function(){
-                var c = eval(vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getClosestBehaviorPointInfo(II)(vis.mouse().y, vis.mouse().x));
+                var c = eval(vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getClosestBehaviorPointInfo()());
                 vis.serieIndex(c[0]);
                 vis.valueIndex(c[1]);
                 

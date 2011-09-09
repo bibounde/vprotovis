@@ -163,7 +163,7 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
         
         function createTooltip() {
             vis.event("mousemove", function(){
-                var c = eval(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getClosestBehaviorPointInfo(II)(vis.mouse().y, vis.mouse().x));
+                var c = eval(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getClosestBehaviorPointInfo()());
                 vis.serieIndex(c[0]);
                 vis.valueIndex(c[1]);
                 
