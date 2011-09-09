@@ -6,12 +6,12 @@
 	<groupId>com.bibounde.vprotovis</groupId>
 	<artifactId>vprotovis</artifactId>
 	<packaging>jar</packaging>
-	<version>0.4</version>
+	<version>0.5-SNAPSHOT</version>
 	<name>Protovis wrapper for Vaadin Add-on</name>
 
 	<properties>
 	    <!-- Deployment type : snapshots or releases-->
-	    <deployment.type>releases</deployment.type>
+	    <deployment.type>snapshots</deployment.type>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>6.6.0</vaadin.version>
 		<gwt.version>2.2.0</gwt.version>
