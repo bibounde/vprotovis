@@ -34,7 +34,6 @@ public class SpiderChartComponent extends AbstractChartComponent {
     public SpiderChartComponent() {
         super(new SpiderChart());
         this.setId("v-protovis-spiderchart-" + this.hashCode());
-        this.chart.setTooltipEnabled(false);
     }
     
     private SpiderChart getSpiderChart() {

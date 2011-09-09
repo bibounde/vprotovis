@@ -40,6 +40,8 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
 
     private Tooltip currentTooltip;
     
+    private int[] currentTooltipDataIndex;
+    
     /**
      * @see com.bibounde.vprotovis.gwt.client.VAbstractChartComponent#getClassName()
      */
@@ -124,16 +126,6 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             label.textStyle(axisColor);
         }
         
-        function getTooltipInfo(valueIndex, value) {
-            for(var i=0;i<enabledTooltips.length;i++) {
-                var coords = enabledTooltips[i];
-                if (coords[1] == valueIndex && coords[2] == value) {
-                    return coords;
-                }
-            }
-            return new Array(-1, -1, -1);
-        }
-        
         function enabledTooltipContains(valueIndex, value) {
             for(var i=0;i<enabledTooltips.length;i++) {
                 var coords = enabledTooltips[i];
@@ -144,57 +136,47 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             return false;
         }
         
+        function isTooltipEnabled(serieIndex, valueIndex) {
+            for(var i=0;i<enabledTooltips.length;i++) {
+                var coords = enabledTooltips[i];
+                if (coords[0] == serieIndex && coords[1] == valueIndex) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         function createDataLine(serieIndex, data, color) {
             var line = vis.add($wnd.pv.Line).data(data);
             line.left( function(d) {
-                var left = centerLeft + Math.cos(theta(this.index * angle)) * (dataStep * d);
-                leftValues[serieIndex][this.index] = left;
-                return left;
+                return leftValues[serieIndex][this.index];
             });
             line.bottom(function(d) {
-                var bottom = centerBottom + Math.sin(theta(this.index * angle)) * (dataStep * d);
-                bottomValues[serieIndex][this.index] = bottom;
-                return bottom;
+                return bottomValues[serieIndex][this.index];
             });
             line.strokeStyle(color);
             if (vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isAreaEnabled()()) {
                 line.fillStyle(color.rgb().alpha(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getAreaOpacity()()));
             }
             line.lineWidth(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getLineWidth()());
-            
-            if (vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isTooltipEnabled()()) {
-                enableTooltip(line, serieIndex, data, color);
-            }
         }
         
-        function enableTooltip(line, serieIndex, data, color) {
-            line.event("point", function(){
-                var val = data[this.index];
+        function createTooltip() {
+            vis.event("mousemove", function(){
+                var c = eval(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getClosestBehaviorPointInfo(II)(vis.mouse().y, vis.mouse().x));
+                vis.serieIndex(c[0]);
+                vis.valueIndex(c[1]);
                 
-                //Retrieves coords for top tooltip
-                var coords = getTooltipInfo(this.index, val);
-                    
-                if (this.index < columns.length) {
-                    vis.valueIndex(coords[1]);
-                    vis.serieIndex(coords[0]);
+                if (c[0] >= 0) {
                     var left = leftValues[vis.serieIndex()][vis.valueIndex()];
                     var top = chartHeight - bottomValues[vis.serieIndex()][vis.valueIndex()];
-                    var text = tooltips[vis.serieIndex()][vis.valueIndex()];
-                    vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::showTooltip(IILjava/lang/String;)(left, top, text);
+                    vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::showTooltip(IIIILjava/lang/String;)(left, top, vis.serieIndex(), vis.valueIndex(), tooltips[vis.serieIndex()][vis.valueIndex()]);
                 } else {
-                    vis.valueIndex(-1);
-                    vis.serieIndex(-1);
+                    vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::hideTooltip()();
                 }
-                    
-                return this.parent;
-            });
-            line.event("unpoint", function(){
-                vis.valueIndex(-1);
-                vis.serieIndex(-1);
-                vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::hideTooltip()();
-                return this.parent;
-            });
                 
+                return vis;
+            });
             var dot = vis.add($wnd.pv.Dot);
             dot.visible(function() {
                 return vis.valueIndex() >= 0;
@@ -206,9 +188,9 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
                 return bottomValues[vis.serieIndex()][vis.valueIndex()];
             });
             dot.fillStyle(function() {
-                return $wnd.pv.color(colors.range()[vis.serieIndex()]).brighter(0.8).rgb();
+                return colors.range()[vis.serieIndex()];
             });
-            dot.strokeStyle(function() {return colors.range()[vis.serieIndex()];});
+            dot.strokeStyle("rgba(255, 255, 255, 0.5)");
             dot.radius(vspiderchart.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getRadiusWidth()());
         }
         
@@ -291,19 +273,44 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
                     }
                 } 
             }
+            
         }
-        //Init coord arrays for tooltip
+        
+        //Initialize coords. Usefull for tooltips and point behavior fix
         var leftValues = new Array();
         var bottomValues = new Array();
-        for (i=0;i<=data.length;i++){
+        
+        for(i=0;i<data.length;i++) {
+            var lineData = data[i];
             leftValues.push(new Array());
             bottomValues.push(new Array());
+            
+            for(j=0;j<lineData.length;j++) {
+                var d = lineData[j];
+                var left = centerLeft + Math.cos(theta(j * angle)) * (dataStep * d);
+                var bottom = centerBottom + Math.sin(theta(j * angle)) * (dataStep * d);
+                leftValues[i].push(left);
+                bottomValues[i].push(bottom);
+                
+                //Add line info only if tooltip is enabled
+                if (this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isTooltipEnabled()()) {
+                    if (isTooltipEnabled(i, j) && j < columns.length){
+                        this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::putBehaviorPointInfo(IIII)(chartHeight - bottom, left, i, j);
+                    }
+                }
+            }
         }
         
         //Display data
         for (i=0; i<data.length; i++) {
             createDataLine(i, data[i], colors.range()[i]);
         }
+        
+        //Tooltip activation. After line in order to display dot on top
+        if (this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isTooltipEnabled()()) {
+            createTooltip();
+        }
+        
         
         //Legend management
         if (this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isLegendEnabled()()) {
@@ -315,7 +322,15 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
         vis.render();
     }-*/;
     
-    public void showTooltip(int x, int y, String tooltipText) {
+    public void showTooltip(int x, int y, int serieIndex, int valueIndex, String tooltipText) {
+        int[] coords = new int[]{serieIndex, valueIndex};
+        if (this.currentTooltip != null && this.currentTooltipDataIndex != null) {
+            if (coords[0] == this.currentTooltipDataIndex[0] && coords[1] == this.currentTooltipDataIndex[1]) {
+                //Already displayed
+                return;
+            }
+        }
+        this.currentTooltipDataIndex = coords;
         this.hideTooltip();
         this.currentTooltip = new Tooltip();
         
