@@ -227,11 +227,9 @@ public class VLineChartComponent extends VAbstractChartComponent {
         //Tooltip management
         if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isTooltipEnabled()()) {
             vis.def("valueIndex", -1).def("serieIndex", -1);
-            //vis.event("mousemove", $wnd.pv.Behavior.point(10)); 
             vis.events("all");
         
             var tooltips = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getTooltips()());
-            line.events("all");
             vis.event("mousemove", function(){
                 var c = eval(vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getClosestBehaviorPointInfo(II)(vis.mouse().y, vis.mouse().x));
                 vis.serieIndex(c[0]);
@@ -281,7 +279,7 @@ public class VLineChartComponent extends VAbstractChartComponent {
     
     public void showTooltip(int x, int y, int serieIndex, int valueIndex, String tooltipText) {
         int[] coords = new int[]{serieIndex, valueIndex};
-        if (this.currentTooltipDataIndex != null) {
+        if (this.currentTooltip != null && this.currentTooltipDataIndex != null) {
             if (coords[0] == this.currentTooltipDataIndex[0] && coords[1] == this.currentTooltipDataIndex[1]) {
                 //Already displayed
                 return;
