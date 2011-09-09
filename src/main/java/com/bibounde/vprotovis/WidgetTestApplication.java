@@ -1,5 +1,6 @@
 package com.bibounde.vprotovis;
 
+import com.bibounde.vprotovis.chart.InterpolationMode;
 import com.bibounde.vprotovis.chart.bar.BarTooltipFormatter;
 import com.bibounde.vprotovis.chart.line.LineTooltipFormatter;
 import com.bibounde.vprotovis.chart.pie.PieLabelFormatter;
@@ -28,7 +29,8 @@ public class WidgetTestApplication extends Application {
         //this.runBar();
         //this.runLine();
         //this.runPie();
-        this.runSpider();
+        //this.runSpider();
+        this.runArea();
     }
     
     private void runBar() {
@@ -228,5 +230,63 @@ public class WidgetTestApplication extends Application {
         panel.addComponent(spider);
         
         window.addComponent(panel);
+    }
+    
+    private void runArea() {
+        
+        AreaChartComponent area = new AreaChartComponent();
+        
+        area.addSerie("Sales", new Point[]{new Point(0, 1000), new Point(1, 1170), new Point(2, 660), new Point(3, 1030)});
+        area.addSerie("Expenses", new Point[]{new Point(0, 400), new Point(1, 460), new Point(2, 1200), new Point(3, 540)});
+        area.addSerie("Expenses- NegY", new Point[]{new Point(0, 0), new Point(1, -1360), new Point(2, 12), new Point(3, 210)});
+        
+        area.setId("protovis");
+        area.setChartWidth(450);
+        area.setChartHeight(300);
+        area.setInterpolationMode(InterpolationMode.CARDINAL);
+        //line.setLineWidth(4);
+        //line.setColors(new String[]{"#9c9ede", "#cedb9c", "#de9ed6"});
+        
+        area.setLegendVisible(true);
+        area.setLegendAreaWidth(150d);
+        area.setLegendInsetLeft(50);
+        
+        area.setXAxisVisible(true);
+        area.setXAxisLabelVisible(true);
+        area.setXAxisLabelStep(0.5);
+        area.setXAxisGridVisible(true);
+        area.setMarginLeft(50);
+        area.setMarginBottom(50);
+        //line.addVerticalAxis(-1200, 1200, 300);
+       
+        area.setYAxisVisible(true);
+        area.setYAxisLabelVisible(true);
+        area.setYAxisLabelStep(300);
+        area.setYAxisGridVisible(true);
+        
+        area.setAreaOpacity(0.3d);
+        
+        VerticalSplitPanel splitPanel = new VerticalSplitPanel();
+        splitPanel.setSplitPosition(40);
+        splitPanel.setWidth("100%");
+        splitPanel.setHeight("500px");
+        
+        splitPanel.addComponent(new Label("Empty"));
+        
+        Panel content = new Panel();
+        content.setSizeFull();
+        
+        VerticalLayout mainLayout = (VerticalLayout) content.getContent();
+        mainLayout.setMargin(true);
+        mainLayout.setSpacing(true);
+        
+        Panel chartContent = new Panel();
+        content.addComponent(chartContent);
+        
+        chartContent.addComponent(area);
+        
+        splitPanel.addComponent(content);
+        
+        window.addComponent(splitPanel);
     }
 }

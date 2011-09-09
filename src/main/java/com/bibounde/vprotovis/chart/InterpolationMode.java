@@ -1,4 +1,4 @@
-package com.bibounde.vprotovis.chart.line;
+package com.bibounde.vprotovis.chart;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package com.bibounde.vprotovis.chart.line;
+package com.bibounde.vprotovis.chart.area;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import com.bibounde.vprotovis.chart.AbstractChart;
 import com.bibounde.vprotovis.chart.InterpolationMode;
 import com.bibounde.vprotovis.common.Point;
 
-public class LineChart extends AbstractChart {
+public class AreaChart extends AbstractChart {
 
 	private List<Serie> series = new ArrayList<Serie>();
 	private boolean xAxisEnabled = false;
@@ -20,6 +20,7 @@ public class LineChart extends AbstractChart {
 	private boolean yAxisGridEnabled = false;
 	private InterpolationMode interpolationMode = InterpolationMode.LINEAR;
 	private int lineWidth = 1;
+	private double opacity = 0.3d;
 	
 	public int addSerie(String name, Point[] values) {
 		Serie s = new Serie();
@@ -162,5 +163,19 @@ public class LineChart extends AbstractChart {
      */
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
+    }
+
+    /**
+     * @return the opacity
+     */
+    public double getOpacity() {
+        return opacity;
+    }
+
+    /**
+     * @param opacity the opacity to set
+     */
+    public void setOpacity(double opacity) {
+        this.opacity = opacity;
     }
 }

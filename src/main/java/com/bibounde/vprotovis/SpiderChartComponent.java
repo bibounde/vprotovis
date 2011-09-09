@@ -1,8 +1,5 @@
 package com.bibounde.vprotovis;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bibounde.vprotovis.chart.spider.DefaultSpiderTooltipFormatter;
 import com.bibounde.vprotovis.chart.spider.Serie;
 import com.bibounde.vprotovis.chart.spider.SpiderChart;
