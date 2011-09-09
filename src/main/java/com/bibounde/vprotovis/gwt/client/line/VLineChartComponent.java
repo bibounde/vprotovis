@@ -46,6 +46,8 @@ public class VLineChartComponent extends VAbstractChartComponent {
 
     private Tooltip currentTooltip;
     
+    private int[] currentTooltipDataIndex;
+    
     /**
      * @see com.bibounde.vprotovis.gwt.client.VAbstractChartComponent#getClassName()
      */
@@ -94,14 +96,6 @@ public class VLineChartComponent extends VAbstractChartComponent {
         var panelBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getPanelBottom()();
         var panelLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getPanelLeft()();
         
-        //Init coord arrays
-        var leftValues = new Array();
-        var bottomValues = new Array();
-        for (i=0;i<=data.length;i++){
-            leftValues.push(new Array());
-            bottomValues.push(new Array());
-        }
-        
         var vis = new $wnd.pv.Panel().canvas(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getDivId()());
         vis.width(chartWidth);
         vis.height(chartHeight);
@@ -135,22 +129,38 @@ public class VLineChartComponent extends VAbstractChartComponent {
             grid.strokeStyle(gridColor);
         }
         
+        var lineBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineBottom()();
+        var lineLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineLeft()();
+        
+        //Initialize coords. Usefull for tooltips and point behavior fix
+        var leftValues = new Array();
+        var bottomValues = new Array();
+        
+        for(i=0;i<data.length;i++) {
+            var lineData = data[i];
+            leftValues.push(new Array());
+            bottomValues.push(new Array());
+            
+            for(j=0;j<lineData.length;j++) {
+                var d = lineData[j];
+                var left = d.x * lineLeft;
+                var bottom = d.y * lineBottom;
+                leftValues[i].push(left);
+                bottomValues[i].push(bottom);
+                
+                this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::putBehaviorPointInfo(IIII)(chartHeight - panelBottom - bottom, panelLeft + left, i, j);
+            }
+        }
+        
         var panel = vis.add($wnd.pv.Panel).data(data).bottom(panelBottom).left(panelLeft);
          
         var line = panel.add($wnd.pv.Line).data(function(d) {return d;});
         
-        var lineBottom = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineBottom()();
-        var lineLeft = this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineLeft()();
-        
-        line.left(function(d) {
-            var l = d.x * lineLeft;
-            leftValues[this.parent.index].push(l);
-            return l;
+        line.left(function() {
+            return leftValues[this.parent.index][this.index];
         });
-        line.bottom(function(d) {
-            var b = d.y * lineBottom;
-            bottomValues[this.parent.index].push(b); 
-            return b;
+        line.bottom(function() {
+            return bottomValues[this.parent.index][this.index];
         });
         line.lineWidth(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getLineWidth()());
         line.interpolate(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getInterpolationMode()());
@@ -217,27 +227,26 @@ public class VLineChartComponent extends VAbstractChartComponent {
         //Tooltip management
         if (this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::isTooltipEnabled()()) {
             vis.def("valueIndex", -1).def("serieIndex", -1);
-            vis.event("mousemove", $wnd.pv.Behavior.point(10)); 
+            //vis.event("mousemove", $wnd.pv.Behavior.point(10)); 
             vis.events("all");
         
             var tooltips = eval(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getTooltips()());
-        
-            line.event("point", function(){
-                vis.valueIndex(this.index);
-                vis.serieIndex(this.parent.index);
-                var left = panelLeft + leftValues[vis.serieIndex()][vis.valueIndex()];
-                var top = chartHeight - panelBottom - bottomValues[vis.serieIndex()][vis.valueIndex()];;
-            
-                vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::showTooltip(IILjava/lang/String;)(left, top, tooltips[vis.serieIndex()][vis.valueIndex()]);
-                return this.parent.parent;
+            line.events("all");
+            vis.event("mousemove", function(){
+                var c = eval(vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getClosestBehaviorPointInfo(II)(vis.mouse().y, vis.mouse().x));
+                vis.serieIndex(c[0]);
+                vis.valueIndex(c[1]);
+                
+                if (c[0] >= 0) {
+                    var left = panelLeft + leftValues[vis.serieIndex()][vis.valueIndex()];
+                    var top = chartHeight - panelBottom - bottomValues[vis.serieIndex()][vis.valueIndex()];
+                    vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::showTooltip(IIIILjava/lang/String;)(left, top, vis.serieIndex(), vis.valueIndex(), tooltips[vis.serieIndex()][vis.valueIndex()]);
+                } else {
+                    vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::hideTooltip()();
+                }
+                
+                return vis;
             });
-            line.event("unpoint", function(){
-                vis.valueIndex(-1);
-                vis.serieIndex(-1);
-                vlinechart.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::hideTooltip()();
-                return this.parent.parent;
-            });
-            
             var dot = vis.add($wnd.pv.Dot);
             dot.visible(function() {
                 return vis.valueIndex() >= 0;
@@ -249,9 +258,9 @@ public class VLineChartComponent extends VAbstractChartComponent {
                 return panelBottom + bottomValues[vis.serieIndex()][vis.valueIndex()];
             });
             dot.fillStyle(function() {
-                return $wnd.pv.color(colors.range()[vis.serieIndex()]).brighter(0.8).rgb();
+                return colors.range()[vis.serieIndex()];
             });
-            dot.strokeStyle(function() {return colors.range()[vis.serieIndex()];});
+            dot.strokeStyle("rgba(255, 255, 255, 0.5)");
             dot.radius(this.@com.bibounde.vprotovis.gwt.client.line.VLineChartComponent::getRadiusWidth()());
         }
         
@@ -270,7 +279,16 @@ public class VLineChartComponent extends VAbstractChartComponent {
         vis.render();   
     }-*/;
     
-    public void showTooltip(int x, int y, String tooltipText) {
+    public void showTooltip(int x, int y, int serieIndex, int valueIndex, String tooltipText) {
+        int[] coords = new int[]{serieIndex, valueIndex};
+        if (this.currentTooltipDataIndex != null) {
+            if (coords[0] == this.currentTooltipDataIndex[0] && coords[1] == this.currentTooltipDataIndex[1]) {
+                //Already displayed
+                return;
+            }
+        }
+        this.currentTooltipDataIndex = coords;
+        
         this.hideTooltip();
         this.currentTooltip = new Tooltip();
         

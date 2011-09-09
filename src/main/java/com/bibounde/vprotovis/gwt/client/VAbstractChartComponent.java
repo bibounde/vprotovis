@@ -1,5 +1,9 @@
 package com.bibounde.vprotovis.gwt.client;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,6 +34,8 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
     
     protected UIDL currentUIDL;
     
+    private Map<UIRectangle, int[]> behaviorPointInfoMap = new HashMap<UIRectangle, int[]>();
+     
     
     public VAbstractChartComponent() {
         DivElement canvas = Document.get().createDivElement();
@@ -56,6 +62,8 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
         // Save the client side identifier (paintable id) for the widget
         paintableId = uidl.getId();
         getElement().setId(this.getDivId());
+        
+        this.behaviorPointInfoMap.clear();
         
         this.render();
     }
@@ -120,6 +128,30 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
     
     public double getLegendInsetLeft() {
         return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LEGEND_INSET_LEFT);
+    }
+    
+    public void putBehaviorPointInfo(int top, int left, int parentIndex, int valueIndex) {
+        int fixedLeft = left - this.getElement().getAbsoluteLeft();
+        int fixedTop = top - this.getElement().getAbsoluteTop();
+        UIRectangle r = new UIRectangle(fixedLeft-10, fixedTop-10, 20, 20);
+        //System.out.println("On put [" + parentIndex + ", " + valueIndex + "] avec pour valeur initiale ([" + left + ", " + top + "])dans " + r  + " avec un top absolu a " + this.getElement().getAbsoluteTop());
+        this.behaviorPointInfoMap.put(r, new int[]{parentIndex, valueIndex});
+    }
+    
+    public String getClosestBehaviorPointInfo(int top, int left) {
+        //System.out.println("Tentative avec pour valeur initiale ([" + left + ", " + top + "]) avec un top absolu a " + this.getElement().getAbsoluteTop());
+        int fixedLeft = left - this.getElement().getAbsoluteLeft();
+        int fixedTop = top - this.getElement().getAbsoluteTop();
+        Iterator<UIRectangle> it = this.behaviorPointInfoMap.keySet().iterator();
+        while (it.hasNext()) {
+            UIRectangle r = (UIRectangle) it.next();
+            if (r.contains(fixedLeft, fixedTop)){
+                //System.out.println("On vient de sélectionner : " + UIDLUtil.getJSArray(this.behaviorPointInfoMap.get(r)));
+                return UIDLUtil.getJSArray(this.behaviorPointInfoMap.get(r));
+            }
+        }
+        //System.out.println("Aucune sélection");
+        return "[-1, -1]";
     }
 
 }

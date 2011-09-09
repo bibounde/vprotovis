@@ -20,4 +20,21 @@ public class UIDLUtil {
         ret.append("]");
         return ret.toString();
     }
+    
+    /**
+     * Return string which represents an array (ex: [12, 13, 14]) to evaluate in native js
+     * @param values source
+     * @return string which represents an array (ex: [12, 13, 14]) to evaluate in native js
+     */
+    public static String getJSArray(int[] values) {
+        StringBuilder ret = new StringBuilder("[");
+        for (int i = 0; i < values.length; i++) {
+            if (i > 0) {
+                ret.append(", ");
+            }
+            ret.append(values[i]);
+        }
+        ret.append("]");
+        return ret.toString();
+    }
 }
