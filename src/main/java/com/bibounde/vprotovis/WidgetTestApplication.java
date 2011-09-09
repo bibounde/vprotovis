@@ -26,9 +26,9 @@ public class WidgetTestApplication extends Application {
         setMainWindow(window);
 
         //this.runBar();
-        this.runLine();
+        //this.runLine();
         //this.runPie();
-        //this.runSpider();
+        this.runSpider();
     }
     
     private void runBar() {
@@ -205,8 +205,8 @@ public class WidgetTestApplication extends Application {
     private void runSpider() {
         SpiderChartComponent spider = new SpiderChartComponent();
         
-        spider.setChartWidth(500);
-        spider.setChartHeight(300);
+        spider.setChartWidth(200);
+        spider.setChartHeight(200);
         
         spider.addSerie("Pierre", new double[]{1d, 2d, 3d, 4d, 5d});
         spider.addSerie("Julien", new double[]{4d, 4d, 1d, 4d, 3d});
@@ -224,7 +224,9 @@ public class WidgetTestApplication extends Application {
         spider.setLegendVisible(true);
         spider.setTooltipEnabled(true);
         
+        Panel panel = new Panel();
+        panel.addComponent(spider);
         
-        window.addComponent(spider);
+        window.addComponent(panel);
     }
 }
