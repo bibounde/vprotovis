@@ -257,11 +257,11 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
             }
             
             var axisStep = this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::getAxisStep()();
-            var gridStep = (ruleWidth - axisOffset) / (axisStep * maxValue);
+            var gridStep = (ruleWidth - axisOffset) / maxValue;
             
             if (this.@com.bibounde.vprotovis.gwt.client.spider.VSpiderChartComponent::isAxisGridEnabled()()) {
                 //Create grid
-                for (i=1; i<= maxValue; i++) {
+                for (i=axisStep; i<= maxValue; i=i+axisStep) {
                     createGrid(columns.length + 1, i * gridStep);
                 }
             }
