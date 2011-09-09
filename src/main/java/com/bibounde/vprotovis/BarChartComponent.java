@@ -89,7 +89,7 @@ public class BarChartComponent extends AbstractChartComponent {
      * Sets visibility of x axis
      * @param visible x axis visibility
      */
-    public void setXAxisVisisble(boolean visible) {
+    public void setXAxisVisible(boolean visible) {
         this.getBarChart().setXAxisEnabled(visible);
         this.getBarChart().setXAxisLabelEnabled(false);
     }
