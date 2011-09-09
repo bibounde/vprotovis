@@ -7,7 +7,10 @@ import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.Point;
 import com.vaadin.Application;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
 /**
@@ -23,9 +26,9 @@ public class WidgetTestApplication extends Application {
         setMainWindow(window);
 
         //this.runBar();
-        //this.runLine();
+        this.runLine();
         //this.runPie();
-        this.runSpider();
+        //this.runSpider();
     }
     
     private void runBar() {
@@ -120,7 +123,28 @@ public class WidgetTestApplication extends Application {
         line.setYAxisLabelStep(300);
         line.setYAxisGridVisible(true);
         
-        window.addComponent(line);
+        VerticalSplitPanel splitPanel = new VerticalSplitPanel();
+        splitPanel.setSplitPosition(40);
+        splitPanel.setWidth("100%");
+        splitPanel.setHeight("500px");
+        
+        splitPanel.addComponent(new Label("Empty"));
+        
+        Panel content = new Panel();
+        content.setSizeFull();
+        
+        VerticalLayout mainLayout = (VerticalLayout) content.getContent();
+        mainLayout.setMargin(true);
+        mainLayout.setSpacing(true);
+        
+        Panel chartContent = new Panel();
+        content.addComponent(chartContent);
+        
+        chartContent.addComponent(line);
+        
+        splitPanel.addComponent(content);
+        
+        window.addComponent(splitPanel);
     }
     
     private void runPie() {
