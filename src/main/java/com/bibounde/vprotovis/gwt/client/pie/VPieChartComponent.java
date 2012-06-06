@@ -11,6 +11,7 @@ import com.bibounde.vprotovis.gwt.client.TooltipOptions;
 import com.bibounde.vprotovis.gwt.client.UIDLUtil;
 import com.bibounde.vprotovis.gwt.client.UIRectangle;
 import com.bibounde.vprotovis.gwt.client.VAbstractChartComponent;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -50,6 +51,11 @@ public class VPieChartComponent extends VAbstractChartComponent {
     private Map<Integer, Tooltip> tooltipMap = new HashMap<Integer, Tooltip>();
     private AbsolutePanel content;
     
+    @Override
+    protected Element createRootElement() {
+        this.content = new AbsolutePanel();
+        return this.content.getElement();
+    }
     
     
     /**
@@ -175,7 +181,6 @@ public class VPieChartComponent extends VAbstractChartComponent {
         if (this.isTooltipsPermanent()) {
             TooltipComposite composite = new TooltipComposite();
             composite.setText(this.getTooltipValues()[tooltipIndex]);
-            
             this.content.add(composite);
             
             TooltipOptions options = this.getTooltipOptions(composite.getOffsetWidth(), composite.getOffsetHeight(), x, y, true);

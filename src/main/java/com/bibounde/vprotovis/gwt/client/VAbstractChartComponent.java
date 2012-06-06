@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
@@ -43,8 +44,7 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
      
     
     public VAbstractChartComponent() {
-        DivElement canvas = Document.get().createDivElement();
-        setElement(canvas);
+        setElement(this.createRootElement());
         setStyleName(this.getClassName());
         
         Event.addNativePreviewHandler(new NativePreviewHandler(){
@@ -56,6 +56,11 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
                 }
             }
         });
+    }
+    
+    protected Element createRootElement() {
+        DivElement canvas = Document.get().createDivElement();
+        return canvas;
     }
     
     public abstract String getClassName();
