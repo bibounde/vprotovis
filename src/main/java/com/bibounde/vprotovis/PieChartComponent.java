@@ -225,6 +225,7 @@ public class PieChartComponent extends AbstractChartComponent {
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_HIGHLIGHT_OFFSET, this.getPieChart().getHighlightOffset());
 
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_TOOLTIPS_PERMANENT, this.getPieChart().isTooltipPermanent());
+        target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_ENABLED, this.getPieChart().isLabelVisible());
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LABEL_COLOR, this.getPieChart().getLabelColor());
         
         target.addVariable(this, VPieChartComponent.UIDL_OPTIONS_LINE_WIDTH, this.getPieChart().getLineWidth());
