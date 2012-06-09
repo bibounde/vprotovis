@@ -294,7 +294,7 @@ public class VAreaChartComponent extends VAbstractChartComponent {
         this.currentTooltipDataIndex = coords;
         
         this.hideTooltip();
-        this.currentTooltip = new Tooltip();
+        this.currentTooltip = new Tooltip(this);
         
         this.currentTooltip.setText(tooltipText);
         

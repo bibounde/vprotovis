@@ -8,6 +8,7 @@ import com.bibounde.vprotovis.chart.pie.PieTooltipFormatter;
 import com.bibounde.vprotovis.common.AxisLabelFormatter;
 import com.bibounde.vprotovis.common.Point;
 import com.vaadin.Application;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -21,16 +22,139 @@ import com.vaadin.ui.Window;
 public class WidgetTestApplication extends Application {
     private Window window;
 
-    @Override
-    public void init() {
+    public void initClem() {
         window = new Window("Widget Test");
         setMainWindow(window);
 
         //this.runBar();
         //this.runLine();
-        //this.runPie();
+        this.runPie();
         //this.runSpider();
-        this.runArea();
+        //this.runArea();
+    }
+    
+    public void initBug() {
+        Window mainWindow = new Window("Graph Application");
+        AreaChartComponent area = new AreaChartComponent();
+        area.addSerie("Serie_0", new Point[] { new Point(0d, 1000d), new Point(1d, 1170d), new Point(2d, 660d), new Point(3d, 1030d) });
+        area.addSerie("Serie_1", new Point[] { new Point(0d, -933d), new Point(1d, 1759d), new Point(2d, -783d), new Point(3d, -358d) });
+        area.addSerie("Serie_2", new Point[] { new Point(0d, -271d), new Point(1d, 420d), new Point(2d, 869d), new Point(3d, -508d) });
+        area.setChartWidth(600d);
+        area.setChartHeight(300d);
+
+        area.setMarginLeft(50d);
+
+        area.setMarginBottom(50d);
+
+        area.setXAxisVisible(true);
+        area.setXAxisLabelVisible(true);
+        area.setXAxisLabelStep(0.5d);
+        area.setXAxisGridVisible(true);
+
+        area.setYAxisVisible(true);
+        area.setYAxisLabelVisible(true);
+        area.setYAxisLabelStep(300d);
+        area.setYAxisGridVisible(true);
+
+        area.setLegendVisible(true);
+        area.setLegendAreaWidth(150d);
+
+        area.setTooltipEnabled(true);
+
+        AbsoluteLayout layPreview = new AbsoluteLayout();
+
+        //layPreview.addComponent(area, "top:0px;left:0px;");
+        layPreview.setWidth("600px");
+        layPreview.setHeight("300px");
+
+        Window win = new Window();
+        win.setWidth("600px");
+        win.setHeight("300px");
+        
+        win.addComponent(area);
+
+        mainWindow.addWindow(win);
+        
+        //mainWindow.addComponent(area);
+
+        setMainWindow(mainWindow);
+    }
+    
+    public void init() {
+        Window mainWindow = new Window("Graph Application");
+        setMainWindow(mainWindow);
+        
+        BarChartComponent bar = new BarChartComponent();
+        bar.addSerie("Sales", new double[] { -100, 1170, 660, 1030 });
+        bar.addSerie("Expenses", new double[] { 1757.0, -1307.0, -1825.0, 252.0 });
+        bar.addSerie("VAT", new double[] { 1593.0, -1659.0, -204.0, 680.0 });
+        
+        bar.setGroupNames(new String[] { "2008", "2009", "2010", "2011" });
+        bar.setId("protovis");
+        bar.setChartWidth(550);
+        bar.setChartHeight(300);
+        
+        //bar.setBarInset(2);
+        //bar.setGroupBarInset(25);
+        
+        //bar.setXAxisLabelVisible(true);
+        
+        bar.setMarginLeft(50);
+        bar.setMarginBottom(20);
+        bar.setYAxisVisible(true);
+        bar.setYAxisLabelVisible(true);
+        bar.setYAxisLabelStep(650);
+        bar.setYAxisGridVisible(true);
+        bar.setYAxisLabelFormatter(new AxisLabelFormatter() {
+            public String format(double labelValue) {
+                return String.valueOf(labelValue) + "\u20AC";
+            }
+        });
+        
+        bar.setLegendVisible(true);
+        bar.setLegendAreaWidth(150);
+        bar.setLegendInsetLeft(50);
+        
+        BarTooltipFormatter tooltipFormatter = new BarTooltipFormatter() {
+            
+            public String getTooltipHTML(String serieName, double value, String groupName) {
+                StringBuilder tooltipHTML = new StringBuilder();
+                tooltipHTML.append("<table border=0 cellpadding=2 ><tr><td valign=top>").append("<img src=\"");
+
+                String img = "http://www.investirama.com/img/axialis/green/Arrow2%20Up.png";
+                if (value < 0) {
+                    img = "http://www.investirama.com/img/axialis/red/Arrow2%20Down.png";
+                }
+                tooltipHTML.append(img);
+                tooltipHTML.append("\"></td><td>");
+                tooltipHTML.append("<b><i>").append(groupName).append("</i></b><br/>");
+                tooltipHTML.append(serieName).append(": ").append(value).append(" \u20AC");
+                tooltipHTML.append("</td><tr></table>");
+
+                return tooltipHTML.toString();
+            }
+
+            public boolean isVisible(String serieName, double value, String groupName) {
+                return true;
+            }
+        };
+        bar.setTooltipFormatter(tooltipFormatter);
+
+        AbsoluteLayout layPreview = new AbsoluteLayout();
+
+        layPreview.addComponent(bar, "top:0px;left:0px;");
+        //layPreview.setWidth("600px");
+        //layPreview.setHeight("300px");
+
+        Window win = new Window();
+        win.setWidth("600px");
+        win.setHeight("300px");
+        
+        win.addComponent(bar);
+
+        mainWindow.addWindow(win);
+        
+        //mainWindow.addComponent(win);
     }
     
     private void runBar() {
@@ -166,8 +290,8 @@ public class WidgetTestApplication extends Application {
         pie.setMarginLeft(50d);
         pie.setMarginTop(50d);
         
-        //pie.setLabelVisible(true);
-        //pie.setLabelColor("#FFFFFF");
+        pie.setLabelVisible(true);
+        pie.setLabelColor("#FFFFFF");
         
         pie.setLabelFormatter(new PieLabelFormatter() {
             
@@ -193,7 +317,7 @@ public class WidgetTestApplication extends Application {
                 
                 return ret.toString();
             }
-        }, false);
+        }, true);
         
         pie.setLegendVisible(true);
         pie.setLegendAreaWidth(150d);

@@ -6,6 +6,7 @@ import com.bibounde.vprotovis.gwt.client.Tooltip;
 import com.bibounde.vprotovis.gwt.client.TooltipComposite.ArrowStyle;
 import com.bibounde.vprotovis.gwt.client.UIDLUtil;
 import com.bibounde.vprotovis.gwt.client.VAbstractChartComponent;
+import com.google.gwt.user.client.DOM;
 
 public class VBarChartComponent extends VAbstractChartComponent {
 
@@ -55,7 +56,7 @@ public class VBarChartComponent extends VAbstractChartComponent {
         return CLASSNAME;
     }
     
-    public native void render() /*-{
+    public native void render   () /*-{
     
         var vbarchart = this;
     
@@ -226,7 +227,7 @@ public class VBarChartComponent extends VAbstractChartComponent {
         int tooltipBottom = this.getElement().getAbsoluteBottom() - Double.valueOf(bottom).intValue();
         
         if (this.currentTooltip == null) {
-            this.currentTooltip = new Tooltip();
+            this.currentTooltip = new Tooltip(this);
         }
         this.currentTooltip.setText(tooltipText);
         

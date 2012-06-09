@@ -8,7 +8,7 @@
     </context-param>
     <servlet>
         <servlet-name>Vaadin Application Servlet</servlet-name>
-        <servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+        <servlet-class>com.bibounde.vprotovis.gwt.server.IE8ApplicationServlet</servlet-class>
         <init-param>
             <description>Vaadin application class to start</description>
             <param-name>application</param-name>

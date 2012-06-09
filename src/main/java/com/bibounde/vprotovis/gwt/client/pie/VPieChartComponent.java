@@ -194,7 +194,7 @@ public class VPieChartComponent extends VAbstractChartComponent {
             Tooltip tooltip = this.tooltipMap.get(tooltipIndex); 
             
             if (tooltip == null) {
-                tooltip = new Tooltip();
+                tooltip = new Tooltip(this);
                 tooltip.addCloseHandler(new CloseHandler<PopupPanel>() {
                     
                     public void onClose(CloseEvent<PopupPanel> event) {
