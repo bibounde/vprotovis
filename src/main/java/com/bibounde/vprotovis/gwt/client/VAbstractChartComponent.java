@@ -150,12 +150,14 @@ public abstract class VAbstractChartComponent extends Widget implements Paintabl
         return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LEGEND_INSET_LEFT);
     }
     
+    @Deprecated
     public void putBehaviorPointInfo(int top, int left, int parentIndex, int valueIndex) {
         UIRectangle r = new UIRectangle(left-10, top-10, 20, 20);
         //System.out.println("On put [" + parentIndex + ", " + valueIndex + "] avec pour valeur initiale ([" + left + ", " + top + "])dans " + r  + " avec un top absolu a " + this.getElement().getAbsoluteTop());
         this.behaviorPointInfoMap.put(r, new int[]{parentIndex, valueIndex});
     }
     
+    @Deprecated
     public String getClosestBehaviorPointInfo() {
         //System.out.println("Tentative avec pour valeur initiale ([" + mouseX + ", " + mouseY + "]) avec un top absolu a " + this.getElement().getAbsoluteTop());
         int fixedLeft = mouseX - this.getElement().getAbsoluteLeft();

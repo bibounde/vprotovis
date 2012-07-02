@@ -7,7 +7,7 @@ package com.bibounde.vprotovis.chart.bar;
  *
  */
 public class DefaultBarTooltipFormatter implements BarTooltipFormatter {
-
+    
     public String getTooltipHTML(String serieName, double value, String groupName) {
         StringBuilder ret = new StringBuilder();
         if (!"".equals(groupName)) {
@@ -17,5 +17,4 @@ public class DefaultBarTooltipFormatter implements BarTooltipFormatter {
         
         return ret.toString();
     }
-
 }

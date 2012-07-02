@@ -3,3 +3,5 @@ target
 .settings
 setenv.sh
 trust.jks
+.project
+.classpath

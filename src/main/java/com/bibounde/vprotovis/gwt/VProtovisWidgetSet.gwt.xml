@@ -5,6 +5,9 @@
 	<!-- Inherit DefaultWidgetSet -->
 	<inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
 	
+	<inherits name="com.bibounde.pcharts.PCharts" />
+	<inherits name="com.google.gwt.json.JSON" />
+	
 	<!-- script src="protovis.min-3.3.1.js">
 	</script>
 	<script src="protovis-msie-shim.js">

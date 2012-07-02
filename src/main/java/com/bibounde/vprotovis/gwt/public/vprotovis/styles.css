@@ -12,6 +12,11 @@
 	font-family: arial;
 }
 
+.v-vprotovis-tooltip-content table tr td {
+    font-size: 11px;
+    font-family: arial;
+}
+
 .v-vprotovis-tooltip-arrow-bottomleft {
     width:0; 
     height:0; 
