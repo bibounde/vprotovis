@@ -25,6 +25,8 @@ public class SpiderChartComponent extends AbstractChartComponent {
 
     private AxisLabelFormatter axisLabelFormatter = new DefaultAxisLabelFormatter();
     private SpiderTooltipFormatter tooltipFormatter = new DefaultSpiderTooltipFormatter();
+    private Double axisMaxValue = null;
+
     /**
      * Initializes a newly created SpiderChartComponent
      */
@@ -119,7 +121,15 @@ public class SpiderChartComponent extends AbstractChartComponent {
             this.axisLabelFormatter = new DefaultAxisLabelFormatter();
         }
     }
-    
+
+    /**
+     * Sets the maximum value of the chart axes.
+     * @param axisMaxValue maximum value of the chart axes
+     */
+    public void setAxisMaxValue(double axisMaxValue) {
+        this.axisMaxValue = axisMaxValue;
+    }
+
     /**
      * Sets visibility of tooltips
      * @param enabled visibility of tooltips
@@ -208,6 +218,10 @@ public class SpiderChartComponent extends AbstractChartComponent {
                     }
                 }
             }
+
+            // use the manually set axisMaxValue if available
+            maxValue = this.axisMaxValue != null ? this.axisMaxValue : maxValue;
+
             //Need to add first value for circle completion
             if (s.getValues().length > 0) {
                 sValues[this.getSpiderChart().getAxisNames().length] = String.valueOf(s.getValues()[0]);
