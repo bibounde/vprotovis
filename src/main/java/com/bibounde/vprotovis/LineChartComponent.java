@@ -149,14 +149,6 @@ public class LineChartComponent extends AbstractChartComponent {
     }
 
     /**
-     * Sets line width
-     * @param lineWidth linewidth to set
-     */
-    public void setLineWidth(int lineWidth) {
-        this.getLineChart().setLineWidth(lineWidth);
-    }
-    
-    /**
      * Sets tooltip formatter
      * @param tooltipFormatter tooltip formatter
      */

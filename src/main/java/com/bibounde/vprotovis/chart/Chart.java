@@ -107,6 +107,18 @@ public interface Chart extends Serializable {
     public void setLegendInsetLeft(double inset); 
 
     /**
+     * Returns the line width
+     * @return line width
+     */
+    public double getLineWidth();
+
+    /**
+     * Sets the line width
+     * @param lineWidth line width
+     */
+    public void setLineWidth(double lineWidth);
+
+    /**
      * @return the tooltipEnabled
      */
     public boolean isTooltipEnabled();

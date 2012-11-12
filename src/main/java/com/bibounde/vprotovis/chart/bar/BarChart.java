@@ -148,4 +148,12 @@ public class BarChart extends AbstractChart {
     public void setYAxisGridEnabled(boolean yAxisGridEnabled) {
         this.yAxisGridEnabled = yAxisGridEnabled;
     }
+
+    public double getLineWidth() {
+        throw new RuntimeException("Not yet implemented");
+    }
+
+    public void setLineWidth(double lineWidth) {
+        throw new RuntimeException("Not yet implemented");
+    }
 }

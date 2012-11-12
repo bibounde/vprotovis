@@ -132,11 +132,20 @@ public abstract class AbstractChartComponent extends AbstractComponent {
     public void setTooltipEnabled(boolean enabled) {
         this.chart.setTooltipEnabled(enabled);
     }
+
     /**
      * Sets legend's left inset value
      * @param inset legend's left inset value
      */
     public void setLegendInsetLeft(double inset) {
         this.chart.setLegendInsetLeft(inset);
+    }
+
+    /**
+     * Sets the line width
+     * @param lineWidth line width
+     */
+    public void setLineWidth(double lineWidth) {
+        this.chart.setLineWidth(lineWidth);
     }
 }

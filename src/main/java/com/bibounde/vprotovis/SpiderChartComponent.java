@@ -150,14 +150,6 @@ public class SpiderChartComponent extends AbstractChartComponent {
     } 
     
     /**
-     * Sets the line width
-     * @param lineWidth line width
-     */
-    public void setLineWidth(int lineWidth) {
-        this.getSpiderChart().setLineWidth(lineWidth);
-    }
-    
-    /**
      * Sets the area mode
      * @param enabled area mode enabled if true
      */

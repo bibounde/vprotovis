@@ -296,8 +296,8 @@ public class VPieChartComponent extends VAbstractChartComponent {
         return UIDLUtil.getJSArray(values, true);
     }
     
-    public int getLineWidth() {
-        return this.currentUIDL.getIntVariable(UIDL_OPTIONS_LINE_WIDTH);
+    public double getLineWidth() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LINE_WIDTH);
     }
     
     public String getLineColor() {
