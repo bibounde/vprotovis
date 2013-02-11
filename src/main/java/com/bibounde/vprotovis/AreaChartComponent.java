@@ -139,14 +139,6 @@ public class AreaChartComponent extends AbstractChartComponent {
     }
 
     /**
-     * Sets line width
-     * @param lineWidth linewidth to set
-     */
-    public void setLineWidth(int lineWidth) {
-        this.getAreaChart().setLineWidth(lineWidth);
-    }
-    
-    /**
      * Sets the area opacity
      * @param opacity area opacity (must be in [0, 1])
      */

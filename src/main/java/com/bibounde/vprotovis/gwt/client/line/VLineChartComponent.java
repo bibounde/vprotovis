@@ -426,12 +426,12 @@ public class VLineChartComponent extends VAbstractChartComponent {
         return this.currentUIDL.getStringVariable(UIDL_OPTIONS_INTERPOLATION_MODE);
     }
     
-    public int getLineWidth() {
-        return this.currentUIDL.getIntVariable(UIDL_OPTIONS_LINE_WIDTH);
+    public double getLineWidth() {
+        return this.currentUIDL.getDoubleVariable(UIDL_OPTIONS_LINE_WIDTH);
     }
     
     public int getRadiusWidth() {
-        return this.getLineWidth() + 2;
+        return (int) (this.getLineWidth() + 2.5);
     }
     
     public String getSerieNames() {

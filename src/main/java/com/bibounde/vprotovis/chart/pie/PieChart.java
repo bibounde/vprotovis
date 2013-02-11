@@ -15,7 +15,7 @@ public class PieChart extends AbstractChart {
     private boolean labelVisible = false;
     private String labelColor = COLOR_BLACK;
     private boolean tooltipPermanent = false;
-    private int lineWidth = 0;
+    private double lineWidth = 0;
     private String lineColor= COLOR_WHITE;
     
     /**
@@ -91,13 +91,13 @@ public class PieChart extends AbstractChart {
     /**
      * @return the lineWidth
      */
-    public int getLineWidth() {
+    public double getLineWidth() {
         return lineWidth;
     }
     /**
      * @param lineWidth the lineWidth to set
      */
-    public void setLineWidth(int lineWidth) {
+    public void setLineWidth(double lineWidth) {
         this.lineWidth = lineWidth;
     }
     /**

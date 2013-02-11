@@ -433,7 +433,7 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
         return this.currentUIDL.getBooleanVariable(UIDL_OPTIONS_AXIS_CAPTION_ENABLED);
     }
     
-    public int getLineWidth() {
+    public double getLineWidth() {
         return this.currentUIDL.getIntVariable(UIDL_OPTIONS_LINE_WIDTH);
     }
     
@@ -452,7 +452,7 @@ public class VSpiderChartComponent extends VAbstractChartComponent {
     }
     
     public int getRadiusWidth() {
-        return this.getLineWidth() + 2;
+        return (int) (this.getLineWidth() + 2.5);
     }
     
     private TooltipOptions getTooltipOptions(int tooltipWidth, int tooltipHeight, int x, int y) {

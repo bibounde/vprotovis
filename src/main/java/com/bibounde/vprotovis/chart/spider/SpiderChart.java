@@ -15,7 +15,7 @@ public class SpiderChart extends AbstractChart {
     private boolean axisCaptionEnabled = true;
     private double axisLabelStep = 1d;
     private boolean axisGridEnabled = true;
-    private int lineWidth = 1;
+    private double lineWidth = 1;
     private boolean areaMode = true;
     private double opacity = 0.3d;
     
@@ -103,13 +103,13 @@ public class SpiderChart extends AbstractChart {
     /**
      * @return the lineWidth
      */
-    public int getLineWidth() {
+    public double getLineWidth() {
         return lineWidth;
     }
     /**
      * @param lineWidth the lineWidth to set
      */
-    public void setLineWidth(int lineWidth) {
+    public void setLineWidth(double lineWidth) {
         this.lineWidth = lineWidth;
     }
     /**

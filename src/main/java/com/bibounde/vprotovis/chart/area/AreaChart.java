@@ -19,7 +19,7 @@ public class AreaChart extends AbstractChart {
 	private double yAxisLabelStep = 0d;
 	private boolean yAxisGridEnabled = false;
 	private InterpolationMode interpolationMode = InterpolationMode.LINEAR;
-	private int lineWidth = 1;
+	private double lineWidth = 1;
 	private double opacity = 0.3d;
 	
 	public int addSerie(String name, Point[] values) {
@@ -155,13 +155,13 @@ public class AreaChart extends AbstractChart {
     /**
      * @return the lineWidth
      */
-    public int getLineWidth() {
+    public double getLineWidth() {
         return lineWidth;
     }
     /**
      * @param lineWidth the lineWidth to set
      */
-    public void setLineWidth(int lineWidth) {
+    public void setLineWidth(double lineWidth) {
         this.lineWidth = lineWidth;
     }
 
